@@ -4,3 +4,6 @@
 [submodule "source/rozdzial_2/rozdzial_22"]
 	path = source/rozdzial_2/rozdzial_22
 	url = https://github.com/Youarecheck/Bazy_Danych_Tematyczne_Repo_MK.git
+[submodule "source/rozdzial_2/rozdzial_24"]
+	path = source/rozdzial_2/rozdzial_24
+	url = https://github.com/OskarProgrammer/monitorowanie_i_diagnostyka.git

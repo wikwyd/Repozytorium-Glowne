@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2026.3.1)  18 JUN 2026 17:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2026.3.1)  18 JUN 2026 17:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -732,7 +732,7 @@ Package: sphinxmessages 2019/01/04 v2.0 Localized LaTeX macros (Sphinx team)
 
 
 Writing index file sprawozdanie-z-laboratoriow.idx
-LaTeX Font Info:    Trying to load font information for T1+qtm on input line 85
+LaTeX Font Info:    Trying to load font information for T1+qtm on input line 86
 .
 (/usr/share/texmf/tex/latex/tex-gyre/t1qtm.fd
 File: t1qtm.fd 2009/09/25 v1.2 font definition file for T1/qtm
@@ -745,24 +745,24 @@ File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 (./sprawozdanie-z-laboratoriow.aux)
 \openout1 = `sprawozdanie-z-laboratoriow.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 85.
-LaTeX Font Info:    ... okay on input line 85.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 85.
-LaTeX Font Info:    ... okay on input line 85.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 85.
-LaTeX Font Info:    ... okay on input line 85.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 85.
-LaTeX Font Info:    ... okay on input line 85.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 85.
-LaTeX Font Info:    ... okay on input line 85.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 85.
-LaTeX Font Info:    ... okay on input line 85.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 85.
-LaTeX Font Info:    ... okay on input line 85.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 85.
-LaTeX Font Info:    ... okay on input line 85.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 85.
-LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -841,24 +841,24 @@ tawesome5
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring ON on input line 85.
+Package hyperref Info: Link coloring ON on input line 86.
 (./sprawozdanie-z-laboratoriow.out) (./sprawozdanie-z-laboratoriow.out)
 \@outlinefile=\write5
 \openout5 = `sprawozdanie-z-laboratoriow.out'.
 
-Package hyperref Info: Option `pageanchor' set `false' on input line 93.
-LaTeX Font Info:    Trying to load font information for T1+qhv on input line 93
+Package hyperref Info: Option `pageanchor' set `false' on input line 94.
+LaTeX Font Info:    Trying to load font information for T1+qhv on input line 94
 .
 
 (/usr/share/texmf/tex/latex/tex-gyre/t1qhv.fd
 File: t1qhv.fd 2009/09/25 v1.2 font definition file for T1/qhv
 )<<ot1.cmap>><<oml.cmap>><<oms.cmap>><<omx.cmap>>
-LaTeX Font Info:    Trying to load font information for U+msa on input line 93.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 94.
 
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 93.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 94.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -881,7 +881,7 @@ dvips/tex-gyre/q-ec.enc}] (./sprawozdanie-z-laboratoriow.toc)
 ]
 Chapter 1.
 LaTeX Font Info:    Trying to load font information for TS1+qtm on input line 1
-09.
+10.
 (/usr/share/texmf/tex/latex/tex-gyre/ts1qtm.fd
 File: ts1qtm.fd 2009/09/25 v1.2 font definition file for TS1/qtm
 )
@@ -897,17 +897,17 @@ Chapter 2.
 
 ]
 LaTeX Font Info:    Trying to load font information for T1+txtt on input line 2
-70.
+71.
  (/usr/share/texlive/texmf-dist/tex/latex/txfonts/t1txtt.fd
 File: t1txtt.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    Font shape `T1/txtt/m/it' in size <10.95> not available
-(Font)              Font shape `T1/txtt/m/sl' tried instead on input line 380.
+(Font)              Font shape `T1/txtt/m/sl' tried instead on input line 381.
 
 
 [3]
 LaTeX Font Info:    Font shape `T1/txtt/b/n' in size <10.95> not available
-(Font)              Font shape `T1/txtt/bx/n' tried instead on input line 405.
+(Font)              Font shape `T1/txtt/bx/n' tried instead on input line 406.
 
 
 [4]
@@ -927,11 +927,11 @@ File: ts1txtt.fd 2000/12/15 v3.1
 
 [9]
 LaTeX Font Info:    Trying to load font information for U+fontawesomefree1 on i
-nput line 1152.
+nput line 1153.
  (/usr/share/texlive/texmf-dist/tex/latex/fontawesome5/ufontawesomefree1.fd)
 
 [10{/usr/share/texlive/texmf-dist/fonts/enc/dvips/fontawesome5/fa5free1.enc}]
-Underfull \hbox (badness 10000) in paragraph at lines 1248--1250
+Underfull \hbox (badness 10000) in paragraph at lines 1249--1251
 \T1/qtm/m/n/10.95 Bez-piecze«stwo danych stanowi ab-so-lutny pri-o-ry-tet ka»de
 j ad-min-is-tracji sys-temami in-for-maty-cznymi.
  []
@@ -939,7 +939,7 @@ j ad-min-is-tracji sys-temami in-for-maty-cznymi.
 
 
 [11]
-Underfull \hbox (badness 10000) in paragraph at lines 1349--1352
+Underfull \hbox (badness 10000) in paragraph at lines 1350--1353
 [][][][][]\T1/qtm/m/n/9 Oracle Doc-u-men-ta-tion, \T1/qtm/m/it/9 AU-DIT_TRAIL \
 T1/qtm/m/n/9 oraz in-for-ma-cje o uni-fied au-dit-ing, [][]$https : / / docs . 
 oracle . com / en / database / oracle /
@@ -987,7 +987,7 @@ nged.
 Here is how much of TeX's memory you used:
  20677 strings out of 473197
  372325 string characters out of 5718606
- 794614 words of memory out of 5000000
+ 793638 words of memory out of 5000000
  43306 multiletter control sequences out of 15000+600000
  627639 words of font info for 104 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
@@ -1002,7 +1002,7 @@ fonts/type1/public/tex-gyre/qtmri.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/public/txfonts/t1xbtt.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/t
 xfonts/t1xtt.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/t1xt
 t.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/tcxtt.pfb>
-Output written on sprawozdanie-z-laboratoriow.pdf (28 pages, 296935 bytes).
+Output written on sprawozdanie-z-laboratoriow.pdf (28 pages, 296936 bytes).
 PDF statistics:
  751 PDF objects out of 1000 (max. 8388607)
  694 compressed objects within 7 object streams

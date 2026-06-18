@@ -37,11 +37,11 @@
 \contentsline {subsubsection}{Przykładowa konfiguracja}{10}{subsubsection*.17}%
 \contentsline {subsubsection}{Najlepsze praktyki}{10}{subsubsection*.18}%
 \contentsline {section}{\numberline {2.3}Kontrola i konserwacja}{10}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Wprowadzenie}{10}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Zarządzanie przestrzenią i mechanizm współbieżności}{10}{subsection.2.3.2}%
-\contentsline {subsection}{\numberline {2.3.3}Optymalizacja i statystyki planisty zapytań}{11}{subsection.2.3.3}%
-\contentsline {subsection}{\numberline {2.3.4}Bezpieczeństwo i rygorystyczna kontrola dostępu}{11}{subsection.2.3.4}%
-\contentsline {subsection}{\numberline {2.3.5}Strategie zabezpieczania przed utratą danych}{11}{subsection.2.3.5}%
+\contentsline {subsection}{\numberline {2.3.1}Wprowadzenie i planowanie konserwacji}{10}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Zarządzanie stanem serwera i sesjami}{10}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Proces Vacuum}{11}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}Zarządzanie transakcjami i schematy (SCHEMA)}{11}{subsection.2.3.4}%
+\contentsline {subsection}{\numberline {2.3.5}Zarządzanie indeksami}{11}{subsection.2.3.5}%
 \contentsline {subsection}{\numberline {2.3.6}Podsumowanie}{12}{subsection.2.3.6}%
 \contentsline {section}{\numberline {2.4}Monitorowanie i diagnostyka}{12}{section.2.4}%
 \contentsline {subsection}{\numberline {2.4.1}Wstęp}{12}{subsection.2.4.1}%
@@ -53,49 +53,60 @@
 \contentsline {subsection}{\numberline {2.4.7}Znaczenie monitorowania i diagnostyki w bazach danych}{14}{subsection.2.4.7}%
 \contentsline {subsection}{\numberline {2.4.8}Podsumowanie}{14}{subsection.2.4.8}%
 \contentsline {subsection}{\numberline {2.4.9}Źródła}{14}{subsection.2.4.9}%
-\contentsline {section}{\numberline {2.5}Wydajność, skalowanie i replikacja danych}{14}{section.2.5}%
-\contentsline {subsection}{\numberline {2.5.1}Wstęp}{15}{subsection.2.5.1}%
-\contentsline {subsection}{\numberline {2.5.2}Wydajność baz danych}{15}{subsection.2.5.2}%
-\contentsline {subsection}{\numberline {2.5.3}Skalowanie: Pionowe vs. Poziome}{15}{subsection.2.5.3}%
-\contentsline {subsection}{\numberline {2.5.4}Replikacja danych i wysoka dostępność}{15}{subsection.2.5.4}%
-\contentsline {subsection}{\numberline {2.5.5}Wyzwania i kompromisy architektoniczne}{15}{subsection.2.5.5}%
-\contentsline {subsection}{\numberline {2.5.6}Podsumowanie}{16}{subsection.2.5.6}%
-\contentsline {section}{\numberline {2.6}Partycjonowanie danych}{16}{section.2.6}%
-\contentsline {section}{\numberline {2.7}Bezpieczeństwo Baz Danych}{16}{section.2.7}%
-\contentsline {subsection}{\numberline {2.7.1}1. Model bezpieczeństwa CIA i ochrona infrastruktury}{16}{subsection.2.7.1}%
-\contentsline {subsubsection}{Triada CIA w środowisku bazodanowym}{16}{subsubsection*.31}%
-\contentsline {subsubsection}{Izolacja sieciowa i architektura chmurowa (VPC)}{16}{subsubsection*.32}%
-\contentsline {subsubsection}{Konteneryzacja a bezpieczeństwo bazy}{17}{subsubsection*.33}%
-\contentsline {subsection}{\numberline {2.7.2}2. Ataki na bazy danych i luki w zabezpieczeniach}{17}{subsection.2.7.2}%
-\contentsline {subsubsection}{Wstrzykiwanie kodu SQL (SQL Injection)}{17}{subsubsection*.34}%
-\contentsline {subsubsection}{Ataki NoSQL Injection}{18}{subsubsection*.35}%
-\contentsline {subsubsection}{Przepełnienie bufora (Buffer Overflow) w DBMS}{18}{subsubsection*.36}%
-\contentsline {subsubsection}{Odmowa Usługi (DoS) na poziomie bazy danych}{18}{subsubsection*.37}%
-\contentsline {subsubsection}{Automatyzacja ataków: Narzędzia audytowe}{19}{subsubsection*.38}%
-\contentsline {subsection}{\numberline {2.7.3}3. Zarządzanie tożsamością, uwierzytelnianie i autoryzacja}{19}{subsection.2.7.3}%
-\contentsline {subsubsection}{Uwierzytelnianie w bazach danych}{19}{subsubsection*.39}%
-\contentsline {subsubsection}{Autoryzacja i modele kontroli dostępu}{19}{subsubsection*.40}%
-\contentsline {subsubsection}{Bezpieczeństwo na poziomie wierszy (Row\sphinxhyphen {}Level Security)}{20}{subsubsection*.41}%
-\contentsline {subsubsection}{Zarządzanie poświadczeniami aplikacji (Secrets Management)}{20}{subsubsection*.42}%
-\contentsline {subsection}{\numberline {2.7.4}4. Kryptografia w bazach danych}{20}{subsection.2.7.4}%
-\contentsline {subsubsection}{Szyfrowanie danych w spoczynku (Data at Rest)}{20}{subsubsection*.43}%
-\contentsline {subsubsection}{Szyfrowanie danych w tranzycie (Data in Transit)}{21}{subsubsection*.44}%
-\contentsline {subsubsection}{Szyfrowanie na poziomie klienta (Client\sphinxhyphen {}Side Encryption)}{21}{subsubsection*.45}%
-\contentsline {subsubsection}{Dynamiczne maskowanie danych i funkcje skrótu}{21}{subsubsection*.46}%
-\contentsline {subsection}{\numberline {2.7.5}5. Audyt, logowanie i wykrywanie anomalii}{22}{subsection.2.7.5}%
-\contentsline {subsubsection}{Znaczenie audytu i rodzaje logów bazodanowych}{22}{subsubsection*.47}%
-\contentsline {subsubsection}{Centralizacja logów i systemy SIEM}{22}{subsubsection*.48}%
-\contentsline {subsubsection}{Database Activity Monitoring (DAM) i wykrywanie anomalii}{22}{subsubsection*.49}%
-\contentsline {subsection}{\numberline {2.7.6}6. Bezpieczeństwo kopii zapasowych i Disaster Recovery}{23}{subsection.2.7.6}%
-\contentsline {subsubsection}{Zasada 3\sphinxhyphen {}2\sphinxhyphen {}1 i niezmienność kopii (Immutable Backups)}{23}{subsubsection*.50}%
-\contentsline {subsubsection}{Szyfrowanie archiwów i zarządzanie kluczami}{23}{subsubsection*.51}%
-\contentsline {subsubsection}{Disaster Recovery (DR) i wskaźniki RTO/RPO}{23}{subsubsection*.52}%
-\contentsline {section}{\numberline {2.8}Kopie zapasowe}{24}{section.2.8}%
-\contentsline {chapter}{\numberline {3}Zadanie 3}{25}{chapter.3}%
-\contentsline {chapter}{\numberline {4}Implementacja bazy danych i import danych}{26}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Definicja i inicjalizacja struktur danych}{26}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Zasilenie bazy danymi demonstracyjnymi}{27}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Koncepcja mechanizmów masowego importu (ETL)}{27}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Mechanizm COPY w PostgreSQL}{27}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}Mechanizm Batch Insert w SQLite}{28}{subsection.4.3.2}%
-\contentsline {chapter}{\numberline {5}Zadanie 5}{29}{chapter.5}%
+\contentsline {section}{\numberline {2.5}Wydajność, skalowanie i replikacja}{14}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Wydajność, skalowanie i replikacja}{15}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Kontrola i buforowanie połączeń z bazą danych}{15}{subsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.5.3}INDEX i CLUSTER}{15}{subsection.2.5.3}%
+\contentsline {subsection}{\numberline {2.5.4}Rola i zastosowanie replikacji}{16}{subsection.2.5.4}%
+\contentsline {subsection}{\numberline {2.5.5}Oprogramowanie i zaimplementowane mechanizmy replikacji}{16}{subsection.2.5.5}%
+\contentsline {subsection}{\numberline {2.5.6}Limity systemu oraz ograniczanie dostępu użytkowników}{16}{subsection.2.5.6}%
+\contentsline {subsection}{\numberline {2.5.7}Testy wydajności sprzętu na poziomie systemu operacyjnego}{16}{subsection.2.5.7}%
+\contentsline {section}{\numberline {2.6}Partycjonowanie danych}{17}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Bezpieczeństwo Baz Danych}{17}{section.2.7}%
+\contentsline {subsection}{\numberline {2.7.1}1. Model bezpieczeństwa CIA i ochrona infrastruktury}{17}{subsection.2.7.1}%
+\contentsline {subsubsection}{Triada CIA w środowisku bazodanowym}{17}{subsubsection*.26}%
+\contentsline {subsubsection}{Izolacja sieciowa i architektura chmurowa (VPC)}{18}{subsubsection*.27}%
+\contentsline {subsubsection}{Konteneryzacja a bezpieczeństwo bazy}{18}{subsubsection*.28}%
+\contentsline {subsection}{\numberline {2.7.2}2. Ataki na bazy danych i luki w zabezpieczeniach}{18}{subsection.2.7.2}%
+\contentsline {subsubsection}{Wstrzykiwanie kodu SQL (SQL Injection)}{18}{subsubsection*.29}%
+\contentsline {subsubsection}{Ataki NoSQL Injection}{19}{subsubsection*.30}%
+\contentsline {subsubsection}{Przepełnienie bufora (Buffer Overflow) w DBMS}{19}{subsubsection*.31}%
+\contentsline {subsubsection}{Odmowa Usługi (DoS) na poziomie bazy danych}{20}{subsubsection*.32}%
+\contentsline {subsubsection}{Automatyzacja ataków: Narzędzia audytowe}{20}{subsubsection*.33}%
+\contentsline {subsection}{\numberline {2.7.3}3. Zarządzanie tożsamością, uwierzytelnianie i autoryzacja}{20}{subsection.2.7.3}%
+\contentsline {subsubsection}{Uwierzytelnianie w bazach danych}{20}{subsubsection*.34}%
+\contentsline {subsubsection}{Autoryzacja i modele kontroli dostępu}{21}{subsubsection*.35}%
+\contentsline {subsubsection}{Bezpieczeństwo na poziomie wierszy (Row\sphinxhyphen {}Level Security)}{21}{subsubsection*.36}%
+\contentsline {subsubsection}{Zarządzanie poświadczeniami aplikacji (Secrets Management)}{21}{subsubsection*.37}%
+\contentsline {subsection}{\numberline {2.7.4}4. Kryptografia w bazach danych}{22}{subsection.2.7.4}%
+\contentsline {subsubsection}{Szyfrowanie danych w spoczynku (Data at Rest)}{22}{subsubsection*.38}%
+\contentsline {subsubsection}{Szyfrowanie danych w tranzycie (Data in Transit)}{22}{subsubsection*.39}%
+\contentsline {subsubsection}{Szyfrowanie na poziomie klienta (Client\sphinxhyphen {}Side Encryption)}{22}{subsubsection*.40}%
+\contentsline {subsubsection}{Dynamiczne maskowanie danych i funkcje skrótu}{23}{subsubsection*.41}%
+\contentsline {subsection}{\numberline {2.7.5}5. Audyt, logowanie i wykrywanie anomalii}{23}{subsection.2.7.5}%
+\contentsline {subsubsection}{Znaczenie audytu i rodzaje logów bazodanowych}{23}{subsubsection*.42}%
+\contentsline {subsubsection}{Centralizacja logów i systemy SIEM}{23}{subsubsection*.43}%
+\contentsline {subsubsection}{Database Activity Monitoring (DAM) i wykrywanie anomalii}{24}{subsubsection*.44}%
+\contentsline {subsection}{\numberline {2.7.6}6. Bezpieczeństwo kopii zapasowych i Disaster Recovery}{24}{subsection.2.7.6}%
+\contentsline {subsubsection}{Zasada 3\sphinxhyphen {}2\sphinxhyphen {}1 i niezmienność kopii (Immutable Backups)}{24}{subsubsection*.45}%
+\contentsline {subsubsection}{Szyfrowanie archiwów i zarządzanie kluczami}{24}{subsubsection*.46}%
+\contentsline {subsubsection}{Disaster Recovery (DR) i wskaźniki RTO/RPO}{24}{subsubsection*.47}%
+\contentsline {section}{\numberline {2.8}Kopie zapasowe i odzyskiwanie danych}{25}{section.2.8}%
+\contentsline {subsection}{\numberline {2.8.1}Wstęp}{25}{subsection.2.8.1}%
+\contentsline {subsection}{\numberline {2.8.2}Tworzenie kopii zapasowej całego systemu PostgreSQL \sphinxhyphen {} mechanizmy wbudowane}{25}{subsection.2.8.2}%
+\contentsline {subsection}{\numberline {2.8.3}Tworzenie kopii zapasowych poszczególnych baz danych \sphinxhyphen {} mechanizmy wbudowane}{26}{subsection.2.8.3}%
+\contentsline {subsection}{\numberline {2.8.4}Odzyskiwanie usuniętych lub uszkodzonych danych}{26}{subsection.2.8.4}%
+\contentsline {subsubsection}{Odtwarzanie tabel i innych obiektów logicznych}{26}{subsubsection*.48}%
+\contentsline {subsubsection}{Odtwarzanie usuniętej bazy danych}{26}{subsubsection*.49}%
+\contentsline {subsubsection}{Odtwarzanie przestrzeni tabel i pełnego klastra}{26}{subsubsection*.50}%
+\contentsline {subsubsection}{PITR i odzyskiwanie stanu sprzed błędu}{27}{subsubsection*.51}%
+\contentsline {subsection}{\numberline {2.8.5}Dedykowane oprogramowanie i skrypty zewnętrzne do automatyzacji}{27}{subsection.2.8.5}%
+\contentsline {subsection}{\numberline {2.8.6}Podsumowanie}{27}{subsection.2.8.6}%
+\contentsline {chapter}{\numberline {3}Zadanie 3}{28}{chapter.3}%
+\contentsline {chapter}{\numberline {4}Implementacja bazy danych i import danych}{29}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Definicja i inicjalizacja struktur danych}{29}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Zasilenie bazy danymi demonstracyjnymi}{30}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Koncepcja mechanizmów masowego importu (ETL)}{30}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Mechanizm COPY w PostgreSQL}{30}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Mechanizm Batch Insert w SQLite}{31}{subsection.4.3.2}%
+\contentsline {chapter}{\numberline {5}Zadanie 5}{32}{chapter.5}%

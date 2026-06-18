@@ -5,12 +5,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Wydajność, skalowanie i replikacja danych &#8212; Sprawozdanie-z-laboratoriów  documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d1102ebc" />
-    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=12dfc556" />
+    <title>Wydajność, skalowanie i replikacja &#8212; Sprawozdanie-z-laboratoriów  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Partycjonowanie danych" href="../rozdzial_26/index.html" />
@@ -32,70 +33,106 @@
 
           <div class="body" role="main">
             
-  <section id="wydajnosc-skalowanie-i-replikacja-danych">
-<h1>Wydajność, skalowanie i replikacja danych<a class="headerlink" href="#wydajnosc-skalowanie-i-replikacja-danych" title="Link to this heading">¶</a></h1>
-<table class="docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p>Autorzy:</p></td>
-<td><ol class="arabic simple">
+  <section id="wydajnosc-skalowanie-i-replikacja">
+<h1>Wydajność, skalowanie i replikacja<a class="headerlink" href="#wydajnosc-skalowanie-i-replikacja" title="Link to this heading">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">Autorzy<span class="colon">:</span></dt>
+<dd class="field-odd"><ol class="arabic simple">
 <li><p>Olaf Chomicki</p></li>
 <li><p>Konrad Machowski</p></li>
 <li><p>Wiktor Wydrzyński</p></li>
 </ol>
-</td>
-</tr>
-</tbody>
-</table>
-<section id="wstep">
-<h2>Wstęp<a class="headerlink" href="#wstep" title="Link to this heading">¶</a></h2>
-<p>W erze gwałtownego wzrostu ilości generowanych informacji, stabilne działanie systemów bazodanowych stało się fundamentem nowoczesnych aplikacji. Wydajność, skalowanie oraz replikacja to trzy ściśle powiązane ze sobą filary, które decydują o tym, czy baza danych będzie w stanie obsłużyć rosnącą liczbę użytkowników oraz operacji w jednostce czasu. Zrozumienie różnic oraz synergii między tymi pojęciami jest kluczowe dla każdego architekta oprogramowania <a class="footnote-reference brackets" href="#id6" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
-<p>Podczas gdy wydajność skupia się na optymalizacji istniejących zasobów w celu jak najszybszego przetwarzania pojedynczych żądań, skalowanie i replikacja odpowiadają na wyzwania związane z ograniczeniami sprzętowymi oraz koniecznością zapewnienia ciągłości działania systemu w przypadku awarii.</p>
+</dd>
+</dl>
+<section id="id1">
+<h2>Wydajność, skalowanie i replikacja<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<p>Współczesne systemy bazodanowe muszą sprostać wymaganiom związanym z wykładniczym przyrostem wolumenu danych oraz stale rosnącą liczbą jednoczesnych użytkowników. W tym kontekście kluczowe staje się zrozumienie trzech fundamentalnych pojęć: wydajności, skalowania i replikacji. Wydajność odnosi się do szybkości przetwarzania pojedynczych transakcji i zapytań przy optymalnym wykorzystaniu dostępnych zasobów.</p>
+<p>Gdy optymalizacja kodu przestaje wystarczać, konieczne staje się skalowanie – pionowe (zwiększanie mocy pojedynczego serwera) lub poziome (rozpraszanie obciążenia na wiele maszyn). Replikacja z kolei stanowi most łączący skalowanie odczytów z zapewnieniem wysokiej dostępności i odporności systemu na awarie sprzętowe.</p>
 </section>
-<section id="wydajnosc-baz-danych">
-<h2>Wydajność baz danych<a class="headerlink" href="#wydajnosc-baz-danych" title="Link to this heading">¶</a></h2>
-<p>Wydajność (Performance) odnosi się do szybkości, z jaką system bazodanowy reaguje na zapytania i transakcje. Na poziomie pojedynczej instancji kluczowe znaczenie ma optymalizacja kodu SQL, poprawne projektowanie indeksów oraz unikanie kosztownych operacji, takich jak pełne skanowanie tabel (Full Table Scan). Optymalizator bazy danych stara się dobrać najlepszą ścieżkę wykonania zapytania, jednak jego skuteczność zależy od aktualności statystyk oraz struktury danych <a class="footnote-reference brackets" href="#id7" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
-<p>Po stronie sprzętowej wąskimi gardłami najczęściej stają się operacje wejścia/wyjścia (I/O) dysków, dostępna pamięć RAM (służąca jako bufor dla często odczytywanych stron danych) oraz moc procesora. Wyczerpanie tych zasobów bezpośrednio przekłada się na wzrost opóźnień (latency) i spadek przepustowości (throughput).</p>
+<section id="kontrola-i-buforowanie-polaczen-z-baza-danych">
+<h2>Kontrola i buforowanie połączeń z bazą danych<a class="headerlink" href="#kontrola-i-buforowanie-polaczen-z-baza-danych" title="Link to this heading">¶</a></h2>
+<p>Nawiązywanie nowego połączenia z bazą danych jest operacją niezwykle kosztowną procesorowo i czasowo, ponieważ wymaga uwierzytelnienia użytkownika, alokacji pamięci oraz ustanowienia sesji sieciowej. W systemach o dużym natężeniu ruchu brak kontroli nad liczbą połączeń prowadzi do szybkiego wyczerpania zasobów serwera.</p>
+<p>Rozwiązaniem tego problemu jest buforowanie połączeń (Connection Pooling). Mechanizm ten polega na utrzymywaniu stałej puli otwartych, gotowych do użycia połączeń, które są wielokrotnie współdzielone przez aplikację. Narzędzia takie jak PgBouncer (dla PostgreSQL) czy wbudowane pule w serwerach aplikacji drastycznie zmniejszają narzut overhead, stabilizując czas reakcji bazy danych pod dużym obciążeniem.</p>
+<p>Przykład konfiguracji PgBouncer (fragment pliku <code class="docutils literal notranslate"><span class="pre">pgbouncer.ini</span></code>):</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[databases]</span>
+<span class="na">moja_baza</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">host=127.0.0.1 port=5432 dbname=produkcja</span>
+
+<span class="k">[pgbouncer]</span>
+<span class="na">listen_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">6432</span>
+<span class="na">listen_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">*</span>
+<span class="na">auth_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">md5</span>
+<span class="na">auth_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/etc/pgbouncer/userlist.txt</span>
+<span class="na">pool_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">transaction</span>
+<span class="na">max_client_conn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1000</span>
+<span class="na">default_pool_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">20</span>
+</pre></div>
+</div>
 </section>
-<section id="skalowanie-pionowe-vs-poziome">
-<h2>Skalowanie: Pionowe vs. Poziome<a class="headerlink" href="#skalowanie-pionowe-vs-poziome" title="Link to this heading">¶</a></h2>
-<p>Gdy optymalizacja zapytań przestaje wystarczać, system musi zostać poddany skalowaniu. Skalowanie pionowe (Scaling Up) polega na zwiększaniu zasobów pojedynczej maszyny – dodaniu szybszych procesorów, większej ilości pamięci RAM lub wydajniejszych dysków SSD. Jest to najprostsze podejście, niepoprawiające jednak architektury aplikacji, ale ma swoje fizyczne i ekonomiczne granice (prawo malejących przychodów oraz limit techniczny serwera) <a class="footnote-reference brackets" href="#id8" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
-<p>Skalowanie poziome (Scaling Out) polega na dodawaniu kolejnych maszyn do klastra. W kontekście baz danych jest to zadanie znacznie trudniejsze niż w przypadku bezstanowych aplikacji webowych, ponieważ wymaga mechanizmów dystrybucji danych. Jedną z głównych metod skalowania poziomego zapisu jest sharding, czyli fizyczny podział bazy na niezależne węzły.</p>
+<section id="index-i-cluster">
+<h2>INDEX i CLUSTER<a class="headerlink" href="#index-i-cluster" title="Link to this heading">¶</a></h2>
+<p>Indeksowanie to podstawowa technika optymalizacji zapytań o charakterze odczytowym. Instrukcja <code class="docutils literal notranslate"><span class="pre">INDEX</span></code> tworzy pomocniczą strukturę danych (najczęściej w formie B-drzewa), która pozwala silnikowi bazy danych na błyskawiczne odnalezienie żądanych wierszy bez konieczności kosztownego przeszukiwania całej tabeli (Full Table Scan).</p>
+<p>Z kolei polecenie <code class="docutils literal notranslate"><span class="pre">CLUSTER</span></code> idzie o krok dalej – fizycznie reorganizuje strukturę danych na dysku w taki sposób, aby kolejność wierszy w tabeli dokładnie odpowiadała kolejności indeksu. Powoduje to, że powiązane rekordy są składowane obok siebie w tych samych blokach pamięci, co radykalnie przyspiesza zapytania zakresowe (Range Queries).</p>
+<p>Przykład użycia poleceń w PostgreSQL:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- 1. Tworzenie standardowego indeksu B-drzewa na kolumnie data_zamowienia</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_zamowienia_data</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">zamowienia</span><span class="w"> </span><span class="p">(</span><span class="n">data_zamowienia</span><span class="p">);</span>
+
+<span class="c1">-- 2. Fizyczne przemieszczenie danych na dysku według kolejności indeksu</span>
+<span class="k">CLUSTER</span><span class="w"> </span><span class="n">zamowienia</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">idx_zamowienia_data</span><span class="p">;</span>
+</pre></div>
+</div>
 </section>
-<section id="replikacja-danych-i-wysoka-dostepnosc">
-<h2>Replikacja danych i wysoka dostępność<a class="headerlink" href="#replikacja-danych-i-wysoka-dostepnosc" title="Link to this heading">¶</a></h2>
-<p>Replikacja to proces kopiowania danych z jednego serwera bazy danych (węzła głównego/Primary) na jeden lub więcej serwerów pomocniczych (węzłów potomnych/Replica). Głównym celem replikacji jest zapewnienie wysokiej dostępności (High Availability) – w razie awarii serwera głównego, jedna z replik może przejąć jego funkcję, minimalizując czas przestoju systemu <a class="footnote-reference brackets" href="#id9" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>.</p>
-<p>Dodatkowo replikacja pozwala na skalowanie operacji odczytu (Read Scalability). Aplikacja może kierować zapytania modyfikujące dane (INSERT, UPDATE) do węzła Primary, natomiast ciężkie zapytania raportowe i odczyty rozpraszać na repliki. Replikacja może odbywać się synchronicznie (gwarantuje spójność danych, ale zwalnia zapisy) lub asynchronicznie (szybsza, ale niesie ryzyko utraty ostatnich transakcji w przypadku nagłej awarii).</p>
+<section id="rola-i-zastosowanie-replikacji">
+<h2>Rola i zastosowanie replikacji<a class="headerlink" href="#rola-i-zastosowanie-replikacji" title="Link to this heading">¶</a></h2>
+<p>Replikacja polega na permanentnym kopiowaniu i synchronizowaniu danych z głównego węzła bazy danych (Primary/Master) na węzły pomocnicze (Replica/Slave). Jej rola w architekturze systemów IT jest wieloaspektowa. Po pierwsze, gwarantuje wysoką dostępność (High Availability) – w przypadku fizycznej awarii Mastera, jedna z replik może automatycznie przejąć jego funkcje (proces Failover).</p>
+<p>Po drugie, umożliwia skalowanie odczytów (Read Scalability). Przekierowanie operacji modyfikujących (INSERT, UPDATE) do węzła głównego, a operacji odczytu oraz generowania ciężkich raportów na repliki pozwala na znaczne odciążenie głównego serwera.</p>
 </section>
-<section id="wyzwania-i-kompromisy-architektoniczne">
-<h2>Wyzwania i kompromisy architektoniczne<a class="headerlink" href="#wyzwania-i-kompromisy-architektoniczne" title="Link to this heading">¶</a></h2>
-<p>Budowanie systemów wysoce skalowalnych i zreplikowanych wiąże się z koniecznością akceptacji kompromisów, co formalnie opisuje twierdzenie CAP (Consistency, Availability, Partition Tolerance). Mówi ono, że w rozproszonym systemie komputerowym można jednocześnie zapewnić tylko dwie z trzech wymienionych cech <a class="footnote-reference brackets" href="#id10" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a>.</p>
-<p>W praktyce systemy bazodanowe często muszą wybierać pomiędzy silną spójnością danych (wszyscy użytkownicy widzą dokładnie to samo w tym samym momencie) a wysoką dostępnością i niskimi opóźnieniami, co doprowadziło do popularyzacji modeli spójności ostatecznej (Eventual Consistency) w bazach typu NoSQL.</p>
+<section id="oprogramowanie-i-zaimplementowane-mechanizmy-replikacji">
+<h2>Oprogramowanie i zaimplementowane mechanizmy replikacji<a class="headerlink" href="#oprogramowanie-i-zaimplementowane-mechanizmy-replikacji" title="Link to this heading">¶</a></h2>
+<p>Mechanizmy replikacji mogą być realizowane na poziomie silnika bazy danych lub za pomocą zewnętrznego oprogramowania. Wyróżnia się dwa główne podejścia pod kątem transmisji danych: replikację opartą na logu (WAL - Write-Ahead Logging) oraz replikację logiczną. Ze względu na synchronizację, proces ten może przebiegać synchronicznie lub asynchronicznie.</p>
+<p>Przykład konfiguracji replikacji logicznej (wbudowanej w PostgreSQL):</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- KROK 1: Uruchomienie na węźle głównym (Primary) - zdefiniowanie publikacji</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="n">PUBLICATION</span><span class="w"> </span><span class="n">pub_dane_sprzedazy</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">zamowienia</span><span class="p">,</span><span class="w"> </span><span class="n">klienci</span><span class="p">;</span>
+
+<span class="c1">-- KROK 2: Uruchomienie na węźle pomocniczym (Replica) - subskrypcja danych</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="n">SUBSCRIPTION</span><span class="w"> </span><span class="n">sub_dane_sprzedazy</span>
+<span class="k">CONNECTION</span><span class="w"> </span><span class="s1">&#39;host=192.168.1.50 port=5432 dbname=produkcja user=repl_user password=secret&#39;</span>
+<span class="n">PUBLICATION</span><span class="w"> </span><span class="n">pub_dane_sprzedazy</span><span class="p">;</span>
+</pre></div>
+</div>
 </section>
-<section id="podsumowanie">
-<h2>Podsumowanie<a class="headerlink" href="#podsumowanie" title="Link to this heading">¶</a></h2>
-<p>Wydajność, skalowanie i replikacja nie są niezależnymi wyspami – to naczynia połączone. Dobrze zoptymalizowana pod kątem wydajności baza danych odwleka w czasie moment, w którym konieczne stanie się kosztowne skalowanie. Z kolei właściwie wdrożona replikacja nie tylko zabezpiecza system przed utratą danych, ale stanowi naturalny krok w kierunku poziomego skalowania odczytów. Architektura systemu musi być stale dostosowywana do dynamicznie zmieniających się wymagań biznesowych oraz skali operacji.</p>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id6" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>“Projektowanie systemów rozproszonych” – Podstawy skalowalności baz danych.</p>
-</aside>
-<aside class="footnote brackets" id="id7" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
-<p>“Optymalizacja zapytań i indeksowanie w relacyjnych bazach danych”.</p>
-</aside>
-<aside class="footnote brackets" id="id8" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
-<p>Analiza kosztów i barier technologicznych w skalowaniu pionowym.</p>
-</aside>
-<aside class="footnote brackets" id="id9" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">4</a><span class="fn-bracket">]</span></span>
-<p>Mechanizmy replikacji synchronicznej i asynchronicznej w systemach High Availability.</p>
-</aside>
-<aside class="footnote brackets" id="id10" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">5</a><span class="fn-bracket">]</span></span>
-<p>Twierdzenie CAP a praktyczne implementacje nowoczesnych magazynów danych.</p>
-</aside>
-</aside>
+<section id="limity-systemu-oraz-ograniczanie-dostepu-uzytkownikow">
+<h2>Limity systemu oraz ograniczanie dostępu użytkowników<a class="headerlink" href="#limity-systemu-oraz-ograniczanie-dostepu-uzytkownikow" title="Link to this heading">¶</a></h2>
+<p>Bezpieczeństwo i stabilność bazy danych wymagają rygorystycznego zarządzania limitami systemowymi oraz uprawnieniami. Zbyt duża swoboda przyznana użytkownikom lub procesom aplikacyjnym może doprowadzić do celowego bądź przypadkowego unieruchomienia systemu.</p>
+<p>Przykład nakładania restrykcji i limitów zasobów w PostgreSQL:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- 1. Ograniczenie maksymalnej liczby jednoczesnych połączeń dla danej roli</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="n">rola_analityk</span><span class="w"> </span><span class="k">CONNECTION</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+
+<span class="c1">-- 2. Ustawienie maksymalnego czasu wykonywania pojedynczego zapytania (np. 30 sekund)</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="n">rola_analityk</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">statement_timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;30s&#39;</span><span class="p">;</span>
+
+<span class="c1">-- 3. Nadanie uprawnień wyłącznie do odczytu danych w wybranym schemacie</span>
+<span class="k">REVOKE</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">rola_analityk</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">rola_analityk</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="testy-wydajnosci-sprzetu-na-poziomie-systemu-operacyjnego">
+<h2>Testy wydajności sprzętu na poziomie systemu operacyjnego<a class="headerlink" href="#testy-wydajnosci-sprzetu-na-poziomie-systemu-operacyjnego" title="Link to this heading">¶</a></h2>
+<p>Przed wdrożeniem produkcyjnym bazy danych kluczowe jest przeprowadzenie niezależnych testów wydajnościowych podzespołów sprzętowych (Benchmarków) bezpośrednio na poziomie systemu operacyjnego, aby wykluczyć błędy konfiguracyjne środowiska.</p>
+<p>Przykłady poleceń diagnostycznych i testowych w systemie Linux:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Test wydajności procesora (CPU) za pomocą sysbench</span>
+sysbench<span class="w"> </span>cpu<span class="w"> </span>--cpu-max-prime<span class="o">=</span><span class="m">20000</span><span class="w"> </span>run
+
+<span class="c1"># 2. Test przepustowości i alokacji pamięci RAM</span>
+sysbench<span class="w"> </span>memory<span class="w"> </span>--memory-block-size<span class="o">=</span>1M<span class="w"> </span>--memory-total-size<span class="o">=</span>10G<span class="w"> </span>run
+
+<span class="c1"># 3. Zaawansowany test wydajności dysku (IOPS i opóźnienia) narzędziem fio</span>
+<span class="c1"># Symulacja losowego odczytu/zapisu (Random R/W) specyficznego dla baz danych</span>
+fio<span class="w"> </span>--name<span class="o">=</span>test_bazy<span class="w"> </span>--ioengine<span class="o">=</span>libaio<span class="w"> </span>--rw<span class="o">=</span>randrw<span class="w"> </span>--bs<span class="o">=</span>4k<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--size<span class="o">=</span>2G<span class="w"> </span>--numjobs<span class="o">=</span><span class="m">2</span><span class="w"> </span>--runtime<span class="o">=</span><span class="m">30</span><span class="w"> </span>--time_based<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--filename<span class="o">=</span>/var/lib/postgresql/test_io.file<span class="w"> </span>--group_reporting
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -115,7 +152,16 @@
 
 
 
-<h3>Navigation</h3>
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
 <p class="caption" role="heading"><span class="caption-text">Spis treści:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../rozdzial_1/index.html">Wstęp do sprawozdania oraz linki</a></li>
@@ -136,16 +182,6 @@
   </ul></li>
 </ul>
 </div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -159,11 +195,11 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &#169;2026, Olaf Chomicki, Konrad Machowski, Wiktor Wydrzyński.
+      &#169;2026, Konrad Machowski.
       
       |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
-      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="../../_sources/rozdzial_2/rozdzial_25/index.rst.txt"

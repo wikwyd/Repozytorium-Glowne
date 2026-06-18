@@ -7,6 +7,7 @@
 \ifdefined\pdfimageresolution
     \pdfimageresolution= \numexpr \dimexpr1in\relax/\sphinxpxdimen\relax
 \fi
+\newdimen\sphinxremdimen\sphinxremdimen = 11pt
 %% let collapsible pdf bookmarks panel have high depth per default
 \PassOptionsToPackage{bookmarksdepth=5}{hyperref}
 
@@ -327,41 +328,61 @@ Pliki konfiguracyjne PostgreSQL znajdują się w katalogu danych (\sphinxcode{\s
 \sphinxaftertopcaption
 \begin{tabular}[t]{\X{30}{100}\X{70}{100}}
 \sphinxtoprule
-\sphinxstyletheadfamily 
-\sphinxAtStartPar
+\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
+\sphinxstyletheadfamily \sphinxAtStartPar
 System
-&\sphinxstyletheadfamily 
-\sphinxAtStartPar
+\sphinxbeforeendvarwidth
+\end{varwidth}%
+&\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
+\sphinxstyletheadfamily \sphinxAtStartPar
 Katalog danych
+\sphinxbeforeendvarwidth
+\end{varwidth}%
 \\
 \sphinxmidrule
-\sphinxtableatstartofbodyhook
+\sphinxtableatstartofbodyhook\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
 \sphinxAtStartPar
 Linux (RPM/DEB)
-&
+\sphinxbeforeendvarwidth
+\end{varwidth}%
+&\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
 \sphinxAtStartPar
 \sphinxcode{\sphinxupquote{/var/lib/pgsql/data/}} lub \sphinxcode{\sphinxupquote{/var/lib/postgresql/*/main/}}
+\sphinxbeforeendvarwidth
+\end{varwidth}%
 \\
-\sphinxhline
+\sphinxhline\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
 \sphinxAtStartPar
 Linux (kompilacja źródłowa)
-&
+\sphinxbeforeendvarwidth
+\end{varwidth}%
+&\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
 \sphinxAtStartPar
 \sphinxcode{\sphinxupquote{/usr/local/pgsql/data/}}
+\sphinxbeforeendvarwidth
+\end{varwidth}%
 \\
-\sphinxhline
+\sphinxhline\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
 \sphinxAtStartPar
 Windows
-&
+\sphinxbeforeendvarwidth
+\end{varwidth}%
+&\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
 \sphinxAtStartPar
 \sphinxcode{\sphinxupquote{C:\textbackslash{}Program Files\textbackslash{}PostgreSQL\textbackslash{}\textless{}version\textgreater{}\textbackslash{}data\textbackslash{}}}
+\sphinxbeforeendvarwidth
+\end{varwidth}%
 \\
-\sphinxhline
+\sphinxhline\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
 \sphinxAtStartPar
 Docker
-&
+\sphinxbeforeendvarwidth
+\end{varwidth}%
+&\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
 \sphinxAtStartPar
 \sphinxcode{\sphinxupquote{/var/lib/postgresql/data/}} (w kontenerze)
+\sphinxbeforeendvarwidth
+\end{varwidth}%
 \\
 \sphinxbottomrule
 \end{tabular}
@@ -675,7 +696,7 @@ Wzorzec nazw plików logów.
 Przykład:
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{n+na}{log\PYGZus{}filename}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}postgresql\PYGZhy{}\PYGZpc{}Y\PYGZhy{}\PYGZpc{}m\PYGZhy{}\PYGZpc{}d.log\PYGZsq{}}
+\PYG{n+na}{log\PYGZus{}filename}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{postgresql\PYGZhy{}\PYGZpc{}Y\PYGZhy{}\PYGZpc{}m\PYGZhy{}\PYGZpc{}d.log}\PYG{l+s}{\PYGZsq{}}
 \end{sphinxVerbatim}
 
 \sphinxlineitem{\sphinxcode{\sphinxupquote{log\_min\_duration\_statement}}}
@@ -773,7 +794,7 @@ Polecenie wykonywane podczas archiwizacji plików WAL.
 \subsubsection{Przykładowa konfiguracja}
 \label{\detokenize{rozdzial_2/rozdzial_22/index:przykladowa-konfiguracja}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{n+na}{listen\PYGZus{}addresses}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}*\PYGZsq{}}
+\PYG{n+na}{listen\PYGZus{}addresses}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{*}\PYG{l+s}{\PYGZsq{}}
 \PYG{n+na}{port}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{5432}
 \PYG{n+na}{max\PYGZus{}connections}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{200}
 
@@ -782,7 +803,7 @@ Polecenie wykonywane podczas archiwizacji plików WAL.
 \PYG{n+na}{maintenance\PYGZus{}work\PYGZus{}mem}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{256MB}
 
 \PYG{n+na}{logging\PYGZus{}collector}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{on}
-\PYG{n+na}{log\PYGZus{}directory}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}log\PYGZsq{}}
+\PYG{n+na}{log\PYGZus{}directory}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{log}\PYG{l+s}{\PYGZsq{}}
 
 \PYG{n+na}{ssl}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{on}
 \PYG{n+na}{password\PYGZus{}encryption}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{scram\PYGZhy{}sha\PYGZhy{}256}
@@ -1172,114 +1193,128 @@ Paweł Łosowski
 \end{description}\end{quote}
 
 
-\subsection{Wprowadzenie}
-\label{\detokenize{rozdzial_2/rozdzial_23/index:wprowadzenie}}
+\subsection{Wprowadzenie i planowanie konserwacji}
+\label{\detokenize{rozdzial_2/rozdzial_23/index:wprowadzenie-i-planowanie-konserwacji}}
 \sphinxAtStartPar
-Współczesne systemy relacyjnych baz danych to wysoce skomplikowane środowiska, które wymagają ciągłego i proaktywnego nadzoru, aby zagwarantować wysoką dostępność, niezawodność oraz wydajność. Administracja takimi systemami stanowi złożone zagadnienie wymagające zarówno wiedzy teoretycznej, jak i praktycznego doświadczenia w zarządzaniu infrastrukturą informatyczną.
-
-
-\subsection{Zarządzanie przestrzenią i mechanizm współbieżności}
-\label{\detokenize{rozdzial_2/rozdzial_23/index:zarzadzanie-przestrzenia-i-mechanizm-wspolbieznosci}}
-\sphinxAtStartPar
-PostgreSQL opiera swoje działanie na zaawansowanej architekturze określanej jako Multi\sphinxhyphen{}Version Concurrency Control (MVCC). Technologia ta pozwala na równoległy odczyt i zapis danych bez wzajemnego blokowania się transakcji, co stanowi fundamentalną zaletę w środowiskach wieloużytkownikowych o wysokim natężeniu operacji.
-
-\sphinxAtStartPar
-Aby zapobiec zjawisku drastycznego puchnięcia tabel oraz degradacji wydajności operacji wejścia i wyjścia, konieczna jest regularna konserwacja na poziomie nośnika danych:
+Współczesne systemy relacyjnych baz danych to wysoce skomplikowane środowiska, które wymagają ciągłego i proaktywnego nadzoru. Aby zagwarantować wysoką dostępność i niezawodność, niezbędne jest rygorystyczne planowanie procesów konserwacyjnych, które opiera się na odpowiedzi na trzy kluczowe pytania:
 \begin{itemize}
 \item {} 
 \sphinxAtStartPar
-\sphinxstylestrong{VACUUM:} Podstawowy proces konserwacyjny odzyskujący miejsce po martwych krotkach. Oznacza on wolne obszary jako dostępne do ponownego zapisu przez nowe instrukcje, zapobiegając niekontrolowanemu wzrostowi rozmiarów tabel na dysku.
+\sphinxstylestrong{Kiedy?} Operacje inwazyjne (np. pełna przebudowa tabel i indeksów) powinny być planowane w tzw. oknach serwisowych, czyli w godzinach najniższego obciążenia systemu (zwykle w nocy lub w weekendy). Lżejsze prace konserwacyjne mogą odbywać się w tle.
 
 \item {} 
 \sphinxAtStartPar
-\sphinxstylestrong{VACUUM FULL:} Znacznie bardziej inwazyjna wersja operacji, która fizycznie przebudowuje strukturę całej tabeli i trwale zwraca wolne miejsce do systemu operacyjnego. Operacja ta wymaga jednak zablokowania całej tabeli i powinna być wykonywana w godzinach niskiego obciążenia.
+\sphinxstylestrong{W jakim zakresie?} Należy precyzyjnie określić, czy konserwacji wymaga cała instancja, pojedyncza baza danych, czy tylko wytypowane, najszybciej rosnące tabele. Skupienie się na najbardziej obciążonych obszarach oszczędza zasoby sprzętowe.
 
 \item {} 
 \sphinxAtStartPar
-\sphinxstylestrong{AUTOVACUUM:} W nowoczesnych środowiskach produkcyjnych utrzymanie czystości dyskowej powierza się wbudowanemu procesowi pracującemu w tle. Monitoruje on na bieżąco statystyki zmian i automatycznie wyzwala operacje czyszczenia, eliminując potrzebę ręcznej interwencji administratora.
+\sphinxstylestrong{Jak?} Konserwacja powinna być maksymalnie zautomatyzowana (np. z wykorzystaniem systemowego demona CRON lub rozszerzenia \sphinxtitleref{pg\_cron}). Ręczne interwencje administratora powinny być zarezerwowane wyłącznie dla sytuacji awaryjnych i niestandardowych problemów wydajnościowych.
 
 \end{itemize}
 
+
+\subsection{Zarządzanie stanem serwera i sesjami}
+\label{\detokenize{rozdzial_2/rozdzial_23/index:zarzadzanie-stanem-serwera-i-sesjami}}
 \sphinxAtStartPar
-Zaniedbanie procesu czyszczenia w systemach o wysokiej rotacji danych może doprowadzić nie tylko do spadku wydajności, ale w skrajnych przypadkach do wyczerpania identyfikatorów transakcji, co prowadzi do całkowitego zamrożenia bazy.
-
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Przykładowe wymuszenie manualnej konserwacji z analizą statystyk dla tabeli}
-\PYG{k}{VACUUM}\PYG{+w}{ }\PYG{p}{(}\PYG{k}{VERBOSE}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{ANALYZE}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{Wypozyczenia}\PYG{p}{;}
-\end{sphinxVerbatim}
-
-
-\subsection{Optymalizacja i statystyki planisty zapytań}
-\label{\detokenize{rozdzial_2/rozdzial_23/index:optymalizacja-i-statystyki-planisty-zapytan}}
-\sphinxAtStartPar
-Kolejnym filarem utrzymania sprawności systemu jest kontrola nad optymalizatorem, zwanym planistą zapytań. Silnik bazy danych przed wykonaniem jakiejkolwiek skomplikowanej kwerendy analizuje dostępne drogi realizacji i wybiera najefektywniejszą z punktu widzenia kosztów obliczeniowych.
+Podstawą kontroli nad środowiskiem bazodanowym jest zarządzanie cyklem życia samej usługi. Uruchamianie, zatrzymywanie i restartowanie serwera bazy danych realizuje się najczęściej za pośrednictwem menedżera usług systemu operacyjnego (np. polecenia \sphinxtitleref{systemctl start/stop/restart postgresql}) lub za pomocą dedykowanego narzędzia wiersza poleceń \sphinxtitleref{pg\_ctl}.
 
 \sphinxAtStartPar
-Aby planista mógł podejmować optymalne decyzje, musi opierać się na wysoce dokładnych i aktualnych statystykach dotyczących rozkładu danych. Obejmują one między innymi histogramy wartości w kolumnach, liczby odrębnych wartości (distinct count), oraz rozmiary tabel i indeksów.
+Podczas wdrażania krytycznych aktualizacji lub w sytuacjach awaryjnych, konieczne jest sprawne zarządzanie ruchem użytkowników:
 \begin{itemize}
 \item {} 
 \sphinxAtStartPar
-Instrukcja \sphinxstylestrong{ANALYZE} służy do natychmiastowego odświeżenia tych metadanych. Baza pobiera losową próbkę wierszy i na jej podstawie aktualizuje wewnętrzne tabele systemowe, co pozwala uniknąć błędnych oszacowań planu wykonania.
+\sphinxstylestrong{Zapobieganie nowym połączeniom:} Administrator może tymczasowo zablokować możliwość logowania się do konkretnej bazy danych poprzez zmianę jej metadanych. Pozwala to na “odcięcie” aplikacji bez wyłączania całego serwera.
 
 \item {} 
 \sphinxAtStartPar
-Bieżące profilowanie wydajności realizowane jest natomiast przy pomocy instrukcji \sphinxstylestrong{EXPLAIN ANALYZE}. Narzędzie to uruchamia zapytanie, po czym zwraca nie tylko wynik, ale również szczegółowy opis planu wykonania wraz z rzeczywistymi czasy i liczbami wierszy na każdym kroku.
+\sphinxstylestrong{Ograniczanie i rozłączanie użytkowników:} Istniejące, aktywne sesje, które np. zawiesiły się lub blokują ważne operacje, można siłowo przerwać, zwalniając tym samym zablokowane zasoby.
 
 \end{itemize}
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Kontrola planu wykonania zapytania z rzeczywistym pomiarem czasu}
-\PYG{k}{EXPLAIN}\PYG{+w}{ }\PYG{k}{ANALYZE}
-\PYG{k}{SELECT}\PYG{+w}{ }\PYG{k}{c}\PYG{p}{.}\PYG{n}{Imie}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{c}\PYG{p}{.}\PYG{n}{Nazwisko}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{k}\PYG{p}{.}\PYG{n}{Tytul}
-\PYG{k}{FROM}\PYG{+w}{ }\PYG{n}{Czytelnicy}\PYG{+w}{ }\PYG{k}{c}
-\PYG{k}{JOIN}\PYG{+w}{ }\PYG{n}{Wypozyczenia}\PYG{+w}{ }\PYG{n}{w}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{k}{c}\PYG{p}{.}\PYG{n}{ID\PYGZus{}Czytelnika}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{w}\PYG{p}{.}\PYG{n}{ID\PYGZus{}Czytelnika}
-\PYG{k}{JOIN}\PYG{+w}{ }\PYG{n}{Ksiazki}\PYG{+w}{ }\PYG{n}{k}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{n}{w}\PYG{p}{.}\PYG{n}{ID\PYGZus{}Ksiazki}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{k}\PYG{p}{.}\PYG{n}{ID\PYGZus{}Ksiazki}
-\PYG{k}{WHERE}\PYG{+w}{ }\PYG{n}{w}\PYG{p}{.}\PYG{n}{Data\PYGZus{}Zwrotu}\PYG{+w}{ }\PYG{k}{IS}\PYG{+w}{ }\PYG{k}{NULL}\PYG{p}{;}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Zapobieganie nawiązywaniu nowych połączeń do bazy danych}
+\PYG{k}{ALTER}\PYG{+w}{ }\PYG{k}{DATABASE}\PYG{+w}{ }\PYG{n}{biblioteka\PYGZus{}db}\PYG{+w}{ }\PYG{n}{ALLOW\PYGZus{}CONNECTIONS}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{k}{false}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Siłowe rozłączenie wszystkich aktywnych użytkowników (poza aktualną sesją)}
+\PYG{k}{SELECT}\PYG{+w}{ }\PYG{n}{pg\PYGZus{}terminate\PYGZus{}backend}\PYG{p}{(}\PYG{n}{pid}\PYG{p}{)}
+\PYG{k}{FROM}\PYG{+w}{ }\PYG{n}{pg\PYGZus{}stat\PYGZus{}activity}
+\PYG{k}{WHERE}\PYG{+w}{ }\PYG{n}{datname}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}biblioteka\PYGZus{}db\PYGZsq{}}\PYG{+w}{ }\PYG{k}{AND}\PYG{+w}{ }\PYG{n}{pid}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{pg\PYGZus{}backend\PYGZus{}pid}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;}
 \end{sphinxVerbatim}
 
 
-\subsection{Bezpieczeństwo i rygorystyczna kontrola dostępu}
-\label{\detokenize{rozdzial_2/rozdzial_23/index:bezpieczenstwo-i-rygorystyczna-kontrola-dostepu}}
+\subsection{Proces Vacuum}
+\label{\detokenize{rozdzial_2/rozdzial_23/index:proces-vacuum}}
 \sphinxAtStartPar
-Bezpieczeństwo danych stanowi absolutny priorytet każdej administracji systemami informatycznymi. Nowoczesne podejście do ochrony baz danych całkowicie odchodzi od wykorzystywania globalnych kont administratora na rzecz zaawansowanego systemu uprawnień opartego na rolach (RBAC \textendash{} Role\sphinxhyphen{}Based Access Control).
+Architektura PostgreSQL opiera się na mechanizmie MVCC (Multi\sphinxhyphen{}Version Concurrency Control). Oznacza to, że instrukcje aktualizacji (UPDATE) i usuwania (DELETE) nie niszczą fizycznie starych danych, lecz tworzą tzw. “martwe krotki” (dead tuples). Do zarządzania nimi służy proces czyszczenia:
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{VACUUM:} Standardowa operacja zwalniająca miejsce po martwych wierszach, czyniąca je dostępnymi dla nowych danych. Nie zmniejsza ona fizycznego rozmiaru pliku na dysku i nie blokuje możliwości jednoczesnego odczytu i zapisu tabeli.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{VACUUM FULL:} Inwazyjna i ciężka operacja, która fizycznie przebudowuje tabelę, faktycznie zmniejszając jej rozmiar i zwracając wolne miejsce do systemu operacyjnego. Wymaga ekskluzywnej blokady (lock), całkowicie odcinając aplikację od modyfikowanej tabeli na czas trwania procesu.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{AUTOVACUUM:} Zautomatyzowany proces działający w tle, który regularnie monitoruje poziom zmian w tabelach i samoczynnie wyzwala standardowy Vacuum, zapobiegając niekontrolowanemu puchnięciu bazy danych (table bloat).
+
+\end{itemize}
+
+
+\subsection{Zarządzanie transakcjami i schematy (SCHEMA)}
+\label{\detokenize{rozdzial_2/rozdzial_23/index:zarzadzanie-transakcjami-i-schematy-schema}}
+\sphinxAtStartPar
+Kolejnym aspektem administracji jest dbanie o logiczną strukturę bazy oraz spójność operacji.
 
 \sphinxAtStartPar
-System zabezpieczeń środowiska PostgreSQL pozwala na niezwykle elastyczną gradację uprawnień. Definiuje się dedykowane role systemowe przypisane do konkretnych mikrousług lub modułów aplikacji, z precyzyjnie określonymi prawami dostępu do pojedynczych schematów, tabel, a nawet kolumn.
+\sphinxstylestrong{SCHEMA (Schematy)} to wirtualne przestrzenie nazw (przypominające katalogi w systemie operacyjnym), służące do logicznego grupowania tabel, widoków i funkcji. Ich główne zastosowania to:
+* Izolacja danych różnych mikrousług lub aplikacji wewnątrz jednej wspólnej bazy danych.
+* Implementacja architektury wielodostępowej (multi\sphinxhyphen{}tenant), gdzie każdy klient aplikacji obsługiwany jest w dedykowanym, oddzielnym schemacie.
+* Ułatwione i zbiorcze zarządzanie uprawnieniami dostępu.
 
 \sphinxAtStartPar
-Kluczowym konceptem jest wdrożenie zasady najmniejszych uprawnień (Principle of Least Privilege). Rola wykorzystywana przez aplikację powinna dysponować prawami pozwalającymi wyłącznie na modyfikację danych niezbędnych do jej funkcjonowania, bez dostępu do danych wrażliwych czy możliwości zmiany struktury bazy.
+\sphinxstylestrong{Zarządzanie transakcjami} to proces kontrolowania instrukcji (BEGIN, COMMIT, ROLLBACK) w taki sposób, aby zachować zgodność z regułami ACID. Administrator musi zwracać szczególną uwagę na zapobieganie tzw. długim transakcjom (long\sphinxhyphen{}running transactions). Otwarta i porzucona transakcja powstrzymuje proces Vacuum przed usuwaniem martwych krotek, co prowadzi do drastycznego spadku wydajności całej bazy.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Przykład implementacji bezpiecznej polityki kontroli dostępu}
-\PYG{k}{CREATE}\PYG{+w}{ }\PYG{k}{ROLE}\PYG{+w}{ }\PYG{n}{app\PYGZus{}user}\PYG{+w}{ }\PYG{k}{WITH}\PYG{+w}{ }\PYG{n}{LOGIN}\PYG{+w}{ }\PYG{n}{PASSWORD}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}TrudneHaslo123\PYGZsq{}}\PYG{p}{;}
-\PYG{k}{GRANT}\PYG{+w}{ }\PYG{k}{CONNECT}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{k}{DATABASE}\PYG{+w}{ }\PYG{n}{biblioteka\PYGZus{}db}\PYG{+w}{ }\PYG{k}{TO}\PYG{+w}{ }\PYG{n}{app\PYGZus{}user}\PYG{p}{;}
-\PYG{k}{GRANT}\PYG{+w}{ }\PYG{k}{USAGE}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{k}{SCHEMA}\PYG{+w}{ }\PYG{k}{public}\PYG{+w}{ }\PYG{k}{TO}\PYG{+w}{ }\PYG{n}{app\PYGZus{}user}\PYG{p}{;}
-\PYG{k}{GRANT}\PYG{+w}{ }\PYG{k}{SELECT}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{INSERT}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{n}{Wypozyczenia}\PYG{+w}{ }\PYG{k}{TO}\PYG{+w}{ }\PYG{n}{app\PYGZus{}user}\PYG{p}{;}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Przykład logiki transakcyjnej z wykorzystaniem konkretnego schematu}
+\PYG{k}{BEGIN}\PYG{p}{;}
+\PYG{k}{INSERT}\PYG{+w}{ }\PYG{k}{INTO}\PYG{+w}{ }\PYG{n}{finanse}\PYG{p}{.}\PYG{n}{historia}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{kwota}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{opis}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{VALUES}\PYG{+w}{ }\PYG{p}{(}\PYG{l+m+mi}{200}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}Opłata serwisowa\PYGZsq{}}\PYG{p}{)}\PYG{p}{;}
+\PYG{k}{UPDATE}\PYG{+w}{ }\PYG{n}{finanse}\PYG{p}{.}\PYG{n}{konta}\PYG{+w}{ }\PYG{k}{SET}\PYG{+w}{ }\PYG{n}{saldo}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{saldo}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{200}\PYG{+w}{ }\PYG{k}{WHERE}\PYG{+w}{ }\PYG{n}{id\PYGZus{}klienta}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{5}\PYG{p}{;}
+\PYG{k}{COMMIT}\PYG{p}{;}
 \end{sphinxVerbatim}
 
 
-\subsection{Strategie zabezpieczania przed utratą danych}
-\label{\detokenize{rozdzial_2/rozdzial_23/index:strategie-zabezpieczania-przed-utrata-danych}}
+\subsection{Zarządzanie indeksami}
+\label{\detokenize{rozdzial_2/rozdzial_23/index:zarzadzanie-indeksami}}
 \sphinxAtStartPar
-Nawet najlepiej zoptymalizowany i zabezpieczony system informatyczny jest narażony na błędy ludzkie lub awarie infrastruktury sprzętowej. Dlatego odpowiednia polityka wykonywania kopii zapasowych stanowi ostateczną linię obrony i jest absolutnie niezbędna dla każdej produkcyjnej instancji bazy danych.
+Indeksy są fundamentalne dla wydajnego wyszukiwania danych, jednak ich utrzymanie kosztuje — spowalniają one modyfikacje danych (DML) i konsumują miejsce na dysku.
 
 \sphinxAtStartPar
-Kopie logiczne polegają na ekstrakcji danych z bazy do postaci czystego skryptu języka SQL lub dedykowanego formatu archiwalnego. Narzędzia realizujące to zadanie gwarantują przenośność danych między platformami i wersjami silnika, jednak proces przywracania jest czasochłonny i może nie przywrócić wszystkich zmian z ostatnich minut przed awarią.
-
-\sphinxAtStartPar
-Dlatego w krytycznych środowiskach produkcyjnych stosuje się kopie fizyczne połączone z archiwizacją dzienników wyprzedzających. Dzienniki te rejestrują absolutnie każdą zmianę bajtu na poziomie magazynu, co umożliwia odtworzenie bazy do dowolnego punktu w przeszłości z dokładnością do sekundy.
+Prawidłowe zarządzanie indeksami polega na stałym monitorowaniu ich wykorzystania. Należy identyfikować i usuwać indeksy, które nie są wykorzystywane przez planistę zapytań (tzw. unused indexes). Dodatkowo, podobnie jak tabele, indeksy ulegają fragmentacji. Z tego powodu administrator powinien regularnie planować operację \sphinxstylestrong{REINDEX}, która od nowa buduje strukturę drzewa indeksu, przywracając mu optymalny rozmiar i maksymalną wydajność. W systemach o wysokiej dostępności stosuje się przebudowę w trybie \sphinxtitleref{CONCURRENTLY}, która nie przerywa pracy aplikacji.
 
 
 \subsection{Podsumowanie}
 \label{\detokenize{rozdzial_2/rozdzial_23/index:podsumowanie}}
 \sphinxAtStartPar
-Prawidłowa kontrola i konserwacja środowiska bazodanowego to wielowymiarowy proces, który nie ma punktu końcowego, lecz trwa przez cały cykl życia oprogramowania. Złożoność nowoczesnych systemów relacyjnych wymaga holistycznego podejścia łączącego automatyzację, monitoring i ciągłe doskonalenie.
+Prawidłowa kontrola i konserwacja środowiska bazodanowego to wielowymiarowy proces, wymagający głębokiego zrozumienia zarówno architektury logicznej, jak i fizycznej serwera.
 
 \sphinxAtStartPar
-Samo zaprojektowanie zgodnego ze sztuką schematu relacyjnego jest zaledwie początkiem pracy. Stabilność aplikacji zależy w równej mierze od rygorystycznego zarządzania fizyczną strukturą danych, optymalizacji wykonywanych operacji oraz wdrażania wielowarstwowych strategii bezpieczeństwa i ochrony przed awarią.
-
+Stabilność i wydajność systemu zależy w równej mierze od prawidłowego zarządzania stanem usługi i połączeniami, dogłębnego planowania okien serwisowych, jak i proaktywnego zarządzania mechanizmem Vacuum i transakcjami. Wykorzystanie schematów do strukturyzacji danych oraz regularne dbanie o kondycję indeksów pozwala na zbudowanie środowiska, które będzie skalowalne, przewidywalne i odporne na awarie w trudnych, produkcyjnych warunkach.
+\begin{quote}\begin{description}
+\sphinxlineitem{Autorzy}\begin{enumerate}
+\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\item {} 
 \sphinxAtStartPar
-Holistyczne spojrzenie na administrację PostgreSQL, obejmujące zarówno automatyzację procesów porządkujących pamięć, jak i ciągłe monitorowanie planów wykonania zapytań, pozwala na budowanie systemów, które są nie tylko funkcjonalne, ale także odpornie i niezawodne w najbardziej wymagających warunkach produkcyjnych.
+Paweł Łoćwin
+
+\item {} 
+\sphinxAtStartPar
+Paweł Łosowski
+
+\end{enumerate}
+
+\end{description}\end{quote}
 
 \sphinxstepscope
 
@@ -1422,18 +1457,9 @@ Monitorowanie i diagnostyka baz danych tworzą wielowarstwowy proces kontroli dz
 \sphinxstepscope
 
 
-\section{Wydajność, skalowanie i replikacja danych}
-\label{\detokenize{rozdzial_2/rozdzial_25/index:wydajnosc-skalowanie-i-replikacja-danych}}\label{\detokenize{rozdzial_2/rozdzial_25/index::doc}}
-
-\begin{savenotes}\sphinxattablestart
-\sphinxthistablewithglobalstyle
-\centering
-\begin{tabular}[t]{*{2}{\X{1}{2}}}
-\sphinxtoprule
-\sphinxtableatstartofbodyhook
-\sphinxAtStartPar
-Autorzy:
-&\begin{enumerate}
+\section{Wydajność, skalowanie i replikacja}
+\label{\detokenize{rozdzial_2/rozdzial_25/index:wydajnosc-skalowanie-i-replikacja}}\label{\detokenize{rozdzial_2/rozdzial_25/index::doc}}\begin{quote}\begin{description}
+\sphinxlineitem{Autorzy}\begin{enumerate}
 \sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
 \item {} 
 \sphinxAtStartPar
@@ -1448,82 +1474,135 @@ Konrad Machowski
 Wiktor Wydrzyński
 
 \end{enumerate}
-\\
-\sphinxbottomrule
-\end{tabular}
-\sphinxtableafterendhook\par
-\sphinxattableend\end{savenotes}
+
+\end{description}\end{quote}
 
 
-\subsection{Wstęp}
-\label{\detokenize{rozdzial_2/rozdzial_25/index:wstep}}
+\subsection{Wydajność, skalowanie i replikacja}
+\label{\detokenize{rozdzial_2/rozdzial_25/index:id1}}
 \sphinxAtStartPar
-W erze gwałtownego wzrostu ilości generowanych informacji, stabilne działanie systemów bazodanowych stało się fundamentem nowoczesnych aplikacji. Wydajność, skalowanie oraz replikacja to trzy ściśle powiązane ze sobą filary, które decydują o tym, czy baza danych będzie w stanie obsłużyć rosnącą liczbę użytkowników oraz operacji w jednostce czasu. Zrozumienie różnic oraz synergii między tymi pojęciami jest kluczowe dla każdego architekta oprogramowania %
-\begin{footnote}[1]\sphinxAtStartFootnote
-“Projektowanie systemów rozproszonych” \textendash{} Podstawy skalowalności baz danych.
-%
-\end{footnote}.
+Współczesne systemy bazodanowe muszą sprostać wymaganiom związanym z wykładniczym przyrostem wolumenu danych oraz stale rosnącą liczbą jednoczesnych użytkowników. W tym kontekście kluczowe staje się zrozumienie trzech fundamentalnych pojęć: wydajności, skalowania i replikacji. Wydajność odnosi się do szybkości przetwarzania pojedynczych transakcji i zapytań przy optymalnym wykorzystaniu dostępnych zasobów.
 
 \sphinxAtStartPar
-Podczas gdy wydajność skupia się na optymalizacji istniejących zasobów w celu jak najszybszego przetwarzania pojedynczych żądań, skalowanie i replikacja odpowiadają na wyzwania związane z ograniczeniami sprzętowymi oraz koniecznością zapewnienia ciągłości działania systemu w przypadku awarii.
+Gdy optymalizacja kodu przestaje wystarczać, konieczne staje się skalowanie \textendash{} pionowe (zwiększanie mocy pojedynczego serwera) lub poziome (rozpraszanie obciążenia na wiele maszyn). Replikacja z kolei stanowi most łączący skalowanie odczytów z zapewnieniem wysokiej dostępności i odporności systemu na awarie sprzętowe.
 
 
-\subsection{Wydajność baz danych}
-\label{\detokenize{rozdzial_2/rozdzial_25/index:wydajnosc-baz-danych}}
+\subsection{Kontrola i buforowanie połączeń z bazą danych}
+\label{\detokenize{rozdzial_2/rozdzial_25/index:kontrola-i-buforowanie-polaczen-z-baza-danych}}
 \sphinxAtStartPar
-Wydajność (Performance) odnosi się do szybkości, z jaką system bazodanowy reaguje na zapytania i transakcje. Na poziomie pojedynczej instancji kluczowe znaczenie ma optymalizacja kodu SQL, poprawne projektowanie indeksów oraz unikanie kosztownych operacji, takich jak pełne skanowanie tabel (Full Table Scan). Optymalizator bazy danych stara się dobrać najlepszą ścieżkę wykonania zapytania, jednak jego skuteczność zależy od aktualności statystyk oraz struktury danych %
-\begin{footnote}[2]\sphinxAtStartFootnote
-“Optymalizacja zapytań i indeksowanie w relacyjnych bazach danych”.
-%
-\end{footnote}.
+Nawiązywanie nowego połączenia z bazą danych jest operacją niezwykle kosztowną procesorowo i czasowo, ponieważ wymaga uwierzytelnienia użytkownika, alokacji pamięci oraz ustanowienia sesji sieciowej. W systemach o dużym natężeniu ruchu brak kontroli nad liczbą połączeń prowadzi do szybkiego wyczerpania zasobów serwera.
 
 \sphinxAtStartPar
-Po stronie sprzętowej wąskimi gardłami najczęściej stają się operacje wejścia/wyjścia (I/O) dysków, dostępna pamięć RAM (służąca jako bufor dla często odczytywanych stron danych) oraz moc procesora. Wyczerpanie tych zasobów bezpośrednio przekłada się na wzrost opóźnień (latency) i spadek przepustowości (throughput).
-
-
-\subsection{Skalowanie: Pionowe vs. Poziome}
-\label{\detokenize{rozdzial_2/rozdzial_25/index:skalowanie-pionowe-vs-poziome}}
-\sphinxAtStartPar
-Gdy optymalizacja zapytań przestaje wystarczać, system musi zostać poddany skalowaniu. Skalowanie pionowe (Scaling Up) polega na zwiększaniu zasobów pojedynczej maszyny \textendash{} dodaniu szybszych procesorów, większej ilości pamięci RAM lub wydajniejszych dysków SSD. Jest to najprostsze podejście, niepoprawiające jednak architektury aplikacji, ale ma swoje fizyczne i ekonomiczne granice (prawo malejących przychodów oraz limit techniczny serwera) %
-\begin{footnote}[3]\sphinxAtStartFootnote
-Analiza kosztów i barier technologicznych w skalowaniu pionowym.
-%
-\end{footnote}.
+Rozwiązaniem tego problemu jest buforowanie połączeń (Connection Pooling). Mechanizm ten polega na utrzymywaniu stałej puli otwartych, gotowych do użycia połączeń, które są wielokrotnie współdzielone przez aplikację. Narzędzia takie jak PgBouncer (dla PostgreSQL) czy wbudowane pule w serwerach aplikacji drastycznie zmniejszają narzut overhead, stabilizując czas reakcji bazy danych pod dużym obciążeniem.
 
 \sphinxAtStartPar
-Skalowanie poziome (Scaling Out) polega na dodawaniu kolejnych maszyn do klastra. W kontekście baz danych jest to zadanie znacznie trudniejsze niż w przypadku bezstanowych aplikacji webowych, ponieważ wymaga mechanizmów dystrybucji danych. Jedną z głównych metod skalowania poziomego zapisu jest sharding, czyli fizyczny podział bazy na niezależne węzły.
+Przykład konfiguracji PgBouncer (fragment pliku \sphinxcode{\sphinxupquote{pgbouncer.ini}}):
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{[databases]}
+\PYG{n+na}{moja\PYGZus{}baza}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{host=127.0.0.1 port=5432 dbname=produkcja}
+
+\PYG{k}{[pgbouncer]}
+\PYG{n+na}{listen\PYGZus{}port}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{6432}
+\PYG{n+na}{listen\PYGZus{}addr}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{*}
+\PYG{n+na}{auth\PYGZus{}type}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{md5}
+\PYG{n+na}{auth\PYGZus{}file}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{/etc/pgbouncer/userlist.txt}
+\PYG{n+na}{pool\PYGZus{}mode}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{transaction}
+\PYG{n+na}{max\PYGZus{}client\PYGZus{}conn}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{1000}
+\PYG{n+na}{default\PYGZus{}pool\PYGZus{}size}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{20}
+\end{sphinxVerbatim}
 
 
-\subsection{Replikacja danych i wysoka dostępność}
-\label{\detokenize{rozdzial_2/rozdzial_25/index:replikacja-danych-i-wysoka-dostepnosc}}
+\subsection{INDEX i CLUSTER}
+\label{\detokenize{rozdzial_2/rozdzial_25/index:index-i-cluster}}
 \sphinxAtStartPar
-Replikacja to proces kopiowania danych z jednego serwera bazy danych (węzła głównego/Primary) na jeden lub więcej serwerów pomocniczych (węzłów potomnych/Replica). Głównym celem replikacji jest zapewnienie wysokiej dostępności (High Availability) \textendash{} w razie awarii serwera głównego, jedna z replik może przejąć jego funkcję, minimalizując czas przestoju systemu %
-\begin{footnote}[4]\sphinxAtStartFootnote
-Mechanizmy replikacji synchronicznej i asynchronicznej w systemach High Availability.
-%
-\end{footnote}.
-
-\sphinxAtStartPar
-Dodatkowo replikacja pozwala na skalowanie operacji odczytu (Read Scalability). Aplikacja może kierować zapytania modyfikujące dane (INSERT, UPDATE) do węzła Primary, natomiast ciężkie zapytania raportowe i odczyty rozpraszać na repliki. Replikacja może odbywać się synchronicznie (gwarantuje spójność danych, ale zwalnia zapisy) lub asynchronicznie (szybsza, ale niesie ryzyko utraty ostatnich transakcji w przypadku nagłej awarii).
-
-
-\subsection{Wyzwania i kompromisy architektoniczne}
-\label{\detokenize{rozdzial_2/rozdzial_25/index:wyzwania-i-kompromisy-architektoniczne}}
-\sphinxAtStartPar
-Budowanie systemów wysoce skalowalnych i zreplikowanych wiąże się z koniecznością akceptacji kompromisów, co formalnie opisuje twierdzenie CAP (Consistency, Availability, Partition Tolerance). Mówi ono, że w rozproszonym systemie komputerowym można jednocześnie zapewnić tylko dwie z trzech wymienionych cech %
-\begin{footnote}[5]\sphinxAtStartFootnote
-Twierdzenie CAP a praktyczne implementacje nowoczesnych magazynów danych.
-%
-\end{footnote}.
+Indeksowanie to podstawowa technika optymalizacji zapytań o charakterze odczytowym. Instrukcja \sphinxcode{\sphinxupquote{INDEX}} tworzy pomocniczą strukturę danych (najczęściej w formie B\sphinxhyphen{}drzewa), która pozwala silnikowi bazy danych na błyskawiczne odnalezienie żądanych wierszy bez konieczności kosztownego przeszukiwania całej tabeli (Full Table Scan).
 
 \sphinxAtStartPar
-W praktyce systemy bazodanowe często muszą wybierać pomiędzy silną spójnością danych (wszyscy użytkownicy widzą dokładnie to samo w tym samym momencie) a wysoką dostępnością i niskimi opóźnieniami, co doprowadziło do popularyzacji modeli spójności ostatecznej (Eventual Consistency) w bazach typu NoSQL.
+Z kolei polecenie \sphinxcode{\sphinxupquote{CLUSTER}} idzie o krok dalej \textendash{} fizycznie reorganizuje strukturę danych na dysku w taki sposób, aby kolejność wierszy w tabeli dokładnie odpowiadała kolejności indeksu. Powoduje to, że powiązane rekordy są składowane obok siebie w tych samych blokach pamięci, co radykalnie przyspiesza zapytania zakresowe (Range Queries).
 
-
-\subsection{Podsumowanie}
-\label{\detokenize{rozdzial_2/rozdzial_25/index:podsumowanie}}
 \sphinxAtStartPar
-Wydajność, skalowanie i replikacja nie są niezależnymi wyspami \textendash{} to naczynia połączone. Dobrze zoptymalizowana pod kątem wydajności baza danych odwleka w czasie moment, w którym konieczne stanie się kosztowne skalowanie. Z kolei właściwie wdrożona replikacja nie tylko zabezpiecza system przed utratą danych, ale stanowi naturalny krok w kierunku poziomego skalowania odczytów. Architektura systemu musi być stale dostosowywana do dynamicznie zmieniających się wymagań biznesowych oraz skali operacji.
+Przykład użycia poleceń w PostgreSQL:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 1. Tworzenie standardowego indeksu B\PYGZhy{}drzewa na kolumnie data\PYGZus{}zamowienia}
+\PYG{k}{CREATE}\PYG{+w}{ }\PYG{k}{INDEX}\PYG{+w}{ }\PYG{n}{idx\PYGZus{}zamowienia\PYGZus{}data}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{n}{zamowienia}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{data\PYGZus{}zamowienia}\PYG{p}{)}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 2. Fizyczne przemieszczenie danych na dysku według kolejności indeksu}
+\PYG{k}{CLUSTER}\PYG{+w}{ }\PYG{n}{zamowienia}\PYG{+w}{ }\PYG{k}{USING}\PYG{+w}{ }\PYG{n}{idx\PYGZus{}zamowienia\PYGZus{}data}\PYG{p}{;}
+\end{sphinxVerbatim}
+
+
+\subsection{Rola i zastosowanie replikacji}
+\label{\detokenize{rozdzial_2/rozdzial_25/index:rola-i-zastosowanie-replikacji}}
+\sphinxAtStartPar
+Replikacja polega na permanentnym kopiowaniu i synchronizowaniu danych z głównego węzła bazy danych (Primary/Master) na węzły pomocnicze (Replica/Slave). Jej rola w architekturze systemów IT jest wieloaspektowa. Po pierwsze, gwarantuje wysoką dostępność (High Availability) \textendash{} w przypadku fizycznej awarii Mastera, jedna z replik może automatycznie przejąć jego funkcje (proces Failover).
+
+\sphinxAtStartPar
+Po drugie, umożliwia skalowanie odczytów (Read Scalability). Przekierowanie operacji modyfikujących (INSERT, UPDATE) do węzła głównego, a operacji odczytu oraz generowania ciężkich raportów na repliki pozwala na znaczne odciążenie głównego serwera.
+
+
+\subsection{Oprogramowanie i zaimplementowane mechanizmy replikacji}
+\label{\detokenize{rozdzial_2/rozdzial_25/index:oprogramowanie-i-zaimplementowane-mechanizmy-replikacji}}
+\sphinxAtStartPar
+Mechanizmy replikacji mogą być realizowane na poziomie silnika bazy danych lub za pomocą zewnętrznego oprogramowania. Wyróżnia się dwa główne podejścia pod kątem transmisji danych: replikację opartą na logu (WAL \sphinxhyphen{} Write\sphinxhyphen{}Ahead Logging) oraz replikację logiczną. Ze względu na synchronizację, proces ten może przebiegać synchronicznie lub asynchronicznie.
+
+\sphinxAtStartPar
+Przykład konfiguracji replikacji logicznej (wbudowanej w PostgreSQL):
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} KROK 1: Uruchomienie na węźle głównym (Primary) \PYGZhy{} zdefiniowanie publikacji}
+\PYG{k}{CREATE}\PYG{+w}{ }\PYG{n}{PUBLICATION}\PYG{+w}{ }\PYG{n}{pub\PYGZus{}dane\PYGZus{}sprzedazy}\PYG{+w}{ }\PYG{k}{FOR}\PYG{+w}{ }\PYG{k}{TABLE}\PYG{+w}{ }\PYG{n}{zamowienia}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{klienci}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} KROK 2: Uruchomienie na węźle pomocniczym (Replica) \PYGZhy{} subskrypcja danych}
+\PYG{k}{CREATE}\PYG{+w}{ }\PYG{n}{SUBSCRIPTION}\PYG{+w}{ }\PYG{n}{sub\PYGZus{}dane\PYGZus{}sprzedazy}
+\PYG{k}{CONNECTION}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}host=192.168.1.50 port=5432 dbname=produkcja user=repl\PYGZus{}user password=secret\PYGZsq{}}
+\PYG{n}{PUBLICATION}\PYG{+w}{ }\PYG{n}{pub\PYGZus{}dane\PYGZus{}sprzedazy}\PYG{p}{;}
+\end{sphinxVerbatim}
+
+
+\subsection{Limity systemu oraz ograniczanie dostępu użytkowników}
+\label{\detokenize{rozdzial_2/rozdzial_25/index:limity-systemu-oraz-ograniczanie-dostepu-uzytkownikow}}
+\sphinxAtStartPar
+Bezpieczeństwo i stabilność bazy danych wymagają rygorystycznego zarządzania limitami systemowymi oraz uprawnieniami. Zbyt duża swoboda przyznana użytkownikom lub procesom aplikacyjnym może doprowadzić do celowego bądź przypadkowego unieruchomienia systemu.
+
+\sphinxAtStartPar
+Przykład nakładania restrykcji i limitów zasobów w PostgreSQL:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 1. Ograniczenie maksymalnej liczby jednoczesnych połączeń dla danej roli}
+\PYG{k}{ALTER}\PYG{+w}{ }\PYG{k}{ROLE}\PYG{+w}{ }\PYG{n}{rola\PYGZus{}analityk}\PYG{+w}{ }\PYG{k}{CONNECTION}\PYG{+w}{ }\PYG{k}{LIMIT}\PYG{+w}{ }\PYG{l+m+mi}{5}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 2. Ustawienie maksymalnego czasu wykonywania pojedynczego zapytania (np. 30 sekund)}
+\PYG{k}{ALTER}\PYG{+w}{ }\PYG{k}{ROLE}\PYG{+w}{ }\PYG{n}{rola\PYGZus{}analityk}\PYG{+w}{ }\PYG{k}{SET}\PYG{+w}{ }\PYG{n}{statement\PYGZus{}timeout}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}30s\PYGZsq{}}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 3. Nadanie uprawnień wyłącznie do odczytu danych w wybranym schemacie}
+\PYG{k}{REVOKE}\PYG{+w}{ }\PYG{k}{ALL}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{k}{ALL}\PYG{+w}{ }\PYG{n}{TABLES}\PYG{+w}{ }\PYG{k}{IN}\PYG{+w}{ }\PYG{k}{SCHEMA}\PYG{+w}{ }\PYG{k}{public}\PYG{+w}{ }\PYG{k}{FROM}\PYG{+w}{ }\PYG{n}{rola\PYGZus{}analityk}\PYG{p}{;}
+\PYG{k}{GRANT}\PYG{+w}{ }\PYG{k}{SELECT}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{k}{ALL}\PYG{+w}{ }\PYG{n}{TABLES}\PYG{+w}{ }\PYG{k}{IN}\PYG{+w}{ }\PYG{k}{SCHEMA}\PYG{+w}{ }\PYG{k}{public}\PYG{+w}{ }\PYG{k}{TO}\PYG{+w}{ }\PYG{n}{rola\PYGZus{}analityk}\PYG{p}{;}
+\end{sphinxVerbatim}
+
+
+\subsection{Testy wydajności sprzętu na poziomie systemu operacyjnego}
+\label{\detokenize{rozdzial_2/rozdzial_25/index:testy-wydajnosci-sprzetu-na-poziomie-systemu-operacyjnego}}
+\sphinxAtStartPar
+Przed wdrożeniem produkcyjnym bazy danych kluczowe jest przeprowadzenie niezależnych testów wydajnościowych podzespołów sprzętowych (Benchmarków) bezpośrednio na poziomie systemu operacyjnego, aby wykluczyć błędy konfiguracyjne środowiska.
+
+\sphinxAtStartPar
+Przykłady poleceń diagnostycznych i testowych w systemie Linux:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} 1. Test wydajności procesora (CPU) za pomocą sysbench}
+sysbench\PYG{+w}{ }cpu\PYG{+w}{ }\PYGZhy{}\PYGZhy{}cpu\PYGZhy{}max\PYGZhy{}prime\PYG{o}{=}\PYG{l+m}{20000}\PYG{+w}{ }run
+
+\PYG{c+c1}{\PYGZsh{} 2. Test przepustowości i alokacji pamięci RAM}
+sysbench\PYG{+w}{ }memory\PYG{+w}{ }\PYGZhy{}\PYGZhy{}memory\PYGZhy{}block\PYGZhy{}size\PYG{o}{=}1M\PYG{+w}{ }\PYGZhy{}\PYGZhy{}memory\PYGZhy{}total\PYGZhy{}size\PYG{o}{=}10G\PYG{+w}{ }run
+
+\PYG{c+c1}{\PYGZsh{} 3. Zaawansowany test wydajności dysku (IOPS i opóźnienia) narzędziem fio}
+\PYG{c+c1}{\PYGZsh{} Symulacja losowego odczytu/zapisu (Random R/W) specyficznego dla baz danych}
+fio\PYG{+w}{ }\PYGZhy{}\PYGZhy{}name\PYG{o}{=}test\PYGZus{}bazy\PYG{+w}{ }\PYGZhy{}\PYGZhy{}ioengine\PYG{o}{=}libaio\PYG{+w}{ }\PYGZhy{}\PYGZhy{}rw\PYG{o}{=}randrw\PYG{+w}{ }\PYGZhy{}\PYGZhy{}bs\PYG{o}{=}4k\PYG{+w}{ }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{+w}{    }\PYGZhy{}\PYGZhy{}size\PYG{o}{=}2G\PYG{+w}{ }\PYGZhy{}\PYGZhy{}numjobs\PYG{o}{=}\PYG{l+m}{2}\PYG{+w}{ }\PYGZhy{}\PYGZhy{}runtime\PYG{o}{=}\PYG{l+m}{30}\PYG{+w}{ }\PYGZhy{}\PYGZhy{}time\PYGZus{}based\PYG{+w}{ }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{+w}{    }\PYGZhy{}\PYGZhy{}filename\PYG{o}{=}/var/lib/postgresql/test\PYGZus{}io.file\PYG{+w}{ }\PYGZhy{}\PYGZhy{}group\PYGZus{}reporting
+\end{sphinxVerbatim}
 
 \sphinxstepscope
 
@@ -1537,6 +1616,32 @@ Wydajność, skalowanie i replikacja nie są niezależnymi wyspami \textendash{}
 \label{\detokenize{rozdzial_2/rozdzial_27/index:bezpieczenstwo-baz-danych}}\label{\detokenize{rozdzial_2/rozdzial_27/index::doc}}
 \sphinxAtStartPar
 Dział 7 przeglądu literaturowego poświęcony architekturze bezpieczeństwa, mechanizmom ochrony oraz analizie podatności w nowoczesnych systemach zarządzania bazami danych.
+\begin{quote}\begin{description}
+\sphinxlineitem{Autorzy}\begin{enumerate}
+\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\item {} 
+\sphinxAtStartPar
+Oskar Mąka
+
+\item {} 
+\sphinxAtStartPar
+Daniel Szokało
+
+\item {} 
+\sphinxAtStartPar
+Dawid Szokało
+
+\end{enumerate}
+
+\sphinxlineitem{Kierunek}
+\sphinxAtStartPar
+Informatyka Techniczna, Politechnika Wrocławska
+
+\sphinxlineitem{Przedmiot}
+\sphinxAtStartPar
+Bazy Danych / Projekt Laboratoryjny
+
+\end{description}\end{quote}
 
 \sphinxstepscope
 
@@ -1878,10 +1983,10 @@ Przykład wymuszenia TLS w konfiguracji PostgreSQL (\sphinxcode{\sphinxupquote{p
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZsh{} Włączenie obsługi protokołu TLS}
 \PYG{n+na}{ssl}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{on}
-\PYG{n+na}{ssl\PYGZus{}cert\PYGZus{}file}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}/etc/ssl/certs/db\PYGZhy{}server.crt\PYGZsq{}}
-\PYG{n+na}{ssl\PYGZus{}key\PYGZus{}file}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}/etc/ssl/private/db\PYGZhy{}server.key\PYGZsq{}}
+\PYG{n+na}{ssl\PYGZus{}cert\PYGZus{}file}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{/etc/ssl/certs/db\PYGZhy{}server.crt}\PYG{l+s}{\PYGZsq{}}
+\PYG{n+na}{ssl\PYGZus{}key\PYGZus{}file}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{/etc/ssl/private/db\PYGZhy{}server.key}\PYG{l+s}{\PYGZsq{}}
 \PYG{c+c1}{\PYGZsh{} Odrzucanie połączeń używających przestarzałych, podatnych wersji protokołu}
-\PYG{n+na}{ssl\PYGZus{}min\PYGZus{}protocol\PYGZus{}version}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}TLSv1.2\PYGZsq{}}
+\PYG{n+na}{ssl\PYGZus{}min\PYGZus{}protocol\PYGZus{}version}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{TLSv1.2}\PYG{l+s}{\PYGZsq{}}
 \end{sphinxVerbatim}
 
 \sphinxAtStartPar
@@ -2006,8 +2111,161 @@ Niezależnie od stopnia skomplikowania architektury chmurowej, każda polityka D
 \sphinxstepscope
 
 
-\section{Kopie zapasowe}
-\label{\detokenize{rozdzial_2/rozdzial_28/index:kopie-zapasowe}}\label{\detokenize{rozdzial_2/rozdzial_28/index::doc}}
+\section{Kopie zapasowe i odzyskiwanie danych}
+\label{\detokenize{rozdzial_2/rozdzial_28/index:kopie-zapasowe-i-odzyskiwanie-danych}}\label{\detokenize{rozdzial_2/rozdzial_28/index::doc}}
+\sphinxAtStartPar
+\sphinxstylestrong{Autorzy:} Norbert Antonovitch, Michał Bednarczyk, Jan Balazs de Borbatviz
+
+
+\subsection{Wstęp}
+\label{\detokenize{rozdzial_2/rozdzial_28/index:wstep}}
+\sphinxAtStartPar
+Kopie zapasowe w PostgreSQL można podzielić na dwa główne nurty: kopie logiczne wykonywane narzędziami \sphinxcode{\sphinxupquote{pg\_dump}} i \sphinxcode{\sphinxupquote{pg\_dumpall}}  oraz kopie fizyczne całego klastra wykonywane m.in. przez \sphinxcode{\sphinxupquote{pg\_basebackup}} wraz z archiwizacją WAL dla odzyskiwania punktowego PITR (Point\sphinxhyphen{}in\sphinxhyphen{}Time Recovery). Kopie logiczne są wygodne do odtwarzania pojedynczych obiektów i pojedynczych baz, natomiast kopie fizyczne są podstawą pełnego odtworzenia instancji, tablespaces i odzyskiwania po awariach.
+
+
+\subsection{Tworzenie kopii zapasowej całego systemu PostgreSQL \sphinxhyphen{} mechanizmy wbudowane}
+\label{\detokenize{rozdzial_2/rozdzial_28/index:tworzenie-kopii-zapasowej-calego-systemu-postgresql-mechanizmy-wbudowane}}
+\sphinxAtStartPar
+Najprostszym wbudowanym sposobem wykonania kopii całego klastra jest \sphinxcode{\sphinxupquote{pg\_dumpall}}, które eksportuje wszystkie bazy w klastrze oraz obiekty globalne wspólne dla całej instancji, takie jak role i przestrzenie tabel. Taki zrzut ma postać tekstowego skryptu SQL i odtwarza się go zwykle przez \sphinxcode{\sphinxupquote{psql}}, ale metoda ta jest logiczna, więc nie daje możliwości odzyskiwania punktowego przez WAL.
+
+\sphinxAtStartPar
+Drugim, ważniejszym z punktu widzenia odporności na awarie mechanizmem jest \sphinxcode{\sphinxupquote{pg\_basebackup}}, które tworzy fizyczną kopię działającego klastra bez blokowania normalnej pracy klientów. Narzędzie to wykonuje kopię całego klastra, a nie pojedynczych baz czy tabel, może pracować w formacie katalogowym lub \sphinxcode{\sphinxupquote{tar}} i może dołączać wymagane pliki WAL metodą stream, fetch albo none. Dokumentacja podkreśla też, że taka kopia może służyć zarówno do PITR, jak i do zbudowania serwera standby.
+
+\sphinxAtStartPar
+Aby pełna kopia fizyczna była użyteczna w scenariuszu odtwarzania do wybranego momentu, należy włączyć archiwizację WAL przez ustawienie co najmniej \sphinxcode{\sphinxupquote{wal\_level = replica}}, \sphinxcode{\sphinxupquote{archive\_mode = on}} oraz poprawnego \sphinxcode{\sphinxupquote{archive\_command}} albo \sphinxcode{\sphinxupquote{archive\_library}}. PostgreSQL zapisuje każdą zmianę w logu WAL, a po odtworzeniu kopii bazowej można odtworzyć kolejne segmenty WAL, aby dojść do stanu bieżącego lub do wskazanego punktu w czasie.
+
+\sphinxAtStartPar
+Przykładowe polecenia:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} logiczna kopia całego klastra}
+pg\PYGZus{}dumpall\PYG{+w}{ }\PYGZhy{}U\PYG{+w}{ }postgres\PYG{+w}{ }\PYGZhy{}\PYGZhy{}clean\PYG{+w}{ }\PYGZhy{}\PYGZhy{}file\PYG{o}{=}cluster.sql
+
+\PYG{c+c1}{\PYGZsh{} fizyczna kopia całego klastra z dołączeniem WAL}
+pg\PYGZus{}basebackup\PYG{+w}{ }\PYGZhy{}h\PYG{+w}{ }dbserver\PYG{+w}{ }\PYGZhy{}D\PYG{+w}{ }/backup/base\PYG{+w}{ }\PYGZhy{}Fp\PYG{+w}{ }\PYGZhy{}X\PYG{+w}{ }stream\PYG{+w}{ }\PYGZhy{}P
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+W praktyce do dokumentacji laboratoryjnej warto zaznaczyć, że \sphinxcode{\sphinxupquote{pg\_dumpall}} lepiej nadaje się do migracji i prostych kopii administracyjnych, a \sphinxcode{\sphinxupquote{pg\_basebackup}} z archiwizacją WAL do scenariuszy disaster recovery.
+
+
+\subsection{Tworzenie kopii zapasowych poszczególnych baz danych \sphinxhyphen{} mechanizmy wbudowane}
+\label{\detokenize{rozdzial_2/rozdzial_28/index:tworzenie-kopii-zapasowych-poszczegolnych-baz-danych-mechanizmy-wbudowane}}
+\sphinxAtStartPar
+Do wykonania kopii pojedynczej bazy służy \sphinxcode{\sphinxupquote{pg\_dump}}, które tworzy spójny zrzut nawet wtedy, gdy baza jest równocześnie używana przez innych użytkowników, i nie blokuje zwykłych operacji odczytu ani zapisu. Narzędzie obsługuje format tekstowy, custom, directory oraz tar, przy czym formaty archiwalne współpracują z \sphinxcode{\sphinxupquote{pg\_restore}} i pozwalają na selektywne odtwarzanie obiektów.
+
+\sphinxAtStartPar
+Istotne jest to, że \sphinxcode{\sphinxupquote{pg\_dump}} wykonuje kopię tylko jednej bazy danych. Format custom (\sphinxcode{\sphinxupquote{\sphinxhyphen{}Fc}}) i directory (\sphinxcode{\sphinxupquote{\sphinxhyphen{}Fd}}) są najbardziej elastyczne, bo pozwalają wybierać odtwarzane elementy, zmieniać kolejność odtwarzania, a w części scenariuszy także korzystać z odtwarzania równoległego.
+
+\sphinxAtStartPar
+Przykładowe polecenia:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} kopia pojedynczej bazy w formacie custom}
+pg\PYGZus{}dump\PYG{+w}{ }\PYGZhy{}U\PYG{+w}{ }postgres\PYG{+w}{ }\PYGZhy{}d\PYG{+w}{ }labdb\PYG{+w}{ }\PYGZhy{}Fc\PYG{+w}{ }\PYGZhy{}f\PYG{+w}{ }/backup/labdb.dump
+
+\PYG{c+c1}{\PYGZsh{} kopia pojedynczej bazy jako skrypt SQL}
+pg\PYGZus{}dump\PYG{+w}{ }\PYGZhy{}U\PYG{+w}{ }postgres\PYG{+w}{ }\PYGZhy{}d\PYG{+w}{ }labdb\PYG{+w}{ }\PYGZhy{}Fp\PYG{+w}{ }\PYGZhy{}f\PYG{+w}{ }/backup/labdb.sql
+
+\PYG{c+c1}{\PYGZsh{} odtworzenie archiwum custom}
+pg\PYGZus{}restore\PYG{+w}{ }\PYGZhy{}d\PYG{+w}{ }labdb\PYGZus{}restored\PYG{+w}{ }/backup/labdb.dump
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+Jeżeli celem jest ochrona wybranych schematów lub tabel, \sphinxcode{\sphinxupquote{pg\_dump}} pozwala zawęzić zakres eksportu przez opcje takie jak \sphinxcode{\sphinxupquote{\sphinxhyphen{}n}} dla schematu i \sphinxcode{\sphinxupquote{\sphinxhyphen{}t}} dla tabeli. Trzeba jednak zaznaczyć, że wybiórczy zrzut nie gwarantuje kompletności zależności wszystkich obiektów w nowym, pustym środowisku, jeśli pominięto elementy, od których zależy odtwarzany obiekt.
+
+
+\subsection{Odzyskiwanie usuniętych lub uszkodzonych danych}
+\label{\detokenize{rozdzial_2/rozdzial_28/index:odzyskiwanie-usunietych-lub-uszkodzonych-danych}}
+\sphinxAtStartPar
+Sposób odzyskiwania zależy od tego, czy problem dotyczy pojedynczego obiektu logicznego, całej bazy, przestrzeni tabel, czy fizycznego uszkodzenia danych. PostgreSQL rozróżnia w praktyce odzyskiwanie logiczne z plików dump oraz odzyskiwanie fizyczne z kopii bazowej i archiwum WAL.
+
+
+\subsubsection{Odtwarzanie tabel i innych obiektów logicznych}
+\label{\detokenize{rozdzial_2/rozdzial_28/index:odtwarzanie-tabel-i-innych-obiektow-logicznych}}
+\sphinxAtStartPar
+Jeżeli wcześniej wykonano kopię \sphinxcode{\sphinxupquote{pg\_dump}} w formacie archiwalnym, można odtworzyć pojedynczą tabelę lub inny obiekt selektywnie przy pomocy \sphinxcode{\sphinxupquote{pg\_restore}}, bez przywracania całej bazy. To jest najprostszy wariant odzyskania przypadkowo usuniętej tabeli, o ile odpowiedni obiekt znajdował się w logicznej kopii zapasowej.
+
+\sphinxAtStartPar
+Przykład:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+pg\PYGZus{}restore\PYG{+w}{ }\PYGZhy{}d\PYG{+w}{ }labdb\PYG{+w}{ }\PYGZhy{}t\PYG{+w}{ }public.wyniki\PYG{+w}{ }/backup/labdb.dump
+\end{sphinxVerbatim}
+
+
+\subsubsection{Odtwarzanie usuniętej bazy danych}
+\label{\detokenize{rozdzial_2/rozdzial_28/index:odtwarzanie-usunietej-bazy-danych}}
+\sphinxAtStartPar
+Usuniętą bazę można najłatwiej odtworzyć z wcześniejszego zrzutu \sphinxcode{\sphinxupquote{pg\_dump}} tej konkretnej bazy albo z \sphinxcode{\sphinxupquote{pg\_dumpall}}, jeżeli wykonywano kopię całego klastra. W przypadku wymogu odtworzenia dokładnie do chwili sprzed usunięcia, potrzebna jest kopia fizyczna oraz archiwum WAL, ponieważ same zrzuty logiczne nie są częścią rozwiązania continuous archiving i nie wspierają PITR.
+
+
+\subsubsection{Odtwarzanie przestrzeni tabel i pełnego klastra}
+\label{\detokenize{rozdzial_2/rozdzial_28/index:odtwarzanie-przestrzeni-tabel-i-pelnego-klastra}}
+\sphinxAtStartPar
+Przestrzenie tabel są obiektami globalnymi klastra, dlatego ich definicje są uwzględniane przez \sphinxcode{\sphinxupquote{pg\_dumpall}}, a przy kopiach fizycznych \sphinxcode{\sphinxupquote{pg\_basebackup}} zachowuje także ich strukturę i mapowanie. Dokumentacja \sphinxcode{\sphinxupquote{pg\_basebackup}} wskazuje, że przy pracy z tablespaces można użyć mapowania \sphinxcode{\sphinxupquote{\sphinxhyphen{}\sphinxhyphen{}tablespace\sphinxhyphen{}mapping}}, a przy odtwarzaniu trzeba zweryfikować poprawność dowiązań symbolicznych i lokalizacji danych.
+
+\sphinxAtStartPar
+Przy fizycznym uszkodzeniu danych, katalogu PGDATA albo tabelpaces standardowa procedura obejmuje odtworzenie kopii bazowej, usunięcie starych plików danych, odtworzenie katalogów danych i tablespaces, skonfigurowanie \sphinxcode{\sphinxupquote{restore\_command}}, utworzenie pliku \sphinxcode{\sphinxupquote{recovery.signal}}, a następnie ponowne uruchomienie serwera w trybie recovery. PostgreSQL podczas odtwarzania odczytuje wymagane segmenty WAL i może dojść do stanu bieżącego albo zatrzymać się na wybranym punkcie odzyskiwania.
+
+
+\subsubsection{PITR i odzyskiwanie stanu sprzed błędu}
+\label{\detokenize{rozdzial_2/rozdzial_28/index:pitr-i-odzyskiwanie-stanu-sprzed-bledu}}
+\sphinxAtStartPar
+Najważniejszym mechanizmem odzyskiwania po usunięciu danych operacyjnych jest PITR, czyli przywrócenie systemu do chwili sprzed błędnej operacji, na przykład \sphinxcode{\sphinxupquote{DROP TABLE}} lub \sphinxcode{\sphinxupquote{DROP DATABASE}}. W takim scenariuszu odtwarza się kopię bazową, konfiguruje \sphinxcode{\sphinxupquote{restore\_command}}, a następnie ustawia cel odzyskiwania, np. przez czas, nazwany punkt przywracania lub identyfikator transakcji.
+
+\sphinxAtStartPar
+To rozwiązanie ma jednak ważne ograniczenie: nie służy do odzyskania pojedynczej tabeli “w miejscu” bez wpływu na resztę systemu, lecz do odtworzenia całego klastra do wcześniejszego stanu. Dlatego w praktyce laboratoryjnej często łączy się oba podejścia: regularne \sphinxcode{\sphinxupquote{pg\_dump}} dla obiektów logicznych i \sphinxcode{\sphinxupquote{pg\_basebackup}} z archiwizacją WAL dla pełnego recovery.
+
+
+\subsection{Dedykowane oprogramowanie i skrypty zewnętrzne do automatyzacji}
+\label{\detokenize{rozdzial_2/rozdzial_28/index:dedykowane-oprogramowanie-i-skrypty-zewnetrzne-do-automatyzacji}}
+\sphinxAtStartPar
+Wbudowane narzędzia PostgreSQL są wystarczające do ręcznego wykonywania kopii, ale w środowisku produkcyjnym często wykorzystuje się oprogramowanie automatyzujące harmonogramy, retencję, walidację i odtwarzanie. Dwa najczęściej wskazywane rozwiązania to Barman i pgBackRest, przy czym dostępna dokumentacja Barman bezpośrednio opisuje obsługę pełnych i przyrostowych kopii, archiwizacji WAL oraz automatycznego uruchamiania backupów.
+
+\sphinxAtStartPar
+Barman wykonuje kopie całego serwera PostgreSQL i wymaga poprawnej archiwizacji WAL, oferując różne metody kopii, w tym streaming przez \sphinxcode{\sphinxupquote{pg\_basebackup}}, \sphinxcode{\sphinxupquote{rsync}} oraz backupy snapshotowe w chmurze. Dokumentacja podaje też wsparcie dla backupów przyrostowych, limitowania pasma, kompresji i pracy z harmonogramem przez zewnętrzne mechanizmy systemowe, np. cron.
+
+\sphinxAtStartPar
+Przykładowe zastosowania narzędzi zewnętrznych:
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Barman:} centralne repozytorium backupów, archiwizacja WAL, backupy pełne i przyrostowe, odzyskiwanie całych instancji.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{pgBackRest:} popularne narzędzie do wydajnych backupów i retencji, często używane w środowiskach HA oraz większych instalacjach PostgreSQL.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Własne skrypty Bash/PowerShell:} wywołanie \sphinxcode{\sphinxupquote{pg\_dump}}, \sphinxcode{\sphinxupquote{pg\_dumpall}} lub \sphinxcode{\sphinxupquote{pg\_basebackup}}, kompresja plików, rotacja katalogów, logowanie i wysyłka wyników przez e\sphinxhyphen{}mail lub do systemu monitoringu.
+
+\end{itemize}
+
+\sphinxAtStartPar
+Przykładowy prosty skrypt automatyzujący kopię jednej bazy:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+ch}{\PYGZsh{}!/bin/bash}
+\PYG{n+nv}{DATA}\PYG{o}{=}\PYG{k}{\PYGZdl{}(}date\PYG{+w}{ }+\PYGZpc{}F\PYGZus{}\PYGZpc{}H\PYGZhy{}\PYGZpc{}M\PYG{k}{)}
+\PYG{n+nv}{KATALOG}\PYG{o}{=}/backup/postgres
+\PYG{n+nv}{BAZA}\PYG{o}{=}labdb
+
+mkdir\PYG{+w}{ }\PYGZhy{}p\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}}\PYG{n+nv}{\PYGZdl{}KATALOG}\PYG{l+s+s2}{\PYGZdq{}}
+pg\PYGZus{}dump\PYG{+w}{ }\PYGZhy{}U\PYG{+w}{ }postgres\PYG{+w}{ }\PYGZhy{}d\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}}\PYG{n+nv}{\PYGZdl{}BAZA}\PYG{l+s+s2}{\PYGZdq{}}\PYG{+w}{ }\PYGZhy{}Fc\PYG{+w}{ }\PYGZhy{}f\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}}\PYG{n+nv}{\PYGZdl{}KATALOG}\PYG{l+s+s2}{/}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n+nv}{BAZA}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZus{}}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n+nv}{DATA}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{.dump}\PYG{l+s+s2}{\PYGZdq{}}
+find\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}}\PYG{n+nv}{\PYGZdl{}KATALOG}\PYG{l+s+s2}{\PYGZdq{}}\PYG{+w}{ }\PYGZhy{}type\PYG{+w}{ }f\PYG{+w}{ }\PYGZhy{}name\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n+nv}{BAZA}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZus{}*.dump}\PYG{l+s+s2}{\PYGZdq{}}\PYG{+w}{ }\PYGZhy{}mtime\PYG{+w}{ }+7\PYG{+w}{ }\PYGZhy{}delete
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+Taki skrypt jest prosty, ale nie zapewnia pełnego disaster recovery, bo nie obejmuje archiwizacji WAL i nie chroni całego klastra. Z tego powodu dla systemów krytycznych bardziej właściwe są narzędzia klasy Barman lub pgBackRest, które porządkują pełny proces backupu, retencji, testów i odtwarzania.
+
+
+\subsection{Podsumowanie}
+\label{\detokenize{rozdzial_2/rozdzial_28/index:podsumowanie}}
+\sphinxAtStartPar
+W rozdziale warto wyraźnie rozróżnić kopie logiczne i fizyczne, bo odpowiadają one na inne potrzeby eksploatacyjne. \sphinxcode{\sphinxupquote{pg\_dump}} i \sphinxcode{\sphinxupquote{pg\_dumpall}} są najlepsze do prostych eksportów i selektywnego odtwarzania, natomiast \sphinxcode{\sphinxupquote{pg\_basebackup}} z archiwizacją WAL jest podstawą odzyskiwania po poważnej awarii i realizacji PITR.
+
 \sphinxstepscope
 
 
@@ -2089,7 +2347,7 @@ Dla zasymulowania warunków produkcyjnych i obciążenia systemów większym wol
 Zarówno dla SQLite, jak i PostgreSQL, pierwszym krokiem w środowisku języka Python było odczytanie płaskiego pliku i przeniesienie go do ustrukturyzowanej, iterowalnej pamięci RAM (np. w postaci listy list):
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kn}{import} \PYG{n+nn}{csv}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{csv}
 
 \PYG{c+c1}{\PYGZsh{} Wczytywanie danych z pliku CSV do struktury iterowalnej}
 \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{klienci.csv}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{r}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{utf\PYGZhy{}8}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{plik\PYGZus{}csv}\PYG{p}{:}

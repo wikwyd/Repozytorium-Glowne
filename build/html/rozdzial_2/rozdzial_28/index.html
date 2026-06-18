@@ -5,12 +5,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Kopie zapasowe &#8212; Sprawozdanie-z-laboratoriów  documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d1102ebc" />
-    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=12dfc556" />
+    <title>Kopie zapasowe i odzyskiwanie danych &#8212; Sprawozdanie-z-laboratoriów  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Zadanie 3" href="../../rozdzial_3/index.html" />
@@ -32,8 +33,98 @@
 
           <div class="body" role="main">
             
-  <section id="kopie-zapasowe">
-<h1>Kopie zapasowe<a class="headerlink" href="#kopie-zapasowe" title="Link to this heading">¶</a></h1>
+  <section id="kopie-zapasowe-i-odzyskiwanie-danych">
+<h1>Kopie zapasowe i odzyskiwanie danych<a class="headerlink" href="#kopie-zapasowe-i-odzyskiwanie-danych" title="Link to this heading">¶</a></h1>
+<p><strong>Autorzy:</strong> Norbert Antonovitch, Michał Bednarczyk, Jan Balazs de Borbatviz</p>
+<section id="wstep">
+<h2>Wstęp<a class="headerlink" href="#wstep" title="Link to this heading">¶</a></h2>
+<p>Kopie zapasowe w PostgreSQL można podzielić na dwa główne nurty: kopie logiczne wykonywane narzędziami <code class="docutils literal notranslate"><span class="pre">pg_dump</span></code> i <code class="docutils literal notranslate"><span class="pre">pg_dumpall</span></code>  oraz kopie fizyczne całego klastra wykonywane m.in. przez <code class="docutils literal notranslate"><span class="pre">pg_basebackup</span></code> wraz z archiwizacją WAL dla odzyskiwania punktowego PITR (Point-in-Time Recovery). Kopie logiczne są wygodne do odtwarzania pojedynczych obiektów i pojedynczych baz, natomiast kopie fizyczne są podstawą pełnego odtworzenia instancji, tablespaces i odzyskiwania po awariach.</p>
+</section>
+<section id="tworzenie-kopii-zapasowej-calego-systemu-postgresql-mechanizmy-wbudowane">
+<h2>Tworzenie kopii zapasowej całego systemu PostgreSQL - mechanizmy wbudowane<a class="headerlink" href="#tworzenie-kopii-zapasowej-calego-systemu-postgresql-mechanizmy-wbudowane" title="Link to this heading">¶</a></h2>
+<p>Najprostszym wbudowanym sposobem wykonania kopii całego klastra jest <code class="docutils literal notranslate"><span class="pre">pg_dumpall</span></code>, które eksportuje wszystkie bazy w klastrze oraz obiekty globalne wspólne dla całej instancji, takie jak role i przestrzenie tabel. Taki zrzut ma postać tekstowego skryptu SQL i odtwarza się go zwykle przez <code class="docutils literal notranslate"><span class="pre">psql</span></code>, ale metoda ta jest logiczna, więc nie daje możliwości odzyskiwania punktowego przez WAL.</p>
+<p>Drugim, ważniejszym z punktu widzenia odporności na awarie mechanizmem jest <code class="docutils literal notranslate"><span class="pre">pg_basebackup</span></code>, które tworzy fizyczną kopię działającego klastra bez blokowania normalnej pracy klientów. Narzędzie to wykonuje kopię całego klastra, a nie pojedynczych baz czy tabel, może pracować w formacie katalogowym lub <code class="docutils literal notranslate"><span class="pre">tar</span></code> i może dołączać wymagane pliki WAL metodą stream, fetch albo none. Dokumentacja podkreśla też, że taka kopia może służyć zarówno do PITR, jak i do zbudowania serwera standby.</p>
+<p>Aby pełna kopia fizyczna była użyteczna w scenariuszu odtwarzania do wybranego momentu, należy włączyć archiwizację WAL przez ustawienie co najmniej <code class="docutils literal notranslate"><span class="pre">wal_level</span> <span class="pre">=</span> <span class="pre">replica</span></code>, <code class="docutils literal notranslate"><span class="pre">archive_mode</span> <span class="pre">=</span> <span class="pre">on</span></code> oraz poprawnego <code class="docutils literal notranslate"><span class="pre">archive_command</span></code> albo <code class="docutils literal notranslate"><span class="pre">archive_library</span></code>. PostgreSQL zapisuje każdą zmianę w logu WAL, a po odtworzeniu kopii bazowej można odtworzyć kolejne segmenty WAL, aby dojść do stanu bieżącego lub do wskazanego punktu w czasie.</p>
+<p>Przykładowe polecenia:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># logiczna kopia całego klastra</span>
+pg_dumpall<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>--clean<span class="w"> </span>--file<span class="o">=</span>cluster.sql
+
+<span class="c1"># fizyczna kopia całego klastra z dołączeniem WAL</span>
+pg_basebackup<span class="w"> </span>-h<span class="w"> </span>dbserver<span class="w"> </span>-D<span class="w"> </span>/backup/base<span class="w"> </span>-Fp<span class="w"> </span>-X<span class="w"> </span>stream<span class="w"> </span>-P
+</pre></div>
+</div>
+<p>W praktyce do dokumentacji laboratoryjnej warto zaznaczyć, że <code class="docutils literal notranslate"><span class="pre">pg_dumpall</span></code> lepiej nadaje się do migracji i prostych kopii administracyjnych, a <code class="docutils literal notranslate"><span class="pre">pg_basebackup</span></code> z archiwizacją WAL do scenariuszy disaster recovery.</p>
+</section>
+<section id="tworzenie-kopii-zapasowych-poszczegolnych-baz-danych-mechanizmy-wbudowane">
+<h2>Tworzenie kopii zapasowych poszczególnych baz danych - mechanizmy wbudowane<a class="headerlink" href="#tworzenie-kopii-zapasowych-poszczegolnych-baz-danych-mechanizmy-wbudowane" title="Link to this heading">¶</a></h2>
+<p>Do wykonania kopii pojedynczej bazy służy <code class="docutils literal notranslate"><span class="pre">pg_dump</span></code>, które tworzy spójny zrzut nawet wtedy, gdy baza jest równocześnie używana przez innych użytkowników, i nie blokuje zwykłych operacji odczytu ani zapisu. Narzędzie obsługuje format tekstowy, custom, directory oraz tar, przy czym formaty archiwalne współpracują z <code class="docutils literal notranslate"><span class="pre">pg_restore</span></code> i pozwalają na selektywne odtwarzanie obiektów.</p>
+<p>Istotne jest to, że <code class="docutils literal notranslate"><span class="pre">pg_dump</span></code> wykonuje kopię tylko jednej bazy danych. Format custom (<code class="docutils literal notranslate"><span class="pre">-Fc</span></code>) i directory (<code class="docutils literal notranslate"><span class="pre">-Fd</span></code>) są najbardziej elastyczne, bo pozwalają wybierać odtwarzane elementy, zmieniać kolejność odtwarzania, a w części scenariuszy także korzystać z odtwarzania równoległego.</p>
+<p>Przykładowe polecenia:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># kopia pojedynczej bazy w formacie custom</span>
+pg_dump<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-d<span class="w"> </span>labdb<span class="w"> </span>-Fc<span class="w"> </span>-f<span class="w"> </span>/backup/labdb.dump
+
+<span class="c1"># kopia pojedynczej bazy jako skrypt SQL</span>
+pg_dump<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-d<span class="w"> </span>labdb<span class="w"> </span>-Fp<span class="w"> </span>-f<span class="w"> </span>/backup/labdb.sql
+
+<span class="c1"># odtworzenie archiwum custom</span>
+pg_restore<span class="w"> </span>-d<span class="w"> </span>labdb_restored<span class="w"> </span>/backup/labdb.dump
+</pre></div>
+</div>
+<p>Jeżeli celem jest ochrona wybranych schematów lub tabel, <code class="docutils literal notranslate"><span class="pre">pg_dump</span></code> pozwala zawęzić zakres eksportu przez opcje takie jak <code class="docutils literal notranslate"><span class="pre">-n</span></code> dla schematu i <code class="docutils literal notranslate"><span class="pre">-t</span></code> dla tabeli. Trzeba jednak zaznaczyć, że wybiórczy zrzut nie gwarantuje kompletności zależności wszystkich obiektów w nowym, pustym środowisku, jeśli pominięto elementy, od których zależy odtwarzany obiekt.</p>
+</section>
+<section id="odzyskiwanie-usunietych-lub-uszkodzonych-danych">
+<h2>Odzyskiwanie usuniętych lub uszkodzonych danych<a class="headerlink" href="#odzyskiwanie-usunietych-lub-uszkodzonych-danych" title="Link to this heading">¶</a></h2>
+<p>Sposób odzyskiwania zależy od tego, czy problem dotyczy pojedynczego obiektu logicznego, całej bazy, przestrzeni tabel, czy fizycznego uszkodzenia danych. PostgreSQL rozróżnia w praktyce odzyskiwanie logiczne z plików dump oraz odzyskiwanie fizyczne z kopii bazowej i archiwum WAL.</p>
+<section id="odtwarzanie-tabel-i-innych-obiektow-logicznych">
+<h3>Odtwarzanie tabel i innych obiektów logicznych<a class="headerlink" href="#odtwarzanie-tabel-i-innych-obiektow-logicznych" title="Link to this heading">¶</a></h3>
+<p>Jeżeli wcześniej wykonano kopię <code class="docutils literal notranslate"><span class="pre">pg_dump</span></code> w formacie archiwalnym, można odtworzyć pojedynczą tabelę lub inny obiekt selektywnie przy pomocy <code class="docutils literal notranslate"><span class="pre">pg_restore</span></code>, bez przywracania całej bazy. To jest najprostszy wariant odzyskania przypadkowo usuniętej tabeli, o ile odpowiedni obiekt znajdował się w logicznej kopii zapasowej.</p>
+<p>Przykład:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pg_restore<span class="w"> </span>-d<span class="w"> </span>labdb<span class="w"> </span>-t<span class="w"> </span>public.wyniki<span class="w"> </span>/backup/labdb.dump
+</pre></div>
+</div>
+</section>
+<section id="odtwarzanie-usunietej-bazy-danych">
+<h3>Odtwarzanie usuniętej bazy danych<a class="headerlink" href="#odtwarzanie-usunietej-bazy-danych" title="Link to this heading">¶</a></h3>
+<p>Usuniętą bazę można najłatwiej odtworzyć z wcześniejszego zrzutu <code class="docutils literal notranslate"><span class="pre">pg_dump</span></code> tej konkretnej bazy albo z <code class="docutils literal notranslate"><span class="pre">pg_dumpall</span></code>, jeżeli wykonywano kopię całego klastra. W przypadku wymogu odtworzenia dokładnie do chwili sprzed usunięcia, potrzebna jest kopia fizyczna oraz archiwum WAL, ponieważ same zrzuty logiczne nie są częścią rozwiązania continuous archiving i nie wspierają PITR.</p>
+</section>
+<section id="odtwarzanie-przestrzeni-tabel-i-pelnego-klastra">
+<h3>Odtwarzanie przestrzeni tabel i pełnego klastra<a class="headerlink" href="#odtwarzanie-przestrzeni-tabel-i-pelnego-klastra" title="Link to this heading">¶</a></h3>
+<p>Przestrzenie tabel są obiektami globalnymi klastra, dlatego ich definicje są uwzględniane przez <code class="docutils literal notranslate"><span class="pre">pg_dumpall</span></code>, a przy kopiach fizycznych <code class="docutils literal notranslate"><span class="pre">pg_basebackup</span></code> zachowuje także ich strukturę i mapowanie. Dokumentacja <code class="docutils literal notranslate"><span class="pre">pg_basebackup</span></code> wskazuje, że przy pracy z tablespaces można użyć mapowania <code class="docutils literal notranslate"><span class="pre">--tablespace-mapping</span></code>, a przy odtwarzaniu trzeba zweryfikować poprawność dowiązań symbolicznych i lokalizacji danych.</p>
+<p>Przy fizycznym uszkodzeniu danych, katalogu PGDATA albo tabelpaces standardowa procedura obejmuje odtworzenie kopii bazowej, usunięcie starych plików danych, odtworzenie katalogów danych i tablespaces, skonfigurowanie <code class="docutils literal notranslate"><span class="pre">restore_command</span></code>, utworzenie pliku <code class="docutils literal notranslate"><span class="pre">recovery.signal</span></code>, a następnie ponowne uruchomienie serwera w trybie recovery. PostgreSQL podczas odtwarzania odczytuje wymagane segmenty WAL i może dojść do stanu bieżącego albo zatrzymać się na wybranym punkcie odzyskiwania.</p>
+</section>
+<section id="pitr-i-odzyskiwanie-stanu-sprzed-bledu">
+<h3>PITR i odzyskiwanie stanu sprzed błędu<a class="headerlink" href="#pitr-i-odzyskiwanie-stanu-sprzed-bledu" title="Link to this heading">¶</a></h3>
+<p>Najważniejszym mechanizmem odzyskiwania po usunięciu danych operacyjnych jest PITR, czyli przywrócenie systemu do chwili sprzed błędnej operacji, na przykład <code class="docutils literal notranslate"><span class="pre">DROP</span> <span class="pre">TABLE</span></code> lub <code class="docutils literal notranslate"><span class="pre">DROP</span> <span class="pre">DATABASE</span></code>. W takim scenariuszu odtwarza się kopię bazową, konfiguruje <code class="docutils literal notranslate"><span class="pre">restore_command</span></code>, a następnie ustawia cel odzyskiwania, np. przez czas, nazwany punkt przywracania lub identyfikator transakcji.</p>
+<p>To rozwiązanie ma jednak ważne ograniczenie: nie służy do odzyskania pojedynczej tabeli “w miejscu” bez wpływu na resztę systemu, lecz do odtworzenia całego klastra do wcześniejszego stanu. Dlatego w praktyce laboratoryjnej często łączy się oba podejścia: regularne <code class="docutils literal notranslate"><span class="pre">pg_dump</span></code> dla obiektów logicznych i <code class="docutils literal notranslate"><span class="pre">pg_basebackup</span></code> z archiwizacją WAL dla pełnego recovery.</p>
+</section>
+</section>
+<section id="dedykowane-oprogramowanie-i-skrypty-zewnetrzne-do-automatyzacji">
+<h2>Dedykowane oprogramowanie i skrypty zewnętrzne do automatyzacji<a class="headerlink" href="#dedykowane-oprogramowanie-i-skrypty-zewnetrzne-do-automatyzacji" title="Link to this heading">¶</a></h2>
+<p>Wbudowane narzędzia PostgreSQL są wystarczające do ręcznego wykonywania kopii, ale w środowisku produkcyjnym często wykorzystuje się oprogramowanie automatyzujące harmonogramy, retencję, walidację i odtwarzanie. Dwa najczęściej wskazywane rozwiązania to Barman i pgBackRest, przy czym dostępna dokumentacja Barman bezpośrednio opisuje obsługę pełnych i przyrostowych kopii, archiwizacji WAL oraz automatycznego uruchamiania backupów.</p>
+<p>Barman wykonuje kopie całego serwera PostgreSQL i wymaga poprawnej archiwizacji WAL, oferując różne metody kopii, w tym streaming przez <code class="docutils literal notranslate"><span class="pre">pg_basebackup</span></code>, <code class="docutils literal notranslate"><span class="pre">rsync</span></code> oraz backupy snapshotowe w chmurze. Dokumentacja podaje też wsparcie dla backupów przyrostowych, limitowania pasma, kompresji i pracy z harmonogramem przez zewnętrzne mechanizmy systemowe, np. cron.</p>
+<p>Przykładowe zastosowania narzędzi zewnętrznych:</p>
+<ul class="simple">
+<li><p><strong>Barman:</strong> centralne repozytorium backupów, archiwizacja WAL, backupy pełne i przyrostowe, odzyskiwanie całych instancji.</p></li>
+<li><p><strong>pgBackRest:</strong> popularne narzędzie do wydajnych backupów i retencji, często używane w środowiskach HA oraz większych instalacjach PostgreSQL.</p></li>
+<li><p><strong>Własne skrypty Bash/PowerShell:</strong> wywołanie <code class="docutils literal notranslate"><span class="pre">pg_dump</span></code>, <code class="docutils literal notranslate"><span class="pre">pg_dumpall</span></code> lub <code class="docutils literal notranslate"><span class="pre">pg_basebackup</span></code>, kompresja plików, rotacja katalogów, logowanie i wysyłka wyników przez e-mail lub do systemu monitoringu.</p></li>
+</ul>
+<p>Przykładowy prosty skrypt automatyzujący kopię jednej bazy:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="nv">DATA</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%F_%H-%M<span class="k">)</span>
+<span class="nv">KATALOG</span><span class="o">=</span>/backup/postgres
+<span class="nv">BAZA</span><span class="o">=</span>labdb
+
+mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$KATALOG</span><span class="s2">&quot;</span>
+pg_dump<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$BAZA</span><span class="s2">&quot;</span><span class="w"> </span>-Fc<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$KATALOG</span><span class="s2">/</span><span class="si">${</span><span class="nv">BAZA</span><span class="si">}</span><span class="s2">_</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">.dump&quot;</span>
+find<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$KATALOG</span><span class="s2">&quot;</span><span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span>-name<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">BAZA</span><span class="si">}</span><span class="s2">_*.dump&quot;</span><span class="w"> </span>-mtime<span class="w"> </span>+7<span class="w"> </span>-delete
+</pre></div>
+</div>
+<p>Taki skrypt jest prosty, ale nie zapewnia pełnego disaster recovery, bo nie obejmuje archiwizacji WAL i nie chroni całego klastra. Z tego powodu dla systemów krytycznych bardziej właściwe są narzędzia klasy Barman lub pgBackRest, które porządkują pełny proces backupu, retencji, testów i odtwarzania.</p>
+</section>
+<section id="podsumowanie">
+<h2>Podsumowanie<a class="headerlink" href="#podsumowanie" title="Link to this heading">¶</a></h2>
+<p>W rozdziale warto wyraźnie rozróżnić kopie logiczne i fizyczne, bo odpowiadają one na inne potrzeby eksploatacyjne. <code class="docutils literal notranslate"><span class="pre">pg_dump</span></code> i <code class="docutils literal notranslate"><span class="pre">pg_dumpall</span></code> są najlepsze do prostych eksportów i selektywnego odtwarzania, natomiast <code class="docutils literal notranslate"><span class="pre">pg_basebackup</span></code> z archiwizacją WAL jest podstawą odzyskiwania po poważnej awarii i realizacji PITR.</p>
+</section>
 </section>
 
 
@@ -52,7 +143,16 @@
 
 
 
-<h3>Navigation</h3>
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
 <p class="caption" role="heading"><span class="caption-text">Spis treści:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../rozdzial_1/index.html">Wstęp do sprawozdania oraz linki</a></li>
@@ -73,16 +173,6 @@
   </ul></li>
 </ul>
 </div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -96,11 +186,11 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &#169;2026, Olaf Chomicki, Konrad Machowski, Wiktor Wydrzyński.
+      &#169;2026, Konrad Machowski.
       
       |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
-      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="../../_sources/rozdzial_2/rozdzial_28/index.rst.txt"

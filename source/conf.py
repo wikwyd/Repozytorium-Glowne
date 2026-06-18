@@ -7,8 +7,8 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Sprawozdanie-z-laboratoriów'
-copyright = '2026, Olaf Chomicki, Konrad Machowski, Wiktor Wydrzyński'
-author = 'Olaf Chomicki, Konrad Machowski, Wiktor Wydrzyński'
+copyright = '2026, Konrad Machowski'
+author = 'Konrad Machowski'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

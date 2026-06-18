@@ -1,60 +1,119 @@
-=========================================
-Wydajność, skalowanie i replikacja danych
-=========================================
+==================================
+Wydajność, skalowanie i replikacja
+==================================
 
-+---------+--------------------------+
-| Autorzy:| 1. Olaf Chomicki         |
-|         | 2. Konrad Machowski      |
-|         | 3. Wiktor Wydrzyński     |
-+---------+--------------------------+
+:Autorzy:
+    1. Olaf Chomicki
+    2. Konrad Machowski
+    3. Wiktor Wydrzyński
 
-Wstęp
-=====
+Wydajność, skalowanie i replikacja
+==================================
 
-W erze gwałtownego wzrostu ilości generowanych informacji, stabilne działanie systemów bazodanowych stało się fundamentem nowoczesnych aplikacji. Wydajność, skalowanie oraz replikacja to trzy ściśle powiązane ze sobą filary, które decydują o tym, czy baza danych będzie w stanie obsłużyć rosnącą liczbę użytkowników oraz operacji w jednostce czasu. Zrozumienie różnic oraz synergii między tymi pojęciami jest kluczowe dla każdego architekta oprogramowania [1]_.
+Współczesne systemy bazodanowe muszą sprostać wymaganiom związanym z wykładniczym przyrostem wolumenu danych oraz stale rosnącą liczbą jednoczesnych użytkowników. W tym kontekście kluczowe staje się zrozumienie trzech fundamentalnych pojęć: wydajności, skalowania i replikacji. Wydajność odnosi się do szybkości przetwarzania pojedynczych transakcji i zapytań przy optymalnym wykorzystaniu dostępnych zasobów. 
 
-Podczas gdy wydajność skupia się na optymalizacji istniejących zasobów w celu jak najszybszego przetwarzania pojedynczych żądań, skalowanie i replikacja odpowiadają na wyzwania związane z ograniczeniami sprzętowymi oraz koniecznością zapewnienia ciągłości działania systemu w przypadku awarii.
+Gdy optymalizacja kodu przestaje wystarczać, konieczne staje się skalowanie – pionowe (zwiększanie mocy pojedynczego serwera) lub poziome (rozpraszanie obciążenia na wiele maszyn). Replikacja z kolei stanowi most łączący skalowanie odczytów z zapewnieniem wysokiej dostępności i odporności systemu na awarie sprzętowe.
 
+Kontrola i buforowanie połączeń z bazą danych
+=============================================
 
-Wydajność baz danych
-====================
+Nawiązywanie nowego połączenia z bazą danych jest operacją niezwykle kosztowną procesorowo i czasowo, ponieważ wymaga uwierzytelnienia użytkownika, alokacji pamięci oraz ustanowienia sesji sieciowej. W systemach o dużym natężeniu ruchu brak kontroli nad liczbą połączeń prowadzi do szybkiego wyczerpania zasobów serwera. 
 
-Wydajność (Performance) odnosi się do szybkości, z jaką system bazodanowy reaguje na zapytania i transakcje. Na poziomie pojedynczej instancji kluczowe znaczenie ma optymalizacja kodu SQL, poprawne projektowanie indeksów oraz unikanie kosztownych operacji, takich jak pełne skanowanie tabel (Full Table Scan). Optymalizator bazy danych stara się dobrać najlepszą ścieżkę wykonania zapytania, jednak jego skuteczność zależy od aktualności statystyk oraz struktury danych [2]_.
+Rozwiązaniem tego problemu jest buforowanie połączeń (Connection Pooling). Mechanizm ten polega na utrzymywaniu stałej puli otwartych, gotowych do użycia połączeń, które są wielokrotnie współdzielone przez aplikację. Narzędzia takie jak PgBouncer (dla PostgreSQL) czy wbudowane pule w serwerach aplikacji drastycznie zmniejszają narzut overhead, stabilizując czas reakcji bazy danych pod dużym obciążeniem.
 
-Po stronie sprzętowej wąskimi gardłami najczęściej stają się operacje wejścia/wyjścia (I/O) dysków, dostępna pamięć RAM (służąca jako bufor dla często odczytywanych stron danych) oraz moc procesora. Wyczerpanie tych zasobów bezpośrednio przekłada się na wzrost opóźnień (latency) i spadek przepustowości (throughput).
+Przykład konfiguracji PgBouncer (fragment pliku ``pgbouncer.ini``):
 
+.. code-block:: ini
 
-Skalowanie: Pionowe vs. Poziome
-===============================
+   [databases]
+   moja_baza = host=127.0.0.1 port=5432 dbname=produkcja
 
-Gdy optymalizacja zapytań przestaje wystarczać, system musi zostać poddany skalowaniu. Skalowanie pionowe (Scaling Up) polega na zwiększaniu zasobów pojedynczej maszyny – dodaniu szybszych procesorów, większej ilości pamięci RAM lub wydajniejszych dysków SSD. Jest to najprostsze podejście, niepoprawiające jednak architektury aplikacji, ale ma swoje fizyczne i ekonomiczne granice (prawo malejących przychodów oraz limit techniczny serwera) [3]_.
+   [pgbouncer]
+   listen_port = 6432
+   listen_addr = *
+   auth_type = md5
+   auth_file = /etc/pgbouncer/userlist.txt
+   pool_mode = transaction
+   max_client_conn = 1000
+   default_pool_size = 20
 
-Skalowanie poziome (Scaling Out) polega na dodawaniu kolejnych maszyn do klastra. W kontekście baz danych jest to zadanie znacznie trudniejsze niż w przypadku bezstanowych aplikacji webowych, ponieważ wymaga mechanizmów dystrybucji danych. Jedną z głównych metod skalowania poziomego zapisu jest sharding, czyli fizyczny podział bazy na niezależne węzły.
+INDEX i CLUSTER
+===============
 
+Indeksowanie to podstawowa technika optymalizacji zapytań o charakterze odczytowym. Instrukcja ``INDEX`` tworzy pomocniczą strukturę danych (najczęściej w formie B-drzewa), która pozwala silnikowi bazy danych na błyskawiczne odnalezienie żądanych wierszy bez konieczności kosztownego przeszukiwania całej tabeli (Full Table Scan). 
 
-Replikacja danych i wysoka dostępność
-=====================================
+Z kolei polecenie ``CLUSTER`` idzie o krok dalej – fizycznie reorganizuje strukturę danych na dysku w taki sposób, aby kolejność wierszy w tabeli dokładnie odpowiadała kolejności indeksu. Powoduje to, że powiązane rekordy są składowane obok siebie w tych samych blokach pamięci, co radykalnie przyspiesza zapytania zakresowe (Range Queries).
 
-Replikacja to proces kopiowania danych z jednego serwera bazy danych (węzła głównego/Primary) na jeden lub więcej serwerów pomocniczych (węzłów potomnych/Replica). Głównym celem replikacji jest zapewnienie wysokiej dostępności (High Availability) – w razie awarii serwera głównego, jedna z replik może przejąć jego funkcję, minimalizując czas przestoju systemu [4]_.
+Przykład użycia poleceń w PostgreSQL:
 
-Dodatkowo replikacja pozwala na skalowanie operacji odczytu (Read Scalability). Aplikacja może kierować zapytania modyfikujące dane (INSERT, UPDATE) do węzła Primary, natomiast ciężkie zapytania raportowe i odczyty rozpraszać na repliki. Replikacja może odbywać się synchronicznie (gwarantuje spójność danych, ale zwalnia zapisy) lub asynchronicznie (szybsza, ale niesie ryzyko utraty ostatnich transakcji w przypadku nagłej awarii).
+.. code-block:: sql
 
+   -- 1. Tworzenie standardowego indeksu B-drzewa na kolumnie data_zamowienia
+   CREATE INDEX idx_zamowienia_data ON zamowienia (data_zamowienia);
 
-Wyzwania i kompromisy architektoniczne
-======================================
+   -- 2. Fizyczne przemieszczenie danych na dysku według kolejności indeksu
+   CLUSTER zamowienia USING idx_zamowienia_data;
 
-Budowanie systemów wysoce skalowalnych i zreplikowanych wiąże się z koniecznością akceptacji kompromisów, co formalnie opisuje twierdzenie CAP (Consistency, Availability, Partition Tolerance). Mówi ono, że w rozproszonym systemie komputerowym można jednocześnie zapewnić tylko dwie z trzech wymienionych cech [5]_. 
+Rola i zastosowanie replikacji
+==============================
 
-W praktyce systemy bazodanowe często muszą wybierać pomiędzy silną spójnością danych (wszyscy użytkownicy widzą dokładnie to samo w tym samym momencie) a wysoką dostępnością i niskimi opóźnieniami, co doprowadziło do popularyzacji modeli spójności ostatecznej (Eventual Consistency) w bazach typu NoSQL.
+Replikacja polega na permanentnym kopiowaniu i synchronizowaniu danych z głównego węzła bazy danych (Primary/Master) na węzły pomocnicze (Replica/Slave). Jej rola w architekturze systemów IT jest wieloaspektowa. Po pierwsze, gwarantuje wysoką dostępność (High Availability) – w przypadku fizycznej awarii Mastera, jedna z replik może automatycznie przejąć jego funkcje (proces Failover). 
 
+Po drugie, umożliwia skalowanie odczytów (Read Scalability). Przekierowanie operacji modyfikujących (INSERT, UPDATE) do węzła głównego, a operacji odczytu oraz generowania ciężkich raportów na repliki pozwala na znaczne odciążenie głównego serwera.
 
-Podsumowanie
-============
+Oprogramowanie i zaimplementowane mechanizmy replikacji
+=======================================================
 
-Wydajność, skalowanie i replikacja nie są niezależnymi wyspami – to naczynia połączone. Dobrze zoptymalizowana pod kątem wydajności baza danych odwleka w czasie moment, w którym konieczne stanie się kosztowne skalowanie. Z kolei właściwie wdrożona replikacja nie tylko zabezpiecza system przed utratą danych, ale stanowi naturalny krok w kierunku poziomego skalowania odczytów. Architektura systemu musi być stale dostosowywana do dynamicznie zmieniających się wymagań biznesowych oraz skali operacji.
+Mechanizmy replikacji mogą być realizowane na poziomie silnika bazy danych lub za pomocą zewnętrznego oprogramowania. Wyróżnia się dwa główne podejścia pod kątem transmisji danych: replikację opartą na logu (WAL - Write-Ahead Logging) oraz replikację logiczną. Ze względu na synchronizację, proces ten może przebiegać synchronicznie lub asynchronicznie.
 
-.. [1] "Projektowanie systemów rozproszonych" – Podstawy skalowalności baz danych.
-.. [2] "Optymalizacja zapytań i indeksowanie w relacyjnych bazach danych".
-.. [3] Analiza kosztów i barier technologicznych w skalowaniu pionowym.
-.. [4] Mechanizmy replikacji synchronicznej i asynchronicznej w systemach High Availability.
-.. [5] Twierdzenie CAP a praktyczne implementacje nowoczesnych magazynów danych.
+Przykład konfiguracji replikacji logicznej (wbudowanej w PostgreSQL):
+
+.. code-block:: sql
+
+   -- KROK 1: Uruchomienie na węźle głównym (Primary) - zdefiniowanie publikacji
+   CREATE PUBLICATION pub_dane_sprzedazy FOR TABLE zamowienia, klienci;
+
+   -- KROK 2: Uruchomienie na węźle pomocniczym (Replica) - subskrypcja danych
+   CREATE SUBSCRIPTION sub_dane_sprzedazy 
+   CONNECTION 'host=192.168.1.50 port=5432 dbname=produkcja user=repl_user password=secret' 
+   PUBLICATION pub_dane_sprzedazy;
+
+Limity systemu oraz ograniczanie dostępu użytkowników
+=====================================================
+
+Bezpieczeństwo i stabilność bazy danych wymagają rygorystycznego zarządzania limitami systemowymi oraz uprawnieniami. Zbyt duża swoboda przyznana użytkownikom lub procesom aplikacyjnym może doprowadzić do celowego bądź przypadkowego unieruchomienia systemu.
+
+Przykład nakładania restrykcji i limitów zasobów w PostgreSQL:
+
+.. code-block:: sql
+
+   -- 1. Ograniczenie maksymalnej liczby jednoczesnych połączeń dla danej roli
+   ALTER ROLE rola_analityk CONNECTION LIMIT 5;
+
+   -- 2. Ustawienie maksymalnego czasu wykonywania pojedynczego zapytania (np. 30 sekund)
+   ALTER ROLE rola_analityk SET statement_timeout = '30s';
+
+   -- 3. Nadanie uprawnień wyłącznie do odczytu danych w wybranym schemacie
+   REVOKE ALL ON ALL TABLES IN SCHEMA public FROM rola_analityk;
+   GRANT SELECT ON ALL TABLES IN SCHEMA public TO rola_analityk;
+
+Testy wydajności sprzętu na poziomie systemu operacyjnego
+=========================================================
+
+Przed wdrożeniem produkcyjnym bazy danych kluczowe jest przeprowadzenie niezależnych testów wydajnościowych podzespołów sprzętowych (Benchmarków) bezpośrednio na poziomie systemu operacyjnego, aby wykluczyć błędy konfiguracyjne środowiska.
+
+Przykłady poleceń diagnostycznych i testowych w systemie Linux:
+
+.. code-block:: bash
+
+   # 1. Test wydajności procesora (CPU) za pomocą sysbench
+   sysbench cpu --cpu-max-prime=20000 run
+
+   # 2. Test przepustowości i alokacji pamięci RAM
+   sysbench memory --memory-block-size=1M --memory-total-size=10G run
+
+   # 3. Zaawansowany test wydajności dysku (IOPS i opóźnienia) narzędziem fio
+   # Symulacja losowego odczytu/zapisu (Random R/W) specyficznego dla baz danych
+   fio --name=test_bazy --ioengine=libaio --rw=randrw --bs=4k \
+       --size=2G --numjobs=2 --runtime=30 --time_based \
+       --filename=/var/lib/postgresql/test_io.file --group_reporting

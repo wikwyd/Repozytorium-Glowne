@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2026.3.1)  18 JUN 2026 17:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2026.3.1)  18 JUN 2026 17:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -868,46 +868,49 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf/fonts/enc/
-dvips/tex-gyre/q-ec.enc}] (./sprawozdanie-z-laboratoriow.toc)
+dvips/tex-gyre/q-ec.enc}] (./sprawozdanie-z-laboratoriow.toc
+
+[1
+
+
+
+])
 \tf@toc=\write6
 \openout6 = `sprawozdanie-z-laboratoriow.toc'.
 
 
 
-[1
-
-
-
-]
-Chapter 1.
+[2]
 LaTeX Font Info:    Trying to load font information for TS1+qtm on input line 1
-10.
-(/usr/share/texmf/tex/latex/tex-gyre/ts1qtm.fd
+07.
+ (/usr/share/texmf/tex/latex/tex-gyre/ts1qtm.fd
 File: ts1qtm.fd 2009/09/25 v1.2 font definition file for TS1/qtm
 )
 
 [1
 
-
 {/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ts1.enc}]
-Chapter 2.
+Chapter 1.
 
 
 [2
 
 ]
+Chapter 2.
 LaTeX Font Info:    Trying to load font information for T1+txtt on input line 2
-71.
- (/usr/share/texlive/texmf-dist/tex/latex/txfonts/t1txtt.fd
+65.
+(/usr/share/texlive/texmf-dist/tex/latex/txfonts/t1txtt.fd
 File: t1txtt.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    Font shape `T1/txtt/m/it' in size <10.95> not available
-(Font)              Font shape `T1/txtt/m/sl' tried instead on input line 381.
+(Font)              Font shape `T1/txtt/m/sl' tried instead on input line 375.
 
 
-[3]
+[3
+
+]
 LaTeX Font Info:    Font shape `T1/txtt/b/n' in size <10.95> not available
-(Font)              Font shape `T1/txtt/bx/n' tried instead on input line 406.
+(Font)              Font shape `T1/txtt/bx/n' tried instead on input line 400.
 
 
 [4]
@@ -927,11 +930,11 @@ File: ts1txtt.fd 2000/12/15 v3.1
 
 [9]
 LaTeX Font Info:    Trying to load font information for U+fontawesomefree1 on i
-nput line 1153.
+nput line 1147.
  (/usr/share/texlive/texmf-dist/tex/latex/fontawesome5/ufontawesomefree1.fd)
 
 [10{/usr/share/texlive/texmf-dist/fonts/enc/dvips/fontawesome5/fa5free1.enc}]
-Underfull \hbox (badness 10000) in paragraph at lines 1249--1251
+Underfull \hbox (badness 10000) in paragraph at lines 1243--1245
 \T1/qtm/m/n/10.95 Bez-piecze«stwo danych stanowi ab-so-lutny pri-o-ry-tet ka»de
 j ad-min-is-tracji sys-temami in-for-maty-cznymi.
  []
@@ -939,15 +942,15 @@ j ad-min-is-tracji sys-temami in-for-maty-cznymi.
 
 
 [11]
-Underfull \hbox (badness 10000) in paragraph at lines 1350--1353
+
+[12]
+Underfull \hbox (badness 10000) in paragraph at lines 1344--1347
 [][][][][]\T1/qtm/m/n/9 Oracle Doc-u-men-ta-tion, \T1/qtm/m/it/9 AU-DIT_TRAIL \
 T1/qtm/m/n/9 oraz in-for-ma-cje o uni-fied au-dit-ing, [][]$https : / / docs . 
 oracle . com / en / database / oracle /
  []
 
 
-
-[12]
 
 [13]
 
@@ -972,26 +975,44 @@ oracle . com / en / database / oracle /
 [23]
 
 [24]
+Chapter 3.
 
-[25] (./sprawozdanie-z-laboratoriow.ind)
 
-[26] (./sprawozdanie-z-laboratoriow.aux)
+[25
+
+]
+Chapter 4.
+
+
+[26
+
+]
+
+[27]
+
+[28]
+Chapter 5.
+(./sprawozdanie-z-laboratoriow.ind)
+
+[29
+
+] (./sprawozdanie-z-laboratoriow.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `sprawozdanie-z-laboratoriow.out' has not cha
 nged.
-(rerunfilecheck)             Checksum: 7DF9EEAA6F092C52A41C66D74668FDBA;23065.
+(rerunfilecheck)             Checksum: C52B979D40A307DB189D8BF98E4FC7C1;22557.
  ) 
 Here is how much of TeX's memory you used:
- 20677 strings out of 473197
- 372325 string characters out of 5718606
- 793638 words of memory out of 5000000
- 43306 multiletter control sequences out of 15000+600000
+ 20672 strings out of 473197
+ 372229 string characters out of 5718606
+ 791466 words of memory out of 5000000
+ 43299 multiletter control sequences out of 15000+600000
  627639 words of font info for 104 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 72i,12n,82p,1216b,659s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,12n,82p,1216b,674s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/fontawesome5/FontAwesome5Fr
 ee-Solid.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi
 6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb><
@@ -1002,10 +1023,10 @@ fonts/type1/public/tex-gyre/qtmri.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/public/txfonts/t1xbtt.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/t
 xfonts/t1xtt.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/t1xt
 t.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/tcxtt.pfb>
-Output written on sprawozdanie-z-laboratoriow.pdf (28 pages, 296936 bytes).
+Output written on sprawozdanie-z-laboratoriow.pdf (32 pages, 302990 bytes).
 PDF statistics:
- 751 PDF objects out of 1000 (max. 8388607)
- 694 compressed objects within 7 object streams
- 189 named destinations out of 1000 (max. 500000)
- 837 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 803 PDF objects out of 1000 (max. 8388607)
+ 741 compressed objects within 8 object streams
+ 191 named destinations out of 1000 (max. 500000)
+ 821 words of extra memory for PDF output out of 10000 (max. 10000000)
 

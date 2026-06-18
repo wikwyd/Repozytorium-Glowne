@@ -1,6 +1,3 @@
-========================================
-Sprawozdanie z Laboratorium: Bazy Danych
-========================================
 
 Wprowadzenie
 ============
@@ -15,8 +12,6 @@ Dokumentacja została podzielona na pięć głównych sekcji:
 * **Rozdział 4:** Realizacja fizycznego schematu bazy danych poprzez skrypty DDL, mechanizmy importu danych oraz automatyzacja zasilania bazy w środowiskach PostgreSQL i SQLite.
 * **Rozdział 5:** Zaawansowane funkcje SQL w Pythonie, selekcje, agregacje, złączenia, operatory zbiorowe i podzapytania.
 
-Spis treści
-===========
 
 .. toctree::
    :maxdepth: 1

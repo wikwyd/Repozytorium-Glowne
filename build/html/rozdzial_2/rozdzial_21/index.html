@@ -35,6 +35,153 @@
             
   <section id="sprzet-dla-bazy-danych">
 <h1>Sprzęt dla bazy danych<a class="headerlink" href="#sprzet-dla-bazy-danych" title="Link to this heading">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">Autorzy<span class="colon">:</span></dt>
+<dd class="field-odd"><ol class="arabic simple">
+<li><p>Wiktor Głogowski</p></li>
+<li><p>Olga Grześkowiak</p></li>
+<li><p>Kamil Karaś</p></li>
+</ol>
+</dd>
+</dl>
+<section id="wstep">
+<h2>Wstęp<a class="headerlink" href="#wstep" title="Link to this heading">¶</a></h2>
+<p>Współczesne systemy zarządzania bazami danych (DBMS) stanowią fundament operacyjny większości przedsiębiorstw. Efektywność ich działania zależy bezpośrednio od synergii pomiędzy warstwą oprogramowania a architekturą sprzętową, na której są one uruchamiane. Bazy danych wykazują unikalne, skrajnie wysokie wymagania względem podsystemów wejścia/wyjścia (I/O), procesora, pamięci operacyjnej oraz niezawodności zasilania.</p>
+<p>W zależności od profilu obciążenia systemu, infrastrukturę sprzętową klasyfikuje się pod dwa główne typy zadań:</p>
+<ul class="simple">
+<li><p><strong>OLTP (Online Transaction Processing):</strong> Systemy transakcyjne charakteryzujące się ogromną liczbą jednoczesnych, krótkich operacji zapisu i odczytu (np. systemy bankowe, sklepy internetowe). Kluczowym parametrem jest tu minimalne opóźnienie oraz wysoka liczba operacji wejścia/wyjścia na sekundę (IOPS).</p></li>
+<li><p><strong>OLAP (Online Analytical Processing):</strong> Hurtownie danych i systemy analityczne realizujące długie, złożone zapytania, które agregują miliony rekordów. Tutaj priorytetem jest przepustowość sekwencyjna oraz masowa wielordzeniowość procesorów.</p></li>
+</ul>
+<p>Poniższy rozdział opisuje architekturę fizyczną bazy danych oraz wytyczne w sprawie doboru komponentów.</p>
+</section>
+<section id="procesor-cpu">
+<h2>Procesor (CPU)<a class="headerlink" href="#procesor-cpu" title="Link to this heading">¶</a></h2>
+<p>Wybór procesora dla serwera bazodanowego determinowany jest nie tylko surową wydajnością obliczeniową, ale również architekturą pamięci podręcznej, topologią połączeń międzygniazdowych oraz modelami licencjonowania oprogramowania.</p>
+<section id="wydajnosc-jednowatkowa-vs-wielordzeniowosc">
+<h3>Wydajność Jednowątkowa vs Wielordzeniowość<a class="headerlink" href="#wydajnosc-jednowatkowa-vs-wielordzeniowosc" title="Link to this heading">¶</a></h3>
+<p>Decyzja o wyborze modelu procesora zależy od struktury zapytań generowanych przez aplikację:</p>
+<ol class="arabic simple">
+<li><p><strong>Taktowanie Zegara:</strong> W środowiskach OLTP, gdzie transakcje często wykonują się sekwencyjnie lub są blokowane przez zamki i zatrzaski, wyższe taktowanie rdzenia (np. 3.6 GHz - 4.0 GHz) przynosi lepsze rezultaty niż ekstremalna liczba rdzeni o niskim taktowaniu. Szybka realizacja pojedynczego wątku skraca czas trwania blokad.</p></li>
+<li><p><strong>Skalowanie Wielordzeniowe:</strong> W systemach OLAP silniki baz danych potrafią dzielić jedno zapytanie na wiele wątków. W tym przypadku procesory posiadające 64, 96 lub więcej rdzeni fizycznych (np. AMD EPYC, Intel Xeon Scalable) pozwalają na równoległe skanowanie indeksów i tabel, drastycznie przyspieszając operacje analityczne.</p></li>
+</ol>
+<p><strong>Wpływ Licencjonowania na Wybór CPU:</strong> Wiodący producenci oprogramowania bazodanowego (np. Microsoft SQL Server Enterprise, Oracle) stosują model licencjonowania per-core. Koszt licencji na jeden rdzeń wielokrotnie przewyższa koszt zakupu samego sprzętu. Z tego powodu ekonomicznie i wydajnościowo uzasadniony jest wybór procesorów o mniejszej liczbie rdzeni, ale o maksymalnym dostępnym taktowaniu bazowym i zaawansowanej architekturze cache.</p>
+</section>
+<section id="topologia-numa-non-uniform-memory-access">
+<h3>Topologia NUMA (Non-Uniform Memory Access)<a class="headerlink" href="#topologia-numa-non-uniform-memory-access" title="Link to this heading">¶</a></h3>
+<p>Wieloprocesorowe serwery (np. architektury dwu- lub czterogniazdowe) dzielą zasoby na tzw. węzły NUMA. Każdy procesor posiada swój zintegrowany kontroler pamięci i bezpośredni dostęp do fizycznie najbliższych banków RAM (pamięć lokalna).</p>
+<ul class="simple">
+<li><p><strong>Dostęp Lokalny:</strong> Charakteryzuje się minimalnymi opóźnieniami i maksymalnym pasmem przenoszenia.</p></li>
+<li><p><strong>Dostęp Zdalny:</strong> Jeśli procesor osadzony w gnieździe 0 potrzebuje danych znajdujących się w banku pamięci przypisanym do gniazda 1, transakcja musi odbyć się za pośrednictwem magistrali międzyprocesorowej (Intel UPI lub AMD Infinity Fabric). Generuje to narzut opóźnienia zwany <em>NUMA penalty</em>.</p></li>
+</ul>
+<p>Niewłaściwa alokacja wątków przez system operacyjny może prowadzić do ciągłego przemieszczania danych między węzłami (<em>NUMA bouncing</em>), co drastycznie obniża wydajność bazy danych. Wymagane jest stosowanie silników bazodanowych w pełni wspierających i optymalizujących architekturę NUMA (<em>NUMA-aware</em>).</p>
+</section>
+<section id="znaczenie-pamieci-podrecznej-cache-l3">
+<h3>Znaczenie Pamięci Podręcznej (Cache L3)<a class="headerlink" href="#znaczenie-pamieci-podrecznej-cache-l3" title="Link to this heading">¶</a></h3>
+<p>Struktury danych w relacyjnych bazach (drzewa B+, tabele stron) sprawiają, że procesor wykonuje ogromną liczbę operacji skoków i wyszukiwań wskaźników. Powoduje to częste chybienia pamięci podręcznej, zmuszając procesor do czekania na dane z RAM-u. Procesory wyposażone w powiększoną pamięć podręczną poziomu trzeciego (L3), takie jak układy z technologią 3D V-Cache, pozwalają na zatrzymanie krytycznych struktur indeksowych wewnątrz struktur procesora, generując ogromne zyski wydajnościowe.</p>
+</section>
+</section>
+<section id="pamiec-ram">
+<h2>Pamięć RAM<a class="headerlink" href="#pamiec-ram" title="Link to this heading">¶</a></h2>
+<p>Pamięć operacyjna RAM decyduje o tym, jak duża część bazy danych może być przetwarzana bezpośrednio w super-szybkiej pamięci półprzewodnikowej, bez konieczności odwoływania się do podsystemu dyskowego.</p>
+<section id="mechanizm-buforowania-danych">
+<h3>Mechanizm Buforowania Danych<a class="headerlink" href="#mechanizm-buforowania-danych" title="Link to this heading">¶</a></h3>
+<p>Podstawową jednostką wymiany danych między dyskiem a pamięcią w bazach danych jest strona (zazwyczaj o rozmiarze 8 KB). Silnik bazy danych alokuje obszar pamięci RAM nazywany <strong>Buffer Pool</strong> (w MS SQL Server) lub <strong>Shared Buffers</strong> (w PostgreSQL).</p>
+<ul class="simple">
+<li><p><strong>Odczyty z Pamięci (Logical Reads):</strong> Jeśli żądana strona danych znajduje się już w RAM, odczyt następuje natychmiastowo (rzędu nanosekund).</p></li>
+<li><p><strong>Odczyty z Dysku (Physical Reads):</strong> W przypadku braku strony w buforze, wątek bazy danych zostaje zawieszony do czasu fizycznego załadowania strony z pamięci masowej, co zwiększa czas odpowiedzi o rzędy wielkości.</p></li>
+</ul>
+<p>Docelowym stanem konfiguracyjnym dla systemów produkcyjnych jest posiadanie takiej ilości pamięci RAM, która pozwala na bezproblemowe przetrzymywanie w całości tzw. hot data set, czyli najczęściej modyfikowanych i odpytywanych danych wraz z ich indeksami.</p>
+</section>
+<section id="wymog-technologii-ecc-error-correcting-code">
+<h3>Wymóg Technologii ECC (Error-Correcting Code)<a class="headerlink" href="#wymog-technologii-ecc-error-correcting-code" title="Link to this heading">¶</a></h3>
+<p>W serwerach bazodanowych niedopuszczalne jest stosowanie pamięci bez obsługi korekcji błędów (non-ECC). Pamięci <strong>ECC</strong> posiadają dodatkowe układy scalone pozwalające na wykrywanie i automatyczną korekcję błędów jednobitowych oraz wykrywanie błędów wielobitowych.</p>
+<p>Wystąpienie zjawiska <em>bit-flip</em> (samorzutnej zmiany wartości bitu w pamięci RAM pod wpływem np. tła radiacyjnego lub zakłóceń elektromagnetycznych) w systemie bez ECC niesie katastrofalne skutki dla baz danych:</p>
+<ul class="simple">
+<li><p><strong>Cicha korupcja danych:</strong> Błędna wartość może zostać zapisana z bufora pamięci wprost na dysk, powodując trwałe i niezauważalne zniszczenie struktury tabeli lub błędne zapisy księgowe.</p></li>
+<li><p><strong>Uszkodzenie stron indeksowych:</strong> Powoduje błędy integralności i uniemożliwia poprawne wykonywanie zapytań SQL.</p></li>
+<li><p><strong>Awaria krytyczna:</strong> W przypadku naruszenia pamięci jądra systemu operacyjnego lub krytycznego procesu bazy danych dochodzi do natychmiastowego zatrzymania serwera (Kernel Panic / BSOD).</p></li>
+</ul>
+</section>
+<section id="parametry-wydajnosciowe-przepustowosc-i-opoznienia">
+<h3>Parametry Wydajnościowe: Przepustowość i Opóźnienia<a class="headerlink" href="#parametry-wydajnosciowe-przepustowosc-i-opoznienia" title="Link to this heading">¶</a></h3>
+<p>Współczesne standardy serwerowe opierają się na pamięciach DDR5, oferujących zaawansowaną architekturę wielokanałową (np. 8 lub 12 kanałów pamięci na jedno gniazdo CPU). Wysoka przepustowość (wyrażana w MT/s) przyspiesza operacje sortowania w pamięci, tworzenie tabel tymczasowych oraz operacje złączania typu <em>Hash Join</em>, które są na porządku dziennym w systemach analitycznych.</p>
+</section>
+</section>
+<section id="pamiec-masowa">
+<h2>Pamięć Masowa<a class="headerlink" href="#pamiec-masowa" title="Link to this heading">¶</a></h2>
+<p>Podsystem pamięci masowej bezpośrednio determinuje ostateczną trwałość danych (cecha <em>Durability</em> z paradygmatu ACID) oraz jest najczęstszym wąskim gardłem systemu informatycznego z uwagi na mechaniczne lub interfejsowe ograniczenia prędkości.</p>
+<section id="klasyfikacja-nosnikow-i-ich-przydatnosc">
+<h3>Klasyfikacja Nośników i Ich Przydatność<a class="headerlink" href="#klasyfikacja-nosnikow-i-ich-przydatnosc" title="Link to this heading">¶</a></h3>
+<p>Współczesna inżynieria bazodanowa całkowicie odchodzi od talerzowych dysków magnetycznych HDD w środowiskach produkcyjnych na rzecz pamięci półprzewodnikowych Flash.</p>
+<ul class="simple">
+<li><p><strong>Dyski HDD (SAS 10K/15K):</strong> Ze względu na ograniczenia mechaniczne oferują zaledwie kilkaset IOPS i wysokie opóźnienia (&gt;5 ms). Ich zastosowanie ogranicza się obecnie wyłącznie do składowania archiwalnych kopii zapasowych (backups).</p></li>
+<li><p><strong>Dyski SSD (SATA/SAS Enterprise):</strong> Zapewniają stabilną wydajność na poziomie do 90 000 IOPS dla odczytu, jednak ograniczeniem staje się interfejs SATA (6 Gb/s) lub SAS-3 (12 Gb/s).</p></li>
+<li><p><strong>Nośniki NVMe (PCIe Gen4/Gen5):</strong> Komunikują się bezpośrednio z procesorem poprzez magistralę PCI Express, eliminując narzut protokołów SCSI/ATA. Osiągają wydajność przekraczającą 1 000 000 IOPS oraz redukują opóźnienia do wartości mikrosekundowych (&lt;50 µs), stając się bezdyskusyjnym standardem dla baz danych.</p></li>
+</ul>
+</section>
+<section id="fizyczna-separacja-architektury-plikow">
+<h3>Fizyczna Separacja Architektury Plików<a class="headerlink" href="#fizyczna-separacja-architektury-plikow" title="Link to this heading">¶</a></h3>
+<p>Poprawna konfiguracja pamięci masowej wymaga rozdzielenia różnych typów aktywności wejścia/wyjścia na odseparowane fizycznie wolumeny dyskowe:</p>
+<ol class="arabic simple">
+<li><p><strong>Dziennik Transakcji:</strong> Każda operacja modyfikacji danych (INSERT, UPDATE, DELETE) musi zostać najpierw sekwencyjnie zapisana w dzienniku transakcji, zanim baza potwierdzi jej pomyślne wykonanie. Ruch ten ma charakter niemal wyłącznie sekwencyjnego zapisu o krytycznym znaczeniu dla opóźnienia aplikacji. Dziennik transakcji powinien znajdować się na najszybszych dedykowanych nośnikach o minimalnym opóźnieniu zapisu.</p></li>
+<li><p><strong>Pliki Danych:</strong> Przechowują właściwe tabele i indeksy. Ruch na tych plikach ma charakter wysoce losowy (zarówno odczyty, jak i zapisy wywoływane przez proces <em>Checkpoint</em>, który zrzuca zmodyfikowane strony z RAM na dysk). Wymagają macierzy zoptymalizowanej pod kątem wysokiej liczby losowych IOPS.</p></li>
+<li><p><strong>Baza Tymczasowa (TempDB / Swapping Space):</strong> Wykorzystywana przez silnik bazy do przechowywania obiektów tymczasowych, wyników pośrednich podzapytań oraz sortowania. Generuje bardzo intensywny, mieszany ruch. Umieszcza się ją na ultra-szybkich dyskach o wysokiej wytrzymałości.</p></li>
+</ol>
+</section>
+<section id="zywotnosc-i-wytrzymalosc-zapisu-dwpd">
+<h3>Żywotność i Wytrzymałość Zapisu (DWPD)<a class="headerlink" href="#zywotnosc-i-wytrzymalosc-zapisu-dwpd" title="Link to this heading">¶</a></h3>
+<p>Bazy danych nieustannie modyfikują i nadpisują sektory. Z tego powodu stosowanie dysków klasy konsumenckiej grozi ich błyskawicznym zużyciem. Przy doborze nośników kluczowym parametrem jest <strong>DWPD</strong> (<em>Drive Writes Per Day</em>) – wskaźnik określający, ile razy dziennie można zapisać całą pojemność dysku przez okres gwarancyjny (zazwyczaj 5 lat). Do baz danych wymagane są nośniki klasy <em>Enterprise Mixed-Use</em> lub <em>Write-Intensive</em> o współczynniku DWPD wynoszącym minimum 3-5.</p>
+</section>
+</section>
+<section id="kontrolery-i-interfejsy-pamieci">
+<h2>Kontrolery i Interfejsy Pamięci<a class="headerlink" href="#kontrolery-i-interfejsy-pamieci" title="Link to this heading">¶</a></h2>
+<p>Kontrolery realizują zadania pośrednictwa, zarządzania macierzami nadmiarowymi (RAID) oraz gwarantują integralność zapisu.</p>
+<section id="sprzetowy-raid-vs-software-defined-storage">
+<h3>Sprzętowy RAID vs Software-Defined Storage<a class="headerlink" href="#sprzetowy-raid-vs-software-defined-storage" title="Link to this heading">¶</a></h3>
+<p>Przez lata standardem były sprzętowe kontrolery RAID (<em>Hardware RAID</em>) wyposażone we własny procesor i pamięć cache. Odciążają one procesor główny serwera z obliczeń sum kontrolnych (szczególnie parzystości w RAID 5/6).</p>
+<p>W przypadku nowoczesnych pamięci NVMe sprzętowe kontrolery starszego typu stawały się wąskim gardłem, blokując bezpośredni dostęp do linii PCIe. Współcześnie odchodzi się od nich na rzecz:</p>
+<ul class="simple">
+<li><p><strong>Bezpośredniego podłączenia NVMe (Direct Attached PCIe)</strong> i zarządzania programowego na poziomie zaawansowanych systemów plików (np. ZFS) lub warstw logicznych OS (np. Linux mdadm / LVM).</p></li>
+<li><p>Modernistycznych, dedykowanych sprzętowych kontrolerów NVMe RAID klasy Enterprise, zdolnych do natywnego przetwarzania protokołu NVMe z pełną prędkością magistrali PCIe Gen5.</p></li>
+</ul>
+<p><strong>Pamięć Podtrzymywana Bateryjnie (BBU/FBWC):</strong>
+W przypadku korzystania ze sprzętowego kontrolera RAID z włączoną pamięcią podręczną zapisu (<em>Write-Back Cache</em>), <strong>bezwzględnym warunkiem bezpieczeństwa</strong> jest obecność modułu <strong>BBU</strong> (<em>Battery Backup Unit</em>) lub <strong>FBWC</strong> (<em>Flash-Backed Write Cache</em>). W razie awarii zasilania serwera, moduł ten podtrzymuje dane w pamięci cache kontrolera (lub przepisuje je do dedykowanej pamięci flash), zapobiegając utracie nieutrwalonych transakcji i uszkodzeniu struktury macierzy.</p>
+</section>
+<section id="wybor-poziomu-raid-pod-katem-baz-danych">
+<h3>Wybór Poziomu RAID pod Kątem Baz Danych<a class="headerlink" href="#wybor-poziomu-raid-pod-katem-baz-danych" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>RAID 10 (Striped Mirror):</strong> Rekomendowany układ dla większości systemów bazodanowych. Łączy zalety wydajnościowe paskowania (RAID 0) i bezpieczeństwa lustrzanego (RAID 1). Zapewnia doskonałą wydajność losowego zapisu, ponieważ nie generuje tzw. narzutu parzystości (<em>write penalty</em>).</p></li>
+<li><p><strong>RAID 5 / RAID 6:</strong> Zapewniają lepsze wykorzystanie przestrzeni dyskowej, ale każda operacja zapisu wymaga odczytu danych, obliczenia nowej parzystości i ponownego zapisu (<em>kara za zapis</em>). Są <strong>wysoce niewskazane dla baz transakcyjnych OLTP</strong>. Mogą być stosowane jedynie w hurtowniach danych (OLAP), gdzie operacje zapisu są sekwencyjne i rzadkie (procesy ETL).</p></li>
+</ul>
+</section>
+</section>
+<section id="zasilanie-i-niezawodnosc">
+<h2>Zasilanie i Niezawodność<a class="headerlink" href="#zasilanie-i-niezawodnosc" title="Link to this heading">¶</a></h2>
+<p>Podsystem zasilania w infrastrukturze bazodanowej traktowany jest jako integralny element ochrony integralności logicznej danych, a nie tylko komponent ciągłości działania.</p>
+<section id="nadmiarowosc-zasilaczy-i-niezalezne-linie-zasilajace">
+<h3>Nadmiarowość Zasilaczy i Niezależne Linie Zasilające<a class="headerlink" href="#nadmiarowosc-zasilaczy-i-niezalezne-linie-zasilajace" title="Link to this heading">¶</a></h3>
+<p>Serwer bazodanowy musi posiadać zasilacze nadmiarowe typu <em>Hot-Swap</em> (z możliwością wymiany podczas pracy) w konfiguracji minimum <strong>N+1</strong> lub optymalnie <strong>2N</strong> (Full Redundancy).</p>
+<p>Zasilacze muszą być podpięte do fizycznie odseparowanych źródeł zasilania:</p>
+<ul class="simple">
+<li><p><strong>Zasilacz A:</strong> Podłączony do Linii zasilającej A oraz dedykowanego modułu UPS A.</p></li>
+<li><p><strong>Zasilacz B:</strong> Podłączony do Linii zasilającej B oraz dedykowanego modułu UPS B.</p></li>
+</ul>
+<p>Taka topologia gwarantuje, że awaria jednego zasilacza, uszkodzenie kabla lub całkowity zanik napięcia na jednej z linii energetycznych nie spowoduje wyłączenia serwera.</p>
+</section>
+<section id="infrastruktura-ups-i-agregaty-pradotworcze">
+<h3>Infrastruktura UPS i Agregaty Prądotwórcze<a class="headerlink" href="#infrastruktura-ups-i-agregaty-pradotworcze" title="Link to this heading">¶</a></h3>
+<p>Wszelkie systemy serwerowe DBMS muszą współpracować z zasilaczami awaryjnymi UPS działającymi w topologii <em>Online</em> (podwójne przetwarzanie). Zapewniają one idealną sinusoidę napięcia, eliminują przepięcia i gwarantują czas podtrzymania niezbędny do automatycznego uruchomienia spalinowych agregatów prądotwórczych o odpowiedniej mocy.</p>
+</section>
+<section id="zapobieganie-zjawisku-torn-writes">
+<h3>Zapobieganie Zjawisku “Torn Writes”<a class="headerlink" href="#zapobieganie-zjawisku-torn-writes" title="Link to this heading">¶</a></h3>
+<p>Zjawisko <em>Torn Write</em> (rozbity/częściowy zapis) występuje, gdy system operacyjny przesyła do zapisu stronę danych (np. 8 KB), a w trakcie fizycznego zapisu na komórkę pamięci Flash dochodzi do nagłego odcięcia zasilania. W efekcie na dysku ląduje np. tylko 4 KB danych, co powoduje bezpowrotne uszkodzenie struktury tej strony i błąd sumy kontrolnej przy próbie kolejnego uruchomienia bazy danych.</p>
+<p>Poza mechanizmami programowymi (takimi jak <em>Doublewrite Buffer</em> w silniku InnoDB/MySQL), na poziomie sprzętowym stosuje się technologię <strong>PLP (Power Loss Protection)</strong>. Dyski klasy Enterprise posiadają wbudowane banki kondensatorów tantalowych. W momencie wykrycia spadku napięcia, energia z kondensatorów pozwala na podtrzymanie pracy kontrolera dysku przez czas wymagany do bezpiecznego opróżnienia pamięci podręcznej RAM dysku i utrwalenia wszystkich danych w nieulotnych komórkach pamięci NAND Flash.</p>
+</section>
+</section>
+<section id="podsumowanie">
+<h2>Podsumowanie<a class="headerlink" href="#podsumowanie" title="Link to this heading">¶</a></h2>
+<p>Dobór sprzętu dla systemów zarządzania bazami danych musi być ściśle dopasowany do profilu obciążenia, z wyraźnym podziałem na transakcyjne środowiska OLTP oraz analityczne systemy OLAP. Wybór procesora stanowi kompromis pomiędzy taktowaniem a wielordzeniowością ze względu na koszty licencyjne, podczas gdy w przypadku pamięci operacyjnej absolutnym wymogiem jest zastosowanie technologii ECC chroniącej przed cichą korupcją danych. W obszarze pamięci masowej standardem stały się nośniki półprzewodnikowe NVMe o wysokiej wytrzymałości (DWPD), które ze względów wydajnościowych wymagają fizycznej separacji wolumenów dla dzienników transakcji i plików danych. Do zabezpieczenia pracy dysków rekomenduje się użycie konfiguracji RAID 10 w połączeniu z nowoczesnymi kontrolerami sprzętowymi lub rozwiązaniami programowymi. Całość infrastruktury musi być kategorycznie chroniona przed awariami poprzez nadmiarowe zasilacze w konfiguracji 2N, systemy UPS w topologii Online oraz dyski wyposażone w sprzętową ochronę PLP eliminującą zjawisko uszkodzonych zapisów.</p>
+</section>
 </section>
 
 

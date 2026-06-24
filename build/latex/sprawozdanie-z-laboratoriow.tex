@@ -78,7 +78,7 @@
 
 
 \title{Sprawozdanie z Laboratorium: Bazy Danych}
-\date{Jun 18, 2026}
+\date{Jun 24, 2026}
 \release{}
 \author{Konrad Machowski}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -238,7 +238,296 @@ Poniższa sekcja zawiera wykaz repozytoriów, w których zespoły opracowywały 
 
 
 \section{Sprzęt dla bazy danych}
-\label{\detokenize{rozdzial_2/rozdzial_21/index:sprzet-dla-bazy-danych}}\label{\detokenize{rozdzial_2/rozdzial_21/index::doc}}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:sprzet-dla-bazy-danych}}\label{\detokenize{rozdzial_2/rozdzial_21/index::doc}}\begin{quote}\begin{description}
+\sphinxlineitem{Autorzy}\begin{enumerate}
+\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\item {} 
+\sphinxAtStartPar
+Wiktor Głogowski
+
+\item {} 
+\sphinxAtStartPar
+Olga Grześkowiak
+
+\item {} 
+\sphinxAtStartPar
+Kamil Karaś
+
+\end{enumerate}
+
+\end{description}\end{quote}
+
+
+\subsection{Wstęp}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:wstep}}
+\sphinxAtStartPar
+Współczesne systemy zarządzania bazami danych (DBMS) stanowią fundament operacyjny większości przedsiębiorstw. Efektywność ich działania zależy bezpośrednio od synergii pomiędzy warstwą oprogramowania a architekturą sprzętową, na której są one uruchamiane. Bazy danych wykazują unikalne, skrajnie wysokie wymagania względem podsystemów wejścia/wyjścia (I/O), procesora, pamięci operacyjnej oraz niezawodności zasilania.
+
+\sphinxAtStartPar
+W zależności od profilu obciążenia systemu, infrastrukturę sprzętową klasyfikuje się pod dwa główne typy zadań:
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{OLTP (Online Transaction Processing):} Systemy transakcyjne charakteryzujące się ogromną liczbą jednoczesnych, krótkich operacji zapisu i odczytu (np. systemy bankowe, sklepy internetowe). Kluczowym parametrem jest tu minimalne opóźnienie oraz wysoka liczba operacji wejścia/wyjścia na sekundę (IOPS).
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{OLAP (Online Analytical Processing):} Hurtownie danych i systemy analityczne realizujące długie, złożone zapytania, które agregują miliony rekordów. Tutaj priorytetem jest przepustowość sekwencyjna oraz masowa wielordzeniowość procesorów.
+
+\end{itemize}
+
+\sphinxAtStartPar
+Poniższy rozdział opisuje architekturę fizyczną bazy danych oraz wytyczne w sprawie doboru komponentów.
+
+
+\subsection{Procesor (CPU)}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:procesor-cpu}}
+\sphinxAtStartPar
+Wybór procesora dla serwera bazodanowego determinowany jest nie tylko surową wydajnością obliczeniową, ale również architekturą pamięci podręcznej, topologią połączeń międzygniazdowych oraz modelami licencjonowania oprogramowania.
+
+
+\subsubsection{Wydajność Jednowątkowa vs Wielordzeniowość}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:wydajnosc-jednowatkowa-vs-wielordzeniowosc}}
+\sphinxAtStartPar
+Decyzja o wyborze modelu procesora zależy od struktury zapytań generowanych przez aplikację:
+\begin{enumerate}
+\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Taktowanie Zegara:} W środowiskach OLTP, gdzie transakcje często wykonują się sekwencyjnie lub są blokowane przez zamki i zatrzaski, wyższe taktowanie rdzenia (np. 3.6 GHz \sphinxhyphen{} 4.0 GHz) przynosi lepsze rezultaty niż ekstremalna liczba rdzeni o niskim taktowaniu. Szybka realizacja pojedynczego wątku skraca czas trwania blokad.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Skalowanie Wielordzeniowe:} W systemach OLAP silniki baz danych potrafią dzielić jedno zapytanie na wiele wątków. W tym przypadku procesory posiadające 64, 96 lub więcej rdzeni fizycznych (np. AMD EPYC, Intel Xeon Scalable) pozwalają na równoległe skanowanie indeksów i tabel, drastycznie przyspieszając operacje analityczne.
+
+\end{enumerate}
+
+\sphinxAtStartPar
+\sphinxstylestrong{Wpływ Licencjonowania na Wybór CPU:} Wiodący producenci oprogramowania bazodanowego (np. Microsoft SQL Server Enterprise, Oracle) stosują model licencjonowania per\sphinxhyphen{}core. Koszt licencji na jeden rdzeń wielokrotnie przewyższa koszt zakupu samego sprzętu. Z tego powodu ekonomicznie i wydajnościowo uzasadniony jest wybór procesorów o mniejszej liczbie rdzeni, ale o maksymalnym dostępnym taktowaniu bazowym i zaawansowanej architekturze cache.
+
+
+\subsubsection{Topologia NUMA (Non\sphinxhyphen{}Uniform Memory Access)}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:topologia-numa-non-uniform-memory-access}}
+\sphinxAtStartPar
+Wieloprocesorowe serwery (np. architektury dwu\sphinxhyphen{} lub czterogniazdowe) dzielą zasoby na tzw. węzły NUMA. Każdy procesor posiada swój zintegrowany kontroler pamięci i bezpośredni dostęp do fizycznie najbliższych banków RAM (pamięć lokalna).
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Dostęp Lokalny:} Charakteryzuje się minimalnymi opóźnieniami i maksymalnym pasmem przenoszenia.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Dostęp Zdalny:} Jeśli procesor osadzony w gnieździe 0 potrzebuje danych znajdujących się w banku pamięci przypisanym do gniazda 1, transakcja musi odbyć się za pośrednictwem magistrali międzyprocesorowej (Intel UPI lub AMD Infinity Fabric). Generuje to narzut opóźnienia zwany \sphinxstyleemphasis{NUMA penalty}.
+
+\end{itemize}
+
+\sphinxAtStartPar
+Niewłaściwa alokacja wątków przez system operacyjny może prowadzić do ciągłego przemieszczania danych między węzłami (\sphinxstyleemphasis{NUMA bouncing}), co drastycznie obniża wydajność bazy danych. Wymagane jest stosowanie silników bazodanowych w pełni wspierających i optymalizujących architekturę NUMA (\sphinxstyleemphasis{NUMA\sphinxhyphen{}aware}).
+
+
+\subsubsection{Znaczenie Pamięci Podręcznej (Cache L3)}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:znaczenie-pamieci-podrecznej-cache-l3}}
+\sphinxAtStartPar
+Struktury danych w relacyjnych bazach (drzewa B+, tabele stron) sprawiają, że procesor wykonuje ogromną liczbę operacji skoków i wyszukiwań wskaźników. Powoduje to częste chybienia pamięci podręcznej, zmuszając procesor do czekania na dane z RAM\sphinxhyphen{}u. Procesory wyposażone w powiększoną pamięć podręczną poziomu trzeciego (L3), takie jak układy z technologią 3D V\sphinxhyphen{}Cache, pozwalają na zatrzymanie krytycznych struktur indeksowych wewnątrz struktur procesora, generując ogromne zyski wydajnościowe.
+
+
+\subsection{Pamięć RAM}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:pamiec-ram}}
+\sphinxAtStartPar
+Pamięć operacyjna RAM decyduje o tym, jak duża część bazy danych może być przetwarzana bezpośrednio w super\sphinxhyphen{}szybkiej pamięci półprzewodnikowej, bez konieczności odwoływania się do podsystemu dyskowego.
+
+
+\subsubsection{Mechanizm Buforowania Danych}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:mechanizm-buforowania-danych}}
+\sphinxAtStartPar
+Podstawową jednostką wymiany danych między dyskiem a pamięcią w bazach danych jest strona (zazwyczaj o rozmiarze 8 KB). Silnik bazy danych alokuje obszar pamięci RAM nazywany \sphinxstylestrong{Buffer Pool} (w MS SQL Server) lub \sphinxstylestrong{Shared Buffers} (w PostgreSQL).
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Odczyty z Pamięci (Logical Reads):} Jeśli żądana strona danych znajduje się już w RAM, odczyt następuje natychmiastowo (rzędu nanosekund).
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Odczyty z Dysku (Physical Reads):} W przypadku braku strony w buforze, wątek bazy danych zostaje zawieszony do czasu fizycznego załadowania strony z pamięci masowej, co zwiększa czas odpowiedzi o rzędy wielkości.
+
+\end{itemize}
+
+\sphinxAtStartPar
+Docelowym stanem konfiguracyjnym dla systemów produkcyjnych jest posiadanie takiej ilości pamięci RAM, która pozwala na bezproblemowe przetrzymywanie w całości tzw. hot data set, czyli najczęściej modyfikowanych i odpytywanych danych wraz z ich indeksami.
+
+
+\subsubsection{Wymóg Technologii ECC (Error\sphinxhyphen{}Correcting Code)}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:wymog-technologii-ecc-error-correcting-code}}
+\sphinxAtStartPar
+W serwerach bazodanowych niedopuszczalne jest stosowanie pamięci bez obsługi korekcji błędów (non\sphinxhyphen{}ECC). Pamięci \sphinxstylestrong{ECC} posiadają dodatkowe układy scalone pozwalające na wykrywanie i automatyczną korekcję błędów jednobitowych oraz wykrywanie błędów wielobitowych.
+
+\sphinxAtStartPar
+Wystąpienie zjawiska \sphinxstyleemphasis{bit\sphinxhyphen{}flip} (samorzutnej zmiany wartości bitu w pamięci RAM pod wpływem np. tła radiacyjnego lub zakłóceń elektromagnetycznych) w systemie bez ECC niesie katastrofalne skutki dla baz danych:
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Cicha korupcja danych:} Błędna wartość może zostać zapisana z bufora pamięci wprost na dysk, powodując trwałe i niezauważalne zniszczenie struktury tabeli lub błędne zapisy księgowe.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Uszkodzenie stron indeksowych:} Powoduje błędy integralności i uniemożliwia poprawne wykonywanie zapytań SQL.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Awaria krytyczna:} W przypadku naruszenia pamięci jądra systemu operacyjnego lub krytycznego procesu bazy danych dochodzi do natychmiastowego zatrzymania serwera (Kernel Panic / BSOD).
+
+\end{itemize}
+
+
+\subsubsection{Parametry Wydajnościowe: Przepustowość i Opóźnienia}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:parametry-wydajnosciowe-przepustowosc-i-opoznienia}}
+\sphinxAtStartPar
+Współczesne standardy serwerowe opierają się na pamięciach DDR5, oferujących zaawansowaną architekturę wielokanałową (np. 8 lub 12 kanałów pamięci na jedno gniazdo CPU). Wysoka przepustowość (wyrażana w MT/s) przyspiesza operacje sortowania w pamięci, tworzenie tabel tymczasowych oraz operacje złączania typu \sphinxstyleemphasis{Hash Join}, które są na porządku dziennym w systemach analitycznych.
+
+
+\subsection{Pamięć Masowa}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:pamiec-masowa}}
+\sphinxAtStartPar
+Podsystem pamięci masowej bezpośrednio determinuje ostateczną trwałość danych (cecha \sphinxstyleemphasis{Durability} z paradygmatu ACID) oraz jest najczęstszym wąskim gardłem systemu informatycznego z uwagi na mechaniczne lub interfejsowe ograniczenia prędkości.
+
+
+\subsubsection{Klasyfikacja Nośników i Ich Przydatność}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:klasyfikacja-nosnikow-i-ich-przydatnosc}}
+\sphinxAtStartPar
+Współczesna inżynieria bazodanowa całkowicie odchodzi od talerzowych dysków magnetycznych HDD w środowiskach produkcyjnych na rzecz pamięci półprzewodnikowych Flash.
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Dyski HDD (SAS 10K/15K):} Ze względu na ograniczenia mechaniczne oferują zaledwie kilkaset IOPS i wysokie opóźnienia (\textgreater{}5 ms). Ich zastosowanie ogranicza się obecnie wyłącznie do składowania archiwalnych kopii zapasowych (backups).
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Dyski SSD (SATA/SAS Enterprise):} Zapewniają stabilną wydajność na poziomie do 90 000 IOPS dla odczytu, jednak ograniczeniem staje się interfejs SATA (6 Gb/s) lub SAS\sphinxhyphen{}3 (12 Gb/s).
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Nośniki NVMe (PCIe Gen4/Gen5):} Komunikują się bezpośrednio z procesorem poprzez magistralę PCI Express, eliminując narzut protokołów SCSI/ATA. Osiągają wydajność przekraczającą 1 000 000 IOPS oraz redukują opóźnienia do wartości mikrosekundowych (\textless{}50 µs), stając się bezdyskusyjnym standardem dla baz danych.
+
+\end{itemize}
+
+
+\subsubsection{Fizyczna Separacja Architektury Plików}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:fizyczna-separacja-architektury-plikow}}
+\sphinxAtStartPar
+Poprawna konfiguracja pamięci masowej wymaga rozdzielenia różnych typów aktywności wejścia/wyjścia na odseparowane fizycznie wolumeny dyskowe:
+\begin{enumerate}
+\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Dziennik Transakcji:} Każda operacja modyfikacji danych (INSERT, UPDATE, DELETE) musi zostać najpierw sekwencyjnie zapisana w dzienniku transakcji, zanim baza potwierdzi jej pomyślne wykonanie. Ruch ten ma charakter niemal wyłącznie sekwencyjnego zapisu o krytycznym znaczeniu dla opóźnienia aplikacji. Dziennik transakcji powinien znajdować się na najszybszych dedykowanych nośnikach o minimalnym opóźnieniu zapisu.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Pliki Danych:} Przechowują właściwe tabele i indeksy. Ruch na tych plikach ma charakter wysoce losowy (zarówno odczyty, jak i zapisy wywoływane przez proces \sphinxstyleemphasis{Checkpoint}, który zrzuca zmodyfikowane strony z RAM na dysk). Wymagają macierzy zoptymalizowanej pod kątem wysokiej liczby losowych IOPS.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Baza Tymczasowa (TempDB / Swapping Space):} Wykorzystywana przez silnik bazy do przechowywania obiektów tymczasowych, wyników pośrednich podzapytań oraz sortowania. Generuje bardzo intensywny, mieszany ruch. Umieszcza się ją na ultra\sphinxhyphen{}szybkich dyskach o wysokiej wytrzymałości.
+
+\end{enumerate}
+
+
+\subsubsection{Żywotność i Wytrzymałość Zapisu (DWPD)}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:zywotnosc-i-wytrzymalosc-zapisu-dwpd}}
+\sphinxAtStartPar
+Bazy danych nieustannie modyfikują i nadpisują sektory. Z tego powodu stosowanie dysków klasy konsumenckiej grozi ich błyskawicznym zużyciem. Przy doborze nośników kluczowym parametrem jest \sphinxstylestrong{DWPD} (\sphinxstyleemphasis{Drive Writes Per Day}) \textendash{} wskaźnik określający, ile razy dziennie można zapisać całą pojemność dysku przez okres gwarancyjny (zazwyczaj 5 lat). Do baz danych wymagane są nośniki klasy \sphinxstyleemphasis{Enterprise Mixed\sphinxhyphen{}Use} lub \sphinxstyleemphasis{Write\sphinxhyphen{}Intensive} o współczynniku DWPD wynoszącym minimum 3\sphinxhyphen{}5.
+
+
+\subsection{Kontrolery i Interfejsy Pamięci}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:kontrolery-i-interfejsy-pamieci}}
+\sphinxAtStartPar
+Kontrolery realizują zadania pośrednictwa, zarządzania macierzami nadmiarowymi (RAID) oraz gwarantują integralność zapisu.
+
+
+\subsubsection{Sprzętowy RAID vs Software\sphinxhyphen{}Defined Storage}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:sprzetowy-raid-vs-software-defined-storage}}
+\sphinxAtStartPar
+Przez lata standardem były sprzętowe kontrolery RAID (\sphinxstyleemphasis{Hardware RAID}) wyposażone we własny procesor i pamięć cache. Odciążają one procesor główny serwera z obliczeń sum kontrolnych (szczególnie parzystości w RAID 5/6).
+
+\sphinxAtStartPar
+W przypadku nowoczesnych pamięci NVMe sprzętowe kontrolery starszego typu stawały się wąskim gardłem, blokując bezpośredni dostęp do linii PCIe. Współcześnie odchodzi się od nich na rzecz:
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Bezpośredniego podłączenia NVMe (Direct Attached PCIe)} i zarządzania programowego na poziomie zaawansowanych systemów plików (np. ZFS) lub warstw logicznych OS (np. Linux mdadm / LVM).
+
+\item {} 
+\sphinxAtStartPar
+Modernistycznych, dedykowanych sprzętowych kontrolerów NVMe RAID klasy Enterprise, zdolnych do natywnego przetwarzania protokołu NVMe z pełną prędkością magistrali PCIe Gen5.
+
+\end{itemize}
+
+\sphinxAtStartPar
+\sphinxstylestrong{Pamięć Podtrzymywana Bateryjnie (BBU/FBWC):}
+W przypadku korzystania ze sprzętowego kontrolera RAID z włączoną pamięcią podręczną zapisu (\sphinxstyleemphasis{Write\sphinxhyphen{}Back Cache}), \sphinxstylestrong{bezwzględnym warunkiem bezpieczeństwa} jest obecność modułu \sphinxstylestrong{BBU} (\sphinxstyleemphasis{Battery Backup Unit}) lub \sphinxstylestrong{FBWC} (\sphinxstyleemphasis{Flash\sphinxhyphen{}Backed Write Cache}). W razie awarii zasilania serwera, moduł ten podtrzymuje dane w pamięci cache kontrolera (lub przepisuje je do dedykowanej pamięci flash), zapobiegając utracie nieutrwalonych transakcji i uszkodzeniu struktury macierzy.
+
+
+\subsubsection{Wybór Poziomu RAID pod Kątem Baz Danych}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:wybor-poziomu-raid-pod-katem-baz-danych}}\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{RAID 10 (Striped Mirror):} Rekomendowany układ dla większości systemów bazodanowych. Łączy zalety wydajnościowe paskowania (RAID 0) i bezpieczeństwa lustrzanego (RAID 1). Zapewnia doskonałą wydajność losowego zapisu, ponieważ nie generuje tzw. narzutu parzystości (\sphinxstyleemphasis{write penalty}).
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{RAID 5 / RAID 6:} Zapewniają lepsze wykorzystanie przestrzeni dyskowej, ale każda operacja zapisu wymaga odczytu danych, obliczenia nowej parzystości i ponownego zapisu (\sphinxstyleemphasis{kara za zapis}). Są \sphinxstylestrong{wysoce niewskazane dla baz transakcyjnych OLTP}. Mogą być stosowane jedynie w hurtowniach danych (OLAP), gdzie operacje zapisu są sekwencyjne i rzadkie (procesy ETL).
+
+\end{itemize}
+
+
+\subsection{Zasilanie i Niezawodność}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:zasilanie-i-niezawodnosc}}
+\sphinxAtStartPar
+Podsystem zasilania w infrastrukturze bazodanowej traktowany jest jako integralny element ochrony integralności logicznej danych, a nie tylko komponent ciągłości działania.
+
+
+\subsubsection{Nadmiarowość Zasilaczy i Niezależne Linie Zasilające}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:nadmiarowosc-zasilaczy-i-niezalezne-linie-zasilajace}}
+\sphinxAtStartPar
+Serwer bazodanowy musi posiadać zasilacze nadmiarowe typu \sphinxstyleemphasis{Hot\sphinxhyphen{}Swap} (z możliwością wymiany podczas pracy) w konfiguracji minimum \sphinxstylestrong{N+1} lub optymalnie \sphinxstylestrong{2N} (Full Redundancy).
+
+\sphinxAtStartPar
+Zasilacze muszą być podpięte do fizycznie odseparowanych źródeł zasilania:
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Zasilacz A:} Podłączony do Linii zasilającej A oraz dedykowanego modułu UPS A.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Zasilacz B:} Podłączony do Linii zasilającej B oraz dedykowanego modułu UPS B.
+
+\end{itemize}
+
+\sphinxAtStartPar
+Taka topologia gwarantuje, że awaria jednego zasilacza, uszkodzenie kabla lub całkowity zanik napięcia na jednej z linii energetycznych nie spowoduje wyłączenia serwera.
+
+
+\subsubsection{Infrastruktura UPS i Agregaty Prądotwórcze}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:infrastruktura-ups-i-agregaty-pradotworcze}}
+\sphinxAtStartPar
+Wszelkie systemy serwerowe DBMS muszą współpracować z zasilaczami awaryjnymi UPS działającymi w topologii \sphinxstyleemphasis{Online} (podwójne przetwarzanie). Zapewniają one idealną sinusoidę napięcia, eliminują przepięcia i gwarantują czas podtrzymania niezbędny do automatycznego uruchomienia spalinowych agregatów prądotwórczych o odpowiedniej mocy.
+
+
+\subsubsection{Zapobieganie Zjawisku “Torn Writes”}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:zapobieganie-zjawisku-torn-writes}}
+\sphinxAtStartPar
+Zjawisko \sphinxstyleemphasis{Torn Write} (rozbity/częściowy zapis) występuje, gdy system operacyjny przesyła do zapisu stronę danych (np. 8 KB), a w trakcie fizycznego zapisu na komórkę pamięci Flash dochodzi do nagłego odcięcia zasilania. W efekcie na dysku ląduje np. tylko 4 KB danych, co powoduje bezpowrotne uszkodzenie struktury tej strony i błąd sumy kontrolnej przy próbie kolejnego uruchomienia bazy danych.
+
+\sphinxAtStartPar
+Poza mechanizmami programowymi (takimi jak \sphinxstyleemphasis{Doublewrite Buffer} w silniku InnoDB/MySQL), na poziomie sprzętowym stosuje się technologię \sphinxstylestrong{PLP (Power Loss Protection)}. Dyski klasy Enterprise posiadają wbudowane banki kondensatorów tantalowych. W momencie wykrycia spadku napięcia, energia z kondensatorów pozwala na podtrzymanie pracy kontrolera dysku przez czas wymagany do bezpiecznego opróżnienia pamięci podręcznej RAM dysku i utrwalenia wszystkich danych w nieulotnych komórkach pamięci NAND Flash.
+
+
+\subsection{Podsumowanie}
+\label{\detokenize{rozdzial_2/rozdzial_21/index:podsumowanie}}
+\sphinxAtStartPar
+Dobór sprzętu dla systemów zarządzania bazami danych musi być ściśle dopasowany do profilu obciążenia, z wyraźnym podziałem na transakcyjne środowiska OLTP oraz analityczne systemy OLAP. Wybór procesora stanowi kompromis pomiędzy taktowaniem a wielordzeniowością ze względu na koszty licencyjne, podczas gdy w przypadku pamięci operacyjnej absolutnym wymogiem jest zastosowanie technologii ECC chroniącej przed cichą korupcją danych. W obszarze pamięci masowej standardem stały się nośniki półprzewodnikowe NVMe o wysokiej wytrzymałości (DWPD), które ze względów wydajnościowych wymagają fizycznej separacji wolumenów dla dzienników transakcji i plików danych. Do zabezpieczenia pracy dysków rekomenduje się użycie konfiguracji RAID 10 w połączeniu z nowoczesnymi kontrolerami sprzętowymi lub rozwiązaniami programowymi. Całość infrastruktury musi być kategorycznie chroniona przed awariami poprzez nadmiarowe zasilacze w konfiguracji 2N, systemy UPS w topologii Online oraz dyski wyposażone w sprzętową ochronę PLP eliminującą zjawisko uszkodzonych zapisów.
+
 \sphinxstepscope
 
 

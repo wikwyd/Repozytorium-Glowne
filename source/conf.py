@@ -7,8 +7,8 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Sprawozdanie-z-laboratoriów'
-copyright = '2026, Konrad Machowski'
-author = 'Konrad Machowski'
+copyright = '2026, Wiktor Wydrzyński'
+author = 'Wiktor Wydrzyński'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -50,7 +50,7 @@ latex_elements = {
 
 latex_documents = [
     ('index', 'sprawozdanie-z-laboratoriow.tex', 'Sprawozdanie z Laboratorium: Bazy Danych', 
-     'Konrad Machowski', 'manual'),
+     'Wiktor Wydrzyński', 'manual'),
 ]
 
 latex_show_urls = 'footnote'

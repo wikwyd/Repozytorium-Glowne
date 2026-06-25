@@ -152,10 +152,11 @@
 \contentsline {subsection}{\numberline {4.4.1}Mechanizm COPY w PostgreSQL}{37}{subsection.4.4.1}%
 \contentsline {subsection}{\numberline {4.4.2}Mechanizm Batch Insert w SQLite}{38}{subsection.4.4.2}%
 \contentsline {chapter}{\numberline {5}Zapytania do bazy danych}{39}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Zaawansowane mechanizmy zapytań SQL}{39}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Selekcja danych i funkcje wierszowe}{39}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Funkcje agregujące i grupowanie}{39}{subsection.5.1.2}%
-\contentsline {subsection}{\numberline {5.1.3}Połączenia asymetryczne (LEFT JOIN)}{40}{subsection.5.1.3}%
-\contentsline {subsection}{\numberline {5.1.4}Operatory zbiorowe (Różnica)}{40}{subsection.5.1.4}%
-\contentsline {subsection}{\numberline {5.1.5}Zagnieżdżone podzapytania (Subqueries)}{40}{subsection.5.1.5}%
-\contentsline {section}{\numberline {5.2}Implementacja skryptowa}{40}{section.5.2}%
+\contentsline {section}{\numberline {5.1}Wprowadzenie}{39}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Zaawansowane mechanizmy zapytań SQL}{39}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Selekcja danych i funkcje wierszowe}{39}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Funkcje agregujące i grupowanie}{39}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Połączenia asymetryczne (LEFT JOIN)}{40}{subsection.5.2.3}%
+\contentsline {subsection}{\numberline {5.2.4}Operatory zbiorowe (Różnica)}{40}{subsection.5.2.4}%
+\contentsline {subsection}{\numberline {5.2.5}Zagnieżdżone podzapytania (Subqueries)}{40}{subsection.5.2.5}%
+\contentsline {section}{\numberline {5.3}Implementacja skryptowa}{40}{section.5.3}%

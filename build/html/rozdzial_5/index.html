@@ -35,8 +35,11 @@
 <h1>Zapytania do bazy danych<a class="headerlink" href="#zapytania-do-bazy-danych" title="Link to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
+<section id="wprowadzenie">
+<h2>Wprowadzenie<a class="headerlink" href="#wprowadzenie" title="Link to this heading">¶</a></h2>
 <p>W ramach piątego rozdziału zaimplementowano moduł analityczny w języku Python, służący do interakcji ze strukturami relacyjnej bazy danych. Przygotowane zapytania SQL realizują złożone scenariusze biznesowe wypożyczalni samochodów, wykorzystując zaawansowane mechanizmy silnika bazy danych.</p>
 <p>Zgodnie z dobrymi praktykami inżynierii oprogramowania, kwerendy zhermetyzowano w postaci funkcji przyjmujących aktywny wskaźnik połączenia (obiekt <code class="docutils literal notranslate"><span class="pre">conn</span></code>), co pozwala na bezpośrednie użycie kodu zarówno w środowiskach produkcyjnych, jak i w notatnikach JupyterLab (JupyterHub).</p>
+</section>
 <section id="zaawansowane-mechanizmy-zapytan-sql">
 <h2>Zaawansowane mechanizmy zapytań SQL<a class="headerlink" href="#zaawansowane-mechanizmy-zapytan-sql" title="Link to this heading">¶</a></h2>
 <p>Aby system w pełni odpowiadał na potrzeby analityczne, w kodzie Pythona wdrożono pełne spektrum operacji na relacjach, w tym selekcję z operacjami wierszowymi, agregacje wielowierszowe, algebrę zbiorów, złączenia asymetryczne oraz podzapytania skalarne. Poniżej omówiono zaimplementowaną logikę bazodanową.</p>

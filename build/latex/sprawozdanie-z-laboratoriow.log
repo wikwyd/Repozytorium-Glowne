@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2026.3.1)  25 JUN 2026 11:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2026.3.1)  25 JUN 2026 12:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1027,7 +1027,7 @@ nged.
 Here is how much of TeX's memory you used:
  20874 strings out of 473197
  377917 string characters out of 5718606
- 797520 words of memory out of 5000000
+ 797555 words of memory out of 5000000
  43421 multiletter control sequences out of 15000+600000
  627639 words of font info for 104 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
@@ -1042,7 +1042,7 @@ fonts/type1/public/tex-gyre/qtmri.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/public/txfonts/t1xbtt.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/t
 xfonts/t1xtt.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/t1xt
 t.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/tcxtt.pfb>
-Output written on sprawozdanie-z-laboratoriow.pdf (45 pages, 360614 bytes).
+Output written on sprawozdanie-z-laboratoriow.pdf (45 pages, 360839 bytes).
 PDF statistics:
  1168 PDF objects out of 1200 (max. 8388607)
  1090 compressed objects within 11 object streams

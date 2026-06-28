@@ -10,26 +10,24 @@ Wstęp do sprawozdania oraz linki
 Wstęp
 =====
 
-Niniejsze sprawozdanie stanowi kompleksową dokumentację prac laboratoryjnych zrealizowanych w ramach przedmiotu Bazy Danych. Głównym założeniem projektu było przełożenie wiedzy akademickiej na praktyczne umiejętności inżynierskie, niezbędne przy projektowaniu, implementacji oraz utrzymaniu nowoczesnych systemów relacyjnych baz danych.
-
-Opracowanie przeprowadza czytelnika przez pełen cykl życia systemu bazodanowego. Proces rozpoczął się od dogłębnej analizy wymagań teoretycznych, co posłużyło jako fundament do zaprojektowania modelu pojęciowego i logicznego. Następnie architektura ta została powołana do życia poprzez fizyczną implementację w środowiskach PostgreSQL oraz SQLite. Istotnym elementem projektu była również automatyzacja i realizacja procesów wsadowego zasilania struktury rzeczywistymi danymi.
+Niniejszy dokument stanowi techniczną dokumentację laboratorium z przedmiotu Bazy Danych. Celem projektu była transformacja wiedzy teoretycznej w praktyczne kompetencje inżynierskie, obejmujące projektowanie, wdrażanie oraz administrację systemami relacyjnymi. Opracowanie opisuje pełen cykl wdrożeniowy oprogramowania: od analizy wymagań i modelowania (pojęciowego i logicznego), przez fizyczną implementację w środowiskach PostgreSQL i SQLite, aż po automatyzację procesów masowego zasilania struktur bazodanowych (ETL).
 
 Wykaz repozytoriów (Linki)
 ==========================
 
-Zgodnie z dobrymi praktykami inżynierii oprogramowania, projekt został logicznie rozdzielony na odrębne repozytoria w rozproszonym systemie kontroli wersji Git. Takie podejście gwarantuje utrzymanie porządku, separację dokumentacji tekstowej od kodu wykonywalnego oraz ułatwia śledzenie historii zmian w poszczególnych komponentach.
+Stosując standardy inżynierii oprogramowania, architekturę projektu podzielono na odrębne repozytoria w rozproszonym systemie kontroli wersji Git. Taka dekompozycja gwarantuje utrzymanie czystości architektury, separację warstwy dokumentacyjnej od kodu operacyjnego oraz ułatwia audyt zmian.
 
 Główne repozytorium sprawozdania (Dokumentacja Sphinx)
 ------------------------------------------------------
-Niniejsze repozytorium pełni rolę centralnego węzła dokumentacyjnego. Znajduje się w nim pełna struktura tekstowa zapisana w formacie reStructuredText, niezbędna konfiguracja generatora dokumentacji Sphinx (plik ``conf.py``) oraz pliki konfiguracyjne środowiska budowania (np. pliki Makefile).
+Centralny węzeł dokumentacyjny projektu. Zawiera logikę sprawozdania zapisaną w formacie reStructuredText oraz pełną konfigurację środowiska kompilatora Sphinx (w tym pliki ``conf.py`` oraz ``Makefile``).
 
-* **Link:** https://github.com/KMachoK/Repozytorium-Glowne.git
+* **Link:** https://github.com/wikwyd/Repozytorium-Glowne.git
 
 Repozytorium z plikami projektowymi
 -----------------------------------
-To repozytorium przechowuje właściwe pliki inżynierskie i deweloperskie. Zgromadzono w nim skrypty DDL definiujące struktury dla silników PostgreSQL i SQLite, wygenerowany plik lokalnej bazy danych oraz zbiory danych w formacie CSV, które wykorzystano do automatycznego zasilenia poszczególnych tabel.
+Baza kodu deweloperskiego. Przechowuje skrypty strukturalne DDL dostosowane do dialektów PostgreSQL i SQLite, wygenerowany plik wbudowanej bazy danych oraz płaskie zbiory danych (CSV) wykorzystane do zautomatyzowanego populowania tabel.
 
-* **Link:** https://github.com/KMachoK/Pliki-baz-danych.git
+* **Link:** https://github.com/wikwyd/pliki.git
 
 Repozytoria reszty grupy (Submoduły)
 ------------------------------------

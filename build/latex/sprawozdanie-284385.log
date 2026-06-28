@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.28)  28 JUN 2026 21:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.28)  28 JUN 2026 21:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**sprawozdanie-284384.tex
-(./sprawozdanie-284384.tex
+**sprawozdanie-284385.tex
+(./sprawozdanie-284385.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
 (./sphinxmanual.cls
@@ -732,10 +732,10 @@ Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
 Package: sphinxmessages 2019/01/04 v2.0 Localized LaTeX macros (Sphinx team)
 )
 \@indexfile=\write4
-\openout4 = `sprawozdanie-284384.idx'.
+\openout4 = `sprawozdanie-284385.idx'.
 
 
-Writing index file sprawozdanie-284384.idx
+Writing index file sprawozdanie-284385.idx
 LaTeX Font Info:    Trying to load font information for T1+qtm on input line 87
 .
 (/usr/share/texmf/tex/latex/tex-gyre/t1qtm.fd
@@ -746,8 +746,8 @@ File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count323
 \l__pdf_internal_box=\box120
 )
-(./sprawozdanie-284384.aux)
-\openout1 = `sprawozdanie-284384.aux'.
+(./sprawozdanie-284385.aux)
+\openout1 = `sprawozdanie-284385.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 87.
 LaTeX Font Info:    ... okay on input line 87.
@@ -827,9 +827,9 @@ e
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package hyperref Info: Link coloring ON on input line 87.
-(./sprawozdanie-284384.out) (./sprawozdanie-284384.out)
+(./sprawozdanie-284385.out) (./sprawozdanie-284385.out)
 \@outlinefile=\write5
-\openout5 = `sprawozdanie-284384.out'.
+\openout5 = `sprawozdanie-284385.out'.
 
 Package hyperref Info: Option `pageanchor' set `false' on input line 95.
 LaTeX Font Info:    Trying to load font information for T1+qhv on input line 95
@@ -851,13 +851,13 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf/fonts/enc/
-dvips/tex-gyre/q-ec.enc}] (./sprawozdanie-284384.toc [1
+dvips/tex-gyre/q-ec.enc}] (./sprawozdanie-284385.toc [1
 
 
 
 ] [2])
 \tf@toc=\write6
-\openout6 = `sprawozdanie-284384.toc'.
+\openout6 = `sprawozdanie-284385.toc'.
 
  [3]
 LaTeX Font Info:    Trying to load font information for TS1+qtm on input line 1
@@ -870,86 +870,86 @@ File: ts1qtm.fd 2009/09/25 v1.2 font definition file for TS1/qtm
 {/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ts1.enc}]
 Chapter 1.
 LaTeX Font Info:    Trying to load font information for T1+txtt on input line 1
-72.
+69.
 (/usr/share/texlive/texmf-dist/tex/latex/txfonts/t1txtt.fd
 File: t1txtt.fd 2000/12/15 v3.1
 ) [2
 
-] [3]
+]
 Chapter 2.
-[4
+[3
 
-] [5] [6] [7] [8]
+] [4] [5] [6] [7]
 LaTeX Font Info:    Font shape `T1/txtt/m/it' in size <10.95> not available
-(Font)              Font shape `T1/txtt/m/sl' tried instead on input line 685.
+(Font)              Font shape `T1/txtt/m/sl' tried instead on input line 682.
 LaTeX Font Info:    Font shape `T1/txtt/b/n' in size <10.95> not available
-(Font)              Font shape `T1/txtt/bx/n' tried instead on input line 710.
- [9]
+(Font)              Font shape `T1/txtt/bx/n' tried instead on input line 707.
+ [8]
 LaTeX Font Info:    Trying to load font information for TS1+txtt on input line 
 1.
 
 (/usr/share/texlive/texmf-dist/tex/latex/txfonts/ts1txtt.fd
 File: ts1txtt.fd 2000/12/15 v3.1
-) [10] [11] [12]
-[13] [14] [15] [16] [17]
-Underfull \hbox (badness 10000) in paragraph at lines 1674--1677
+) [9] [10] [11]
+[12] [13] [14] [15] [16]
+Underfull \hbox (badness 10000) in paragraph at lines 1671--1674
 [][][][][]\T1/qtm/m/n/9 Oracle Doc-u-men-ta-tion, \T1/qtm/m/it/9 AU-DIT_TRAIL \
 T1/qtm/m/n/9 oraz in-for-ma-cje o uni-fied au-dit-ing, [][]$https : / / docs . 
 oracle . com / en / database / oracle /
  []
 
-[18] [19] [20] [21] [22] [23] [24] [25] [26] [27] [28] [29] [30] [31] [32]
-[33] [34] [35]
+[17] [18] [19] [20] [21] [22] [23] [24] [25] [26] [27] [28] [29] [30] [31]
+[32] [33] [34]
 Chapter 3.
-[36
+[35
 
 ]
-<Schemat-chena.png, id=1097, 6167.04pt x 2680.0125pt>
+<Schemat-chena.png, id=1093, 6167.04pt x 2680.0125pt>
 File: Schemat-chena.png Graphic file (type png)
 <use Schemat-chena.png>
-Package pdftex.def Info: Schemat-chena.png  used on input line 2879.
+Package pdftex.def Info: Schemat-chena.png  used on input line 2876.
 (pdftex.def)             Requested size: 397.06577pt x 172.53029pt.
- [37]
-<Schemat-erd.png, id=1103, 1090.82532pt x 624.83438pt>
+ [36]
+<Schemat-erd.png, id=1099, 1090.82532pt x 624.83438pt>
 File: Schemat-erd.png Graphic file (type png)
 <use Schemat-erd.png>
-Package pdftex.def Info: Schemat-erd.png  used on input line 2919.
+Package pdftex.def Info: Schemat-erd.png  used on input line 2916.
 (pdftex.def)             Requested size: 397.06577pt x 227.43816pt.
- [38 <./Schemat-chena.png>] [39 <./Schemat-erd.png>]
+ [37 <./Schemat-chena.png>] [38 <./Schemat-erd.png>]
 Chapter 4.
-[40
+[39
 
-] [41] [42]
+] [40] [41]
 Chapter 5.
-[43
+[42
 
-] [44] [45]
-Underfull \vbox (badness 10000) detected at line 3571
+] [43] [44]
+Underfull \vbox (badness 10000) detected at line 3568
  []
 
 
-Underfull \vbox (badness 10000) detected at line 3571
+Underfull \vbox (badness 10000) detected at line 3568
  []
 
-[46]
-Underfull \vbox (badness 10000) detected at line 3571
+[45]
+Underfull \vbox (badness 10000) detected at line 3568
  []
 
 
-Underfull \vbox (badness 10000) detected at line 3571
+Underfull \vbox (badness 10000) detected at line 3568
  []
 
-[47] (./sprawozdanie-284384.ind) [48] (./sprawozdanie-284384.aux)
+[46] (./sprawozdanie-284385.ind) [47] (./sprawozdanie-284385.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
-Package rerunfilecheck Info: File `sprawozdanie-284384.out' has not changed.
+Package rerunfilecheck Info: File `sprawozdanie-284385.out' has not changed.
 (rerunfilecheck)             Checksum: ADFAC5423E653A3603F26B4FB8A0EE40;40481.
  ) 
 Here is how much of TeX's memory you used:
- 17587 strings out of 476182
- 305437 string characters out of 5795595
+ 17586 strings out of 476182
+ 305430 string characters out of 5795595
  2076975 words of memory out of 5000000
  38889 multiletter control sequences out of 15000+600000
  626566 words of font info for 103 fonts, out of 8000000 for 9000
@@ -964,10 +964,10 @@ texmf/fonts/type1/public/tex-gyre/qhvb.pfb></usr/share/texmf/fonts/type1/public
 fonts/t1xbtt.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/t1xt
 t.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb></usr
 /share/texlive/texmf-dist/fonts/type1/public/txfonts/tcxtt.pfb>
-Output written on sprawozdanie-284384.pdf (52 pages, 1080882 bytes).
+Output written on sprawozdanie-284385.pdf (51 pages, 1080114 bytes).
 PDF statistics:
- 1263 PDF objects out of 1440 (max. 8388607)
- 1175 compressed objects within 12 object streams
- 292 named destinations out of 1000 (max. 500000)
+ 1259 PDF objects out of 1440 (max. 8388607)
+ 1172 compressed objects within 12 object streams
+ 291 named destinations out of 1000 (max. 500000)
  1415 words of extra memory for PDF output out of 10000 (max. 10000000)
 

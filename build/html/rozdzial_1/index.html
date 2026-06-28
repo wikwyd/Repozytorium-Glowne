@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Wstęp do sprawozdania oraz linki &#8212; Sprawozdanie-284384  documentation</title>
+    <title>Wstęp do sprawozdania oraz linki &#8212; Sprawozdanie-284385  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
@@ -46,24 +46,23 @@
 </dl>
 <section id="wstep">
 <h2>Wstęp<a class="headerlink" href="#wstep" title="Link to this heading">¶</a></h2>
-<p>Niniejsze sprawozdanie stanowi kompleksową dokumentację prac laboratoryjnych zrealizowanych w ramach przedmiotu Bazy Danych. Głównym założeniem projektu było przełożenie wiedzy akademickiej na praktyczne umiejętności inżynierskie, niezbędne przy projektowaniu, implementacji oraz utrzymaniu nowoczesnych systemów relacyjnych baz danych.</p>
-<p>Opracowanie przeprowadza czytelnika przez pełen cykl życia systemu bazodanowego. Proces rozpoczął się od dogłębnej analizy wymagań teoretycznych, co posłużyło jako fundament do zaprojektowania modelu pojęciowego i logicznego. Następnie architektura ta została powołana do życia poprzez fizyczną implementację w środowiskach PostgreSQL oraz SQLite. Istotnym elementem projektu była również automatyzacja i realizacja procesów wsadowego zasilania struktury rzeczywistymi danymi.</p>
+<p>Niniejszy dokument stanowi techniczną dokumentację laboratorium z przedmiotu Bazy Danych. Celem projektu była transformacja wiedzy teoretycznej w praktyczne kompetencje inżynierskie, obejmujące projektowanie, wdrażanie oraz administrację systemami relacyjnymi. Opracowanie opisuje pełen cykl wdrożeniowy oprogramowania: od analizy wymagań i modelowania (pojęciowego i logicznego), przez fizyczną implementację w środowiskach PostgreSQL i SQLite, aż po automatyzację procesów masowego zasilania struktur bazodanowych (ETL).</p>
 </section>
 <section id="wykaz-repozytoriow-linki">
 <h2>Wykaz repozytoriów (Linki)<a class="headerlink" href="#wykaz-repozytoriow-linki" title="Link to this heading">¶</a></h2>
-<p>Zgodnie z dobrymi praktykami inżynierii oprogramowania, projekt został logicznie rozdzielony na odrębne repozytoria w rozproszonym systemie kontroli wersji Git. Takie podejście gwarantuje utrzymanie porządku, separację dokumentacji tekstowej od kodu wykonywalnego oraz ułatwia śledzenie historii zmian w poszczególnych komponentach.</p>
+<p>Stosując standardy inżynierii oprogramowania, architekturę projektu podzielono na odrębne repozytoria w rozproszonym systemie kontroli wersji Git. Taka dekompozycja gwarantuje utrzymanie czystości architektury, separację warstwy dokumentacyjnej od kodu operacyjnego oraz ułatwia audyt zmian.</p>
 <section id="glowne-repozytorium-sprawozdania-dokumentacja-sphinx">
 <h3>Główne repozytorium sprawozdania (Dokumentacja Sphinx)<a class="headerlink" href="#glowne-repozytorium-sprawozdania-dokumentacja-sphinx" title="Link to this heading">¶</a></h3>
-<p>Niniejsze repozytorium pełni rolę centralnego węzła dokumentacyjnego. Znajduje się w nim pełna struktura tekstowa zapisana w formacie reStructuredText, niezbędna konfiguracja generatora dokumentacji Sphinx (plik <code class="docutils literal notranslate"><span class="pre">conf.py</span></code>) oraz pliki konfiguracyjne środowiska budowania (np. pliki Makefile).</p>
+<p>Centralny węzeł dokumentacyjny projektu. Zawiera logikę sprawozdania zapisaną w formacie reStructuredText oraz pełną konfigurację środowiska kompilatora Sphinx (w tym pliki <code class="docutils literal notranslate"><span class="pre">conf.py</span></code> oraz <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>).</p>
 <ul class="simple">
-<li><p><strong>Link:</strong> <a class="reference external" href="https://github.com/KMachoK/Repozytorium-Glowne.git">https://github.com/KMachoK/Repozytorium-Glowne.git</a></p></li>
+<li><p><strong>Link:</strong> <a class="reference external" href="https://github.com/wikwyd/Repozytorium-Glowne.git">https://github.com/wikwyd/Repozytorium-Glowne.git</a></p></li>
 </ul>
 </section>
 <section id="repozytorium-z-plikami-projektowymi">
 <h3>Repozytorium z plikami projektowymi<a class="headerlink" href="#repozytorium-z-plikami-projektowymi" title="Link to this heading">¶</a></h3>
-<p>To repozytorium przechowuje właściwe pliki inżynierskie i deweloperskie. Zgromadzono w nim skrypty DDL definiujące struktury dla silników PostgreSQL i SQLite, wygenerowany plik lokalnej bazy danych oraz zbiory danych w formacie CSV, które wykorzystano do automatycznego zasilenia poszczególnych tabel.</p>
+<p>Baza kodu deweloperskiego. Przechowuje skrypty strukturalne DDL dostosowane do dialektów PostgreSQL i SQLite, wygenerowany plik wbudowanej bazy danych oraz płaskie zbiory danych (CSV) wykorzystane do zautomatyzowanego populowania tabel.</p>
 <ul class="simple">
-<li><p><strong>Link:</strong> <a class="reference external" href="https://github.com/KMachoK/Pliki-baz-danych.git">https://github.com/KMachoK/Pliki-baz-danych.git</a></p></li>
+<li><p><strong>Link:</strong> <a class="reference external" href="https://github.com/wikwyd/pliki.git">https://github.com/wikwyd/pliki.git</a></p></li>
 </ul>
 </section>
 <section id="repozytoria-reszty-grupy-submoduly">
@@ -90,7 +89,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">Sprawozdanie-284384</a></h1>
+<h1 class="logo"><a href="../index.html">Sprawozdanie-284385</a></h1>
 
 
 

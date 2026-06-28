@@ -6,7 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Sprawozdanie-284384'
+project = 'Sprawozdanie-284385'
 copyright = '2026, Olaf Chomicki, Konrad Machowski, Wiktor Wydrzyński'
 author = 'Olaf Chomicki, Konrad Machowski, Wiktor Wydrzyński'
 
@@ -50,7 +50,7 @@ latex_elements = {
 }
 
 latex_documents = [
-    ('index', 'sprawozdanie-284384.tex', 'Sprawozdanie 284384: Bazy Danych', 
+    ('index', 'sprawozdanie-284385.tex', 'Sprawozdanie 284385: Bazy Danych', 
      'Olaf Chomicki, Konrad Machowski, Wiktor Wydrzyński', 'manual'),
 ]
 

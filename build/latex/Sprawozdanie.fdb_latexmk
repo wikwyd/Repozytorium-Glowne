@@ -1,11 +1,11 @@
 # Fdb version 4
-["makeindex sprawozdanie-z-laboratoriow.idx"] 1782679315.90972 "sprawozdanie-z-laboratoriow.idx" "sprawozdanie-z-laboratoriow.ind" "sprawozdanie-z-laboratoriow" 1782679319.14604 0
-  "sprawozdanie-z-laboratoriow.idx" 1782679318.06758 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+["makeindex Sprawozdanie.idx"] 1782679567.69682 "Sprawozdanie.idx" "Sprawozdanie.ind" "Sprawozdanie" 1782679570.81777 0
+  "Sprawozdanie.idx" 1782679569.91158 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
   (generated)
-  "sprawozdanie-z-laboratoriow.ilg"
-  "sprawozdanie-z-laboratoriow.ind"
+  "Sprawozdanie.ilg"
+  "Sprawozdanie.ind"
   (rewritten before read)
-["pdflatex"] 1782679317.49984 "sprawozdanie-z-laboratoriow.tex" "sprawozdanie-z-laboratoriow.pdf" "sprawozdanie-z-laboratoriow" 1782679319.14625 0
+["pdflatex"] 1782679569.29547 "Sprawozdanie.tex" "Sprawozdanie.pdf" "Sprawozdanie" 1782679570.81798 0
   "/etc/texmf/web2c/texmf.cnf" 1782676926.4086 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm1095.tfm" 1136768653 3584 929cdff2b7a8c11bd4d49fd68cb0ae70 ""
@@ -163,8 +163,13 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1782676955.1636 128028 f533b797fba58d231669ea19e894e23e ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1782676988 6800787 26e1bd60576e0c4f372caa3ed0ac351f ""
+  "Sprawozdanie.aux" 1782679570.67058 49240 45b5966ffc85ce7ae3cd2c5aac2c0cd5 "pdflatex"
+  "Sprawozdanie.ind" 1782679567.71158 0 d41d8cd98f00b204e9800998ecf8427e "makeindex Sprawozdanie.idx"
+  "Sprawozdanie.out" 1782679570.67658 38751 45a5ce4f8ba7e74d25dcdae5f2d1d933 "pdflatex"
+  "Sprawozdanie.tex" 1782679565.88458 192270 ced4b86df3449d486fddd270d8fd85e7 ""
+  "Sprawozdanie.toc" 1782679570.67658 16215 6b8cb1ded37f6112c22116607db117e7 "pdflatex"
   "sphinx.sty" 1782676758.9626 57237 e19e1f380d737472c975e274a37a2126 ""
-  "sphinxhighlight.sty" 1782679313.71458 7553 83fb52292c17957d9f4aadcb28c57a87 ""
+  "sphinxhighlight.sty" 1782679565.56158 7553 83fb52292c17957d9f4aadcb28c57a87 ""
   "sphinxlatexadmonitions.sty" 1782676758.9636 19258 40d230fa86bf8c791de90924bc0a9916 ""
   "sphinxlatexcontainers.sty" 1782676758.9636 900 d61f923db071a7b54d3cee8a1e6935d3 ""
   "sphinxlatexgraphics.sty" 1782676758.9636 4918 c9266041d02bc615d54b890e96e3acd3 ""
@@ -179,21 +184,16 @@
   "sphinxlatexstyletext.sty" 1782676758.9646 6932 46506bfce90adabe816de566561356fc ""
   "sphinxlatextables.sty" 1782676758.9656 63776 301b4897e4c838a7aa5af2eb139208e8 ""
   "sphinxmanual.cls" 1782676758.9656 4241 7b0d7a37df7b5715fb0dbd585c52ecdb ""
-  "sphinxmessages.sty" 1782679313.98958 745 3f5fcd6cdd7964ed608767954a8ced6f ""
+  "sphinxmessages.sty" 1782679565.89158 745 3f5fcd6cdd7964ed608767954a8ced6f ""
   "sphinxoptionsgeometry.sty" 1782676758.9656 2060 6c27b3eba37bde592ae8908ab2c1ac0f ""
   "sphinxoptionshyperref.sty" 1782676758.9656 1093 e468489bae7631a7f387b4b0f7bc15d4 ""
   "sphinxpackageboxes.sty" 1782676758.9656 36106 1be2053eb1cb9b083b3a75e3657bcb24 ""
   "sphinxpackagefootnote.sty" 1782676758.9666 15497 e3d010897db5f6f93f75d08335769b1f ""
-  "sprawozdanie-z-laboratoriow.aux" 1782679318.99458 49240 45b5966ffc85ce7ae3cd2c5aac2c0cd5 "pdflatex"
-  "sprawozdanie-z-laboratoriow.ind" 1782679315.92458 0 d41d8cd98f00b204e9800998ecf8427e "makeindex sprawozdanie-z-laboratoriow.idx"
-  "sprawozdanie-z-laboratoriow.out" 1782679318.99958 38751 45a5ce4f8ba7e74d25dcdae5f2d1d933 "pdflatex"
-  "sprawozdanie-z-laboratoriow.tex" 1782679313.98158 192285 f1df709375984641c0b4a8351577f5f3 ""
-  "sprawozdanie-z-laboratoriow.toc" 1782679319.00058 16215 6b8cb1ded37f6112c22116607db117e7 "pdflatex"
   (generated)
-  "sprawozdanie-z-laboratoriow.aux"
-  "sprawozdanie-z-laboratoriow.idx"
-  "sprawozdanie-z-laboratoriow.log"
-  "sprawozdanie-z-laboratoriow.out"
-  "sprawozdanie-z-laboratoriow.pdf"
-  "sprawozdanie-z-laboratoriow.toc"
+  "Sprawozdanie.aux"
+  "Sprawozdanie.idx"
+  "Sprawozdanie.log"
+  "Sprawozdanie.out"
+  "Sprawozdanie.pdf"
+  "Sprawozdanie.toc"
   (rewritten before read)

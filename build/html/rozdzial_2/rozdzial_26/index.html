@@ -5,12 +5,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Partycjonowanie danych &#8212; Sprawozdanie-z-laboratoriów  documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d1102ebc" />
-    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=12dfc556" />
+    <title>2.6. Partycjonowanie danych &#8212; Sprawozdanie-z-laboratoriów  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Bezpieczeństwo Baz Danych" href="../rozdzial_27/index.html" />
@@ -33,7 +34,68 @@
           <div class="body" role="main">
             
   <section id="partycjonowanie-danych">
-<h1>Partycjonowanie danych<a class="headerlink" href="#partycjonowanie-danych" title="Link to this heading">¶</a></h1>
+<h1>2.6. Partycjonowanie danych<a class="headerlink" href="#partycjonowanie-danych" title="Link to this heading">¶</a></h1>
+<p><strong>Autorzy</strong></p>
+<ol class="arabic simple">
+<li><p>Michał Bystrzak</p></li>
+<li><p>Damian Dominiak</p></li>
+</ol>
+<section id="wstep-i-istota-problemu">
+<h2>2.6.1 Wstęp i istota problemu<a class="headerlink" href="#wstep-i-istota-problemu" title="Link to this heading">¶</a></h2>
+<p>W dobie systemów informatycznych przetwarzających gigabajty lub terabajty informacji (tzw. VLDB - Very Large Databases), tradycyjne podejście do składowania danych staje się wysoce niewydajne. Kiedy pojedyncza tabela rozrasta się do setek milionów rekordów, fizyczne ograniczenia sprzętowe oraz narzuty na zarządzanie indeksami powodują drastyczny spadek wydajności. Partycjonowanie to zaawansowana technika architektoniczna, polegająca na logicznym podziale jednej, ogromnej tabeli na mniejsze, odseparowane fizycznie fragmenty nazywane partycjami. Z perspektywy aplikacji docelowej oraz zapytań SQL, tabela wciąż prezentuje się i zachowuje jak spójna, pojedyncza relacja.</p>
+</section>
+<section id="cele-stosowania-partycjonowania-danych">
+<h2>2.6.2 Cele stosowania partycjonowania danych<a class="headerlink" href="#cele-stosowania-partycjonowania-danych" title="Link to this heading">¶</a></h2>
+<p>Implementacja mechanizmu partycjonowania w systemach relacyjnych jest podyktowana chęcią rozwiązania konkretnych problemów wydajnościowych i administracyjnych. Główne cele to:</p>
+<ul class="simple">
+<li><p><strong>Zwiększenie wydajności zapytań (Query Performance):</strong> Fundamentalnym celem jest eliminacja konieczności skanowania całej tabeli (Full Table Scan). Dzięki mechanizmowi <em>Partition Pruning</em> (odcinanie partycji), planista zapytań analizuje warunki zdefiniowane w klauzuli <code class="docutils literal notranslate"><span class="pre">WHERE</span></code> i kieruje odczyt wyłącznie do tych fizycznych plików, które mogą zawierać poszukiwane dane.</p></li>
+<li><p><strong>Optymalizacja procesów utrzymaniowych (Maintenance):</strong> Olbrzymie tabele są trudne w utrzymaniu. Operacje takie jak <code class="docutils literal notranslate"><span class="pre">VACUUM</span></code>, <code class="docutils literal notranslate"><span class="pre">REINDEX</span></code> czy odtwarzanie kopii zapasowych mogą blokować zasoby przez wiele godzin. Partycjonowanie pozwala na wykonywanie tych operacji selektywnie, tylko na tych partycjach, które uległy modyfikacji.</p></li>
+<li><p><strong>Zarządzanie cyklem życia danych (Data Lifecycle Management):</strong> W przypadku danych historycznych (np. logów), najszybszą metodą ich usunięcia jest operacja <code class="docutils literal notranslate"><span class="pre">DROP</span> <span class="pre">TABLE</span></code> na starej partycji. Jest to operacja na metadanych, trwająca ułamki sekund, w przeciwieństwie do standardowego <code class="docutils literal notranslate"><span class="pre">DELETE</span></code>, które w architekturze MVCC (Multi-Version Concurrency Control) generuje ogromne ilości “martwych krotek” (dead tuples) i obciąża dziennik transakcji (WAL).</p></li>
+</ul>
+</section>
+<section id="zastosowanie-partycjonowania">
+<h2>2.6.3 Zastosowanie partycjonowania<a class="headerlink" href="#zastosowanie-partycjonowania" title="Link to this heading">¶</a></h2>
+<p>Technika ta nie jest uniwersalnym rozwiązaniem dla każdej bazy danych, lecz sprawdza się w specyficznych, wymagających scenariuszach:</p>
+<ul class="simple">
+<li><p><strong>Hurtownie danych (OLAP):</strong> Systemy analityczne gromadzące dane historyczne. Partycjonowanie pozwala tam na błyskawiczne agregowanie danych (np. sumowanie przychodów z konkretnego miesiąca) bez wczytywania do pamięci RAM danych z całej dekady.</p></li>
+<li><p><strong>Systemy transakcyjne (OLTP) o wysokim przyroście:</strong> Aplikacje rejestrujące logi systemowe, odczyty z czujników IoT, dane telemetryczne czy rejestry transakcji finansowych (Time-Series Data), gdzie każdego dnia przybywają miliony nowych wierszy.</p></li>
+<li><p><strong>Implementacja Storage Tiering:</strong> Możliwość fizycznego rozdzielenia danych na różne nośniki. Najnowsze i najczęściej odpytywane partycje (Hot Data) umieszcza się na ultra-szybkich macierzach NVMe, podczas gdy starsze, rzadko używane partycje (Cold Data) przenosi się na tańsze wolumeny dyskowe (HDD), co znacząco optymalizuje koszty infrastruktury.</p></li>
+</ul>
+</section>
+<section id="zalety-i-wady-partycjonowania">
+<h2>2.6.4 Zalety i wady partycjonowania<a class="headerlink" href="#zalety-i-wady-partycjonowania" title="Link to this heading">¶</a></h2>
+<p>Jak każda technika optymalizacyjna, partycjonowanie stanowi kompromis inżynieryjny (Trade-off).</p>
+<p><strong>Zalety:</strong></p>
+<ul class="simple">
+<li><p>Spektakularny wzrost wydajności operacji odczytu, o ile zapytanie wykorzystuje klucz partycjonowania.</p></li>
+<li><p>Optymalne wykorzystanie pamięci operacyjnej (RAM) – indeksy dla poszczególnych partycji są znacznie mniejsze i z większym prawdopodobieństwem zmieszczą się w całości w pamięci podręcznej (Cache).</p></li>
+<li><p>Możliwość bezinwazyjnego odłączania i dołączania gigabajtów danych niemal w czasie rzeczywistym.</p></li>
+</ul>
+<p><strong>Wady:</strong></p>
+<ul class="simple">
+<li><p>Zwiększony narzut (overhead) na planistę zapytań. Przy bardzo dużej liczbie partycji (np. tysiące fragmentów), czas samego planowania zapytania przez silnik bazy może być dłuższy niż czas jego wykonania.</p></li>
+<li><p>Ograniczenia strukturalne: w wielu systemach DBMS (w tym w PostgreSQL) globalne klucze główne (Primary Keys) i ograniczenia unikalności (UNIQUE) muszą z założenia zawierać w sobie kolumnę będącą kluczem partycjonowania, co bywa trudne do pogodzenia z logiką biznesową aplikacji.</p></li>
+<li><p>Spadek wydajności w przypadku zapytań omijących klucz partycjonowania – silnik musi wówczas odpytać każdą fizyczną partycję z osobna.</p></li>
+</ul>
+</section>
+<section id="implementacja-partycjonowania-w-postgresql">
+<h2>2.6.5 Implementacja partycjonowania w PostgreSQL<a class="headerlink" href="#implementacja-partycjonowania-w-postgresql" title="Link to this heading">¶</a></h2>
+<p>Począwszy od wersji 10, PostgreSQL oferuje natywne wsparcie dla partycjonowania deklaratywnego. Eliminuje to konieczność ręcznego pisania skomplikowanych wyzwalaczy czy reguł (rules). Silnik obsługuje trzy główne strategie przydziału danych:</p>
+<ul class="simple">
+<li><p><strong>Zakresowe (RANGE):</strong> Dane są dzielone na podstawie ciągłych przedziałów wartości. Najczęściej wykorzystywanym kluczem są typy daty i czasu (np. jedna partycja dla <code class="docutils literal notranslate"><span class="pre">2025-01-01</span></code> do <code class="docutils literal notranslate"><span class="pre">2025-01-31</span></code>) lub sekwencje numeryczne.</p></li>
+<li><p><strong>Listowe (LIST):</strong> Dane są dystrybuowane na podstawie konkretnych, dyskretnych wartości zdefiniowanych w tablicy. Metoda ta idealnie sprawdza się w przypadku podziału na kategorie biznesowe, takie jak “Status_Zlecenia” (osobna partycja dla wartości <code class="docutils literal notranslate"><span class="pre">Zakończone</span></code>, <code class="docutils literal notranslate"><span class="pre">W</span> <span class="pre">trakcie</span></code>) lub regiony geograficzne.</p></li>
+<li><p><strong>Haszujące (HASH):</strong> Wiersze są rozdzielane na zadaną liczbę partycji (modułów) z wykorzystaniem zaawansowanej, matematycznej funkcji skrótu. Strategia ta nie służy przyspieszaniu zapytań zakresowych, lecz idealnie równomiernemu rozłożeniu ciężaru I/O podczas masowych operacji wstawiania (INSERT) w systemach wielodyskowych.</p></li>
+</ul>
+</section>
+<section id="ograniczenia-i-obejscie-w-srodowisku-sqlite">
+<h2>2.6.6 Ograniczenia i obejście w środowisku SQLite<a class="headerlink" href="#ograniczenia-i-obejscie-w-srodowisku-sqlite" title="Link to this heading">¶</a></h2>
+<p>W przeciwieństwie do potężnych, serwerowych silników RDBMS takich jak PostgreSQL, lekka i plikowa biblioteka SQLite <strong>nie posiada</strong> natywnego mechanizmu partycjonowania deklaratywnego. Wynika to z jej osadzonej (embedded) architektury.</p>
+<p>Niemniej jednak, efekt partycjonowania w SQLite można emulować za pomocą programistycznego podejścia warstwowego:
+1. <strong>Podział fizyczny:</strong> Utworzenie wielu mniejszych, niezależnych tabel (np. <code class="docutils literal notranslate"><span class="pre">zlecenia_2025</span></code>, <code class="docutils literal notranslate"><span class="pre">zlecenia_2026</span></code>).
+2. <strong>Warstwa logiczna:</strong> Stworzenie wspólnego widoku (<code class="docutils literal notranslate"><span class="pre">VIEW</span></code>), który scala wszystkie te tabele z wykorzystaniem operatora <code class="docutils literal notranslate"><span class="pre">UNION</span> <span class="pre">ALL</span></code>. Umożliwia to wykonywanie zapytań <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> na jednej strukturze.
+3. <strong>Zarządzanie modyfikacjami:</strong> Obsługa instrukcji DML (<code class="docutils literal notranslate"><span class="pre">INSERT</span></code>, <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>, <code class="docutils literal notranslate"><span class="pre">DELETE</span></code>) wymaga zdefiniowania na widoku zestawu wyzwalaczy (<code class="docutils literal notranslate"><span class="pre">TRIGGERS</span> <span class="pre">INSTEAD</span> <span class="pre">OF</span></code>). Wyzwalacze te muszą przechwytywać dane w locie, analizować klucz (np. datę) i dynamicznie przekierowywać operację do odpowiedniej fizycznej pod-tabeli.</p>
+<p>Choć to rozwiązanie jest funkcjonalne, należy pamiętać, że w SQLite każdorazowe uruchamianie wyzwalaczy generuje zauważalny narzut wydajnościowy w porównaniu do natywnego mechanizmu w PostgreSQL.</p>
+</section>
 </section>
 
 
@@ -52,7 +114,16 @@
 
 
 
-<h3>Navigation</h3>
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
 <p class="caption" role="heading"><span class="caption-text">Spis treści:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../rozdzial_1/index.html">Wstęp do sprawozdania oraz linki</a></li>
@@ -73,16 +144,6 @@
   </ul></li>
 </ul>
 </div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -99,8 +160,8 @@
       &#169;2026, Olaf Chomicki, Konrad Machowski, Wiktor Wydrzyński.
       
       |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
-      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="../../_sources/rozdzial_2/rozdzial_26/index.rst.txt"

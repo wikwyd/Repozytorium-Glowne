@@ -7,6 +7,7 @@
 \ifdefined\pdfimageresolution
     \pdfimageresolution= \numexpr \dimexpr1in\relax/\sphinxpxdimen\relax
 \fi
+\newdimen\sphinxremdimen\sphinxremdimen = 11pt
 %% let collapsible pdf bookmarks panel have high depth per default
 \PassOptionsToPackage{bookmarksdepth=5}{hyperref}
 
@@ -77,7 +78,7 @@
 
 
 \title{Sprawozdanie z Laboratorium: Bazy Danych}
-\date{Jun 25, 2026}
+\date{Jun 28, 2026}
 \release{}
 \author{Olaf Chomicki, Konrad Machowski, Wiktor Wydrzyński}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -616,41 +617,61 @@ Pliki konfiguracyjne PostgreSQL znajdują się w katalogu danych (\sphinxcode{\s
 \sphinxaftertopcaption
 \begin{tabular}[t]{\X{30}{100}\X{70}{100}}
 \sphinxtoprule
-\sphinxstyletheadfamily 
-\sphinxAtStartPar
+\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
+\sphinxstyletheadfamily \sphinxAtStartPar
 System
-&\sphinxstyletheadfamily 
-\sphinxAtStartPar
+\sphinxbeforeendvarwidth
+\end{varwidth}%
+&\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
+\sphinxstyletheadfamily \sphinxAtStartPar
 Katalog danych
+\sphinxbeforeendvarwidth
+\end{varwidth}%
 \\
 \sphinxmidrule
-\sphinxtableatstartofbodyhook
+\sphinxtableatstartofbodyhook\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
 \sphinxAtStartPar
 Linux (RPM/DEB)
-&
+\sphinxbeforeendvarwidth
+\end{varwidth}%
+&\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
 \sphinxAtStartPar
 \sphinxcode{\sphinxupquote{/var/lib/pgsql/data/}} lub \sphinxcode{\sphinxupquote{/var/lib/postgresql/*/main/}}
+\sphinxbeforeendvarwidth
+\end{varwidth}%
 \\
-\sphinxhline
+\sphinxhline\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
 \sphinxAtStartPar
 Linux (kompilacja źródłowa)
-&
+\sphinxbeforeendvarwidth
+\end{varwidth}%
+&\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
 \sphinxAtStartPar
 \sphinxcode{\sphinxupquote{/usr/local/pgsql/data/}}
+\sphinxbeforeendvarwidth
+\end{varwidth}%
 \\
-\sphinxhline
+\sphinxhline\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
 \sphinxAtStartPar
 Windows
-&
+\sphinxbeforeendvarwidth
+\end{varwidth}%
+&\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
 \sphinxAtStartPar
 \sphinxcode{\sphinxupquote{C:\textbackslash{}Program Files\textbackslash{}PostgreSQL\textbackslash{}\textless{}version\textgreater{}\textbackslash{}data\textbackslash{}}}
+\sphinxbeforeendvarwidth
+\end{varwidth}%
 \\
-\sphinxhline
+\sphinxhline\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
 \sphinxAtStartPar
 Docker
-&
+\sphinxbeforeendvarwidth
+\end{varwidth}%
+&\begin{varwidth}[t]{\sphinxcolwidth{1}{2}}
 \sphinxAtStartPar
 \sphinxcode{\sphinxupquote{/var/lib/postgresql/data/}} (w kontenerze)
+\sphinxbeforeendvarwidth
+\end{varwidth}%
 \\
 \sphinxbottomrule
 \end{tabular}
@@ -964,7 +985,7 @@ Wzorzec nazw plików logów.
 Przykład:
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{n+na}{log\PYGZus{}filename}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}postgresql\PYGZhy{}\PYGZpc{}Y\PYGZhy{}\PYGZpc{}m\PYGZhy{}\PYGZpc{}d.log\PYGZsq{}}
+\PYG{n+na}{log\PYGZus{}filename}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{postgresql\PYGZhy{}\PYGZpc{}Y\PYGZhy{}\PYGZpc{}m\PYGZhy{}\PYGZpc{}d.log}\PYG{l+s}{\PYGZsq{}}
 \end{sphinxVerbatim}
 
 \sphinxlineitem{\sphinxcode{\sphinxupquote{log\_min\_duration\_statement}}}
@@ -1062,7 +1083,7 @@ Polecenie wykonywane podczas archiwizacji plików WAL.
 \subsubsection{Przykładowa konfiguracja}
 \label{\detokenize{rozdzial_2/rozdzial_22/index:przykladowa-konfiguracja}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{n+na}{listen\PYGZus{}addresses}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}*\PYGZsq{}}
+\PYG{n+na}{listen\PYGZus{}addresses}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{*}\PYG{l+s}{\PYGZsq{}}
 \PYG{n+na}{port}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{5432}
 \PYG{n+na}{max\PYGZus{}connections}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{200}
 
@@ -1071,7 +1092,7 @@ Polecenie wykonywane podczas archiwizacji plików WAL.
 \PYG{n+na}{maintenance\PYGZus{}work\PYGZus{}mem}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{256MB}
 
 \PYG{n+na}{logging\PYGZus{}collector}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{on}
-\PYG{n+na}{log\PYGZus{}directory}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}log\PYGZsq{}}
+\PYG{n+na}{log\PYGZus{}directory}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{log}\PYG{l+s}{\PYGZsq{}}
 
 \PYG{n+na}{ssl}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{on}
 \PYG{n+na}{password\PYGZus{}encryption}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{scram\PYGZhy{}sha\PYGZhy{}256}
@@ -1476,15 +1497,18 @@ Współczesne systemy relacyjnych baz danych to wysoce skomplikowane środowiska
 
 \item {} 
 \sphinxAtStartPar
-\sphinxstylestrong{Jak?} Konserwacja powinna być maksymalnie zautomatyzowana (np. z wykorzystaniem systemowego demona CRON lub rozszerzenia \sphinxtitleref{pg\_cron}). Ręczne interwencje administratora powinny być zarezerwowane wyłącznie dla sytuacji awaryjnych i niestandardowych problemów wydajnościowych.
+\sphinxstylestrong{Jak?} Konserwacja powinna być maksymalnie zautomatyzowana (np. z wykorzystaniem systemowego demona CRON lub rozszerzenia \sphinxcode{\sphinxupquote{pg\_cron}} w PostgreSQL). Ręczne interwencje administratora powinny być zarezerwowane wyłącznie dla sytuacji awaryjnych.
 
 \end{itemize}
+
+\sphinxAtStartPar
+\sphinxstyleemphasis{Uwaga dla środowisk SQLite:} W przeciwieństwie do potężnego PostgreSQL, SQLite jako baza plikowa i wbudowana (embedded) nie posiada demonów działających w tle, więc pojęcie “planowania konserwacji” sprowadza się najczęściej do ręcznego wywoływania skryptów optymalizujących (np. z poziomu aplikacji klienckiej) w momentach, gdy plik bazy nie jest zablokowany.
 
 
 \subsection{Zarządzanie stanem serwera i sesjami}
 \label{\detokenize{rozdzial_2/rozdzial_23/index:zarzadzanie-stanem-serwera-i-sesjami}}
 \sphinxAtStartPar
-Podstawą kontroli nad środowiskiem bazodanowym jest zarządzanie cyklem życia samej usługi. Uruchamianie, zatrzymywanie i restartowanie serwera bazy danych realizuje się najczęściej za pośrednictwem menedżera usług systemu operacyjnego (np. polecenia \sphinxtitleref{systemctl start/stop/restart postgresql}) lub za pomocą dedykowanego narzędzia wiersza poleceń \sphinxtitleref{pg\_ctl}.
+Podstawą kontroli nad środowiskiem bazodanowym w architekturze klient\sphinxhyphen{}serwer (takiej jak PostgreSQL) jest zarządzanie cyklem życia samej usługi. Uruchamianie, zatrzymywanie i restartowanie serwera bazy danych realizuje się najczęściej za pośrednictwem menedżera usług systemu operacyjnego (np. polecenia \sphinxcode{\sphinxupquote{systemctl start/stop/restart postgresql}}) lub za pomocą dedykowanego narzędzia wiersza poleceń \sphinxcode{\sphinxupquote{pg\_ctl}}.
 
 \sphinxAtStartPar
 Podczas wdrażania krytycznych aktualizacji lub w sytuacjach awaryjnych, konieczne jest sprawne zarządzanie ruchem użytkowników:
@@ -1500,7 +1524,7 @@ Podczas wdrażania krytycznych aktualizacji lub w sytuacjach awaryjnych, koniecz
 \end{itemize}
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Zapobieganie nawiązywaniu nowych połączeń do bazy danych}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Zapobieganie nawiązywaniu nowych połączeń do bazy danych (PostgreSQL)}
 \PYG{k}{ALTER}\PYG{+w}{ }\PYG{k}{DATABASE}\PYG{+w}{ }\PYG{n}{biblioteka\PYGZus{}db}\PYG{+w}{ }\PYG{n}{ALLOW\PYGZus{}CONNECTIONS}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{k}{false}\PYG{p}{;}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Siłowe rozłączenie wszystkich aktywnych użytkowników (poza aktualną sesją)}
@@ -1508,6 +1532,9 @@ Podczas wdrażania krytycznych aktualizacji lub w sytuacjach awaryjnych, koniecz
 \PYG{k}{FROM}\PYG{+w}{ }\PYG{n}{pg\PYGZus{}stat\PYGZus{}activity}
 \PYG{k}{WHERE}\PYG{+w}{ }\PYG{n}{datname}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}biblioteka\PYGZus{}db\PYGZsq{}}\PYG{+w}{ }\PYG{k}{AND}\PYG{+w}{ }\PYG{n}{pid}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{pg\PYGZus{}backend\PYGZus{}pid}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;}
 \end{sphinxVerbatim}
+
+\sphinxAtStartPar
+\sphinxstyleemphasis{Uwaga dla środowisk SQLite:} Ponieważ SQLite nie posiada procesu serwera zarządzającego użytkownikami sieciowymi, nie ma tu koncepcji “zabijania sesji” czy blokowania nowych połączeń sieciowych. Dostęp jest kontrolowany wyłącznie na poziomie blokad plików systemu operacyjnego (file locks).
 
 
 \subsection{Proces Vacuum}
@@ -1529,6 +1556,9 @@ Architektura PostgreSQL opiera się na mechanizmie MVCC (Multi\sphinxhyphen{}Ver
 
 \end{itemize}
 
+\sphinxAtStartPar
+\sphinxstyleemphasis{Uwaga dla środowisk SQLite:} SQLite w odpowiedzi na operację DELETE po prostu oznacza miejsce jako “wolne” w pliku. Aby fizycznie skurczyć plik, należy wywołać unikalne polecenie \sphinxcode{\sphinxupquote{VACUUM}} (odpowiednik \sphinxcode{\sphinxupquote{VACUUM FULL}} z PostgreSQL). Możliwe jest również włączenie trybu \sphinxcode{\sphinxupquote{PRAGMA auto\_vacuum = FULL}}, jednak ze względów wydajnościowych narzuca on znaczny koszt przy każdej modyfikacji.
+
 
 \subsection{Zarządzanie transakcjami i schematy (SCHEMA)}
 \label{\detokenize{rozdzial_2/rozdzial_23/index:zarzadzanie-transakcjami-i-schematy-schema}}
@@ -1536,13 +1566,24 @@ Architektura PostgreSQL opiera się na mechanizmie MVCC (Multi\sphinxhyphen{}Ver
 Kolejnym aspektem administracji jest dbanie o logiczną strukturę bazy oraz spójność operacji.
 
 \sphinxAtStartPar
-\sphinxstylestrong{SCHEMA (Schematy)} to wirtualne przestrzenie nazw (przypominające katalogi w systemie operacyjnym), służące do logicznego grupowania tabel, widoków i funkcji. Ich główne zastosowania to:
-* Izolacja danych różnych mikrousług lub aplikacji wewnątrz jednej wspólnej bazy danych.
-* Implementacja architektury wielodostępowej (multi\sphinxhyphen{}tenant), gdzie każdy klient aplikacji obsługiwany jest w dedykowanym, oddzielnym schemacie.
-* Ułatwione i zbiorcze zarządzanie uprawnieniami dostępu.
+\sphinxstylestrong{SCHEMA (Schematy)} to wirtualne przestrzenie nazw (przypominające katalogi w systemie operacyjnym), służące do logicznego grupowania tabel, widoków i funkcji. Warto nadmienić, że mechanizm logicznych schematów znany z PostgreSQL nie występuje natywnie w SQLite (istnieje tam komenda ATTACH do dołączania innych plików baz danych jako schematów, ale działa to na innej zasadzie). Główne zastosowania schematów w PostgreSQL to:
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+Izolacja danych różnych mikrousług lub aplikacji wewnątrz jednej wspólnej bazy danych.
+
+\item {} 
+\sphinxAtStartPar
+Implementacja architektury wielodostępowej (multi\sphinxhyphen{}tenant), gdzie każdy klient aplikacji obsługiwany jest w dedykowanym, oddzielnym schemacie.
+
+\item {} 
+\sphinxAtStartPar
+Ułatwione i zbiorcze zarządzanie uprawnieniami dostępu.
+
+\end{itemize}
 
 \sphinxAtStartPar
-\sphinxstylestrong{Zarządzanie transakcjami} to proces kontrolowania instrukcji (BEGIN, COMMIT, ROLLBACK) w taki sposób, aby zachować zgodność z regułami ACID. Administrator musi zwracać szczególną uwagę na zapobieganie tzw. długim transakcjom (long\sphinxhyphen{}running transactions). Otwarta i porzucona transakcja powstrzymuje proces Vacuum przed usuwaniem martwych krotek, co prowadzi do drastycznego spadku wydajności całej bazy.
+\sphinxstylestrong{Zarządzanie transakcjami} to proces kontrolowania instrukcji (BEGIN, COMMIT, ROLLBACK) w taki sposób, aby zachować zgodność z regułami ACID. Administrator musi zwracać szczególną uwagę na zapobieganie tzw. długim transakcjom (long\sphinxhyphen{}running transactions). Otwarta i porzucona transakcja powstrzymuje proces Vacuum przed usuwaniem martwych krotek, co prowadzi do drastycznego spadku wydajności całej bazy (dotyczy to tak samo PostgreSQL, jak i SQLite, gdzie długa transakcja zapisu blokuje cały plik bazy).
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Przykład logiki transakcyjnej z wykorzystaniem konkretnego schematu}
@@ -1559,30 +1600,16 @@ Kolejnym aspektem administracji jest dbanie o logiczną strukturę bazy oraz sp�
 Indeksy są fundamentalne dla wydajnego wyszukiwania danych, jednak ich utrzymanie kosztuje — spowalniają one modyfikacje danych (DML) i konsumują miejsce na dysku.
 
 \sphinxAtStartPar
-Prawidłowe zarządzanie indeksami polega na stałym monitorowaniu ich wykorzystania. Należy identyfikować i usuwać indeksy, które nie są wykorzystywane przez planistę zapytań (tzw. unused indexes). Dodatkowo, podobnie jak tabele, indeksy ulegają fragmentacji. Z tego powodu administrator powinien regularnie planować operację \sphinxstylestrong{REINDEX}, która od nowa buduje strukturę drzewa indeksu, przywracając mu optymalny rozmiar i maksymalną wydajność. W systemach o wysokiej dostępności stosuje się przebudowę w trybie \sphinxtitleref{CONCURRENTLY}, która nie przerywa pracy aplikacji.
+Prawidłowe zarządzanie indeksami polega na stałym monitorowaniu ich wykorzystania. Należy identyfikować i usuwać indeksy, które nie są wykorzystywane przez planistę zapytań (tzw. unused indexes). Dodatkowo, podobnie jak tabele, indeksy ulegają fragmentacji. Z tego powodu administrator powinien regularnie planować operację \sphinxstylestrong{REINDEX}, która od nowa buduje strukturę drzewa indeksu, przywracając mu optymalny rozmiar i maksymalną wydajność. W systemach PostgreSQL o wysokiej dostępności stosuje się przebudowę w trybie \sphinxcode{\sphinxupquote{CONCURRENTLY}}, która nie przerywa pracy aplikacji (SQLite posiada jedynie standardowe polecenie REINDEX, blokujące tabele).
 
 
 \subsection{Podsumowanie}
 \label{\detokenize{rozdzial_2/rozdzial_23/index:podsumowanie}}
 \sphinxAtStartPar
-Prawidłowa kontrola i konserwacja środowiska bazodanowego to wielowymiarowy proces, wymagający głębokiego zrozumienia zarówno architektury logicznej, jak i fizycznej serwera.
+Prawidłowa kontrola i konserwacja środowiska bazodanowego to wielowymiarowy proces, wymagający głębokiego zrozumienia zarówno architektury logicznej, jak i fizycznej silnika.
 
 \sphinxAtStartPar
-Stabilność i wydajność systemu zależy w równej mierze od prawidłowego zarządzania stanem usługi i połączeniami, dogłębnego planowania okien serwisowych, jak i proaktywnego zarządzania mechanizmem Vacuum i transakcjami. Wykorzystanie schematów do strukturyzacji danych oraz regularne dbanie o kondycję indeksów pozwala na zbudowanie środowiska, które będzie skalowalne, przewidywalne i odporne na awarie w trudnych, produkcyjnych warunkach.
-\begin{quote}\begin{description}
-\sphinxlineitem{Autorzy}\begin{enumerate}
-\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
-\item {} 
-\sphinxAtStartPar
-Paweł Łoćwin
-
-\item {} 
-\sphinxAtStartPar
-Paweł Łosowski
-
-\end{enumerate}
-
-\end{description}\end{quote}
+Stabilność i wydajność dużych systemów relacyjnych (PostgreSQL) zależy w równej mierze od prawidłowego zarządzania stanem usługi i połączeniami sieciowymi, dogłębnego planowania okien serwisowych, jak i proaktywnego zarządzania mechanizmem AutoVacuum. Z kolei w środowiskach wbudowanych (SQLite) ciężar ten przenosi się na precyzyjne zarządzanie blokadami plików operacyjnych oraz manualną defragmentację przestrzeni. Niezależnie od wybranego silnika, regularne dbanie o kondycję indeksów i izolacja transakcyjna pozwalają na zbudowanie stabilnego systemu odpornego na obciążenia w trudnych, produkcyjnych warunkach.
 
 \sphinxstepscope
 
@@ -1875,8 +1902,143 @@ fio\PYG{+w}{ }\PYGZhy{}\PYGZhy{}name\PYG{o}{=}test\PYGZus{}bazy\PYG{+w}{ }\PYGZh
 \sphinxstepscope
 
 
-\section{Partycjonowanie danych}
+\section{2.6. Partycjonowanie danych}
 \label{\detokenize{rozdzial_2/rozdzial_26/index:partycjonowanie-danych}}\label{\detokenize{rozdzial_2/rozdzial_26/index::doc}}
+\sphinxAtStartPar
+\sphinxstylestrong{Autorzy}
+\begin{enumerate}
+\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\item {} 
+\sphinxAtStartPar
+Michał Bystrzak
+
+\item {} 
+\sphinxAtStartPar
+Damian Dominiak
+
+\end{enumerate}
+
+
+\subsection{2.6.1 Wstęp i istota problemu}
+\label{\detokenize{rozdzial_2/rozdzial_26/index:wstep-i-istota-problemu}}
+\sphinxAtStartPar
+W dobie systemów informatycznych przetwarzających gigabajty lub terabajty informacji (tzw. VLDB \sphinxhyphen{} Very Large Databases), tradycyjne podejście do składowania danych staje się wysoce niewydajne. Kiedy pojedyncza tabela rozrasta się do setek milionów rekordów, fizyczne ograniczenia sprzętowe oraz narzuty na zarządzanie indeksami powodują drastyczny spadek wydajności. Partycjonowanie to zaawansowana technika architektoniczna, polegająca na logicznym podziale jednej, ogromnej tabeli na mniejsze, odseparowane fizycznie fragmenty nazywane partycjami. Z perspektywy aplikacji docelowej oraz zapytań SQL, tabela wciąż prezentuje się i zachowuje jak spójna, pojedyncza relacja.
+
+
+\subsection{2.6.2 Cele stosowania partycjonowania danych}
+\label{\detokenize{rozdzial_2/rozdzial_26/index:cele-stosowania-partycjonowania-danych}}
+\sphinxAtStartPar
+Implementacja mechanizmu partycjonowania w systemach relacyjnych jest podyktowana chęcią rozwiązania konkretnych problemów wydajnościowych i administracyjnych. Główne cele to:
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Zwiększenie wydajności zapytań (Query Performance):} Fundamentalnym celem jest eliminacja konieczności skanowania całej tabeli (Full Table Scan). Dzięki mechanizmowi \sphinxstyleemphasis{Partition Pruning} (odcinanie partycji), planista zapytań analizuje warunki zdefiniowane w klauzuli \sphinxcode{\sphinxupquote{WHERE}} i kieruje odczyt wyłącznie do tych fizycznych plików, które mogą zawierać poszukiwane dane.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Optymalizacja procesów utrzymaniowych (Maintenance):} Olbrzymie tabele są trudne w utrzymaniu. Operacje takie jak \sphinxcode{\sphinxupquote{VACUUM}}, \sphinxcode{\sphinxupquote{REINDEX}} czy odtwarzanie kopii zapasowych mogą blokować zasoby przez wiele godzin. Partycjonowanie pozwala na wykonywanie tych operacji selektywnie, tylko na tych partycjach, które uległy modyfikacji.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Zarządzanie cyklem życia danych (Data Lifecycle Management):} W przypadku danych historycznych (np. logów), najszybszą metodą ich usunięcia jest operacja \sphinxcode{\sphinxupquote{DROP TABLE}} na starej partycji. Jest to operacja na metadanych, trwająca ułamki sekund, w przeciwieństwie do standardowego \sphinxcode{\sphinxupquote{DELETE}}, które w architekturze MVCC (Multi\sphinxhyphen{}Version Concurrency Control) generuje ogromne ilości “martwych krotek” (dead tuples) i obciąża dziennik transakcji (WAL).
+
+\end{itemize}
+
+
+\subsection{2.6.3 Zastosowanie partycjonowania}
+\label{\detokenize{rozdzial_2/rozdzial_26/index:zastosowanie-partycjonowania}}
+\sphinxAtStartPar
+Technika ta nie jest uniwersalnym rozwiązaniem dla każdej bazy danych, lecz sprawdza się w specyficznych, wymagających scenariuszach:
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Hurtownie danych (OLAP):} Systemy analityczne gromadzące dane historyczne. Partycjonowanie pozwala tam na błyskawiczne agregowanie danych (np. sumowanie przychodów z konkretnego miesiąca) bez wczytywania do pamięci RAM danych z całej dekady.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Systemy transakcyjne (OLTP) o wysokim przyroście:} Aplikacje rejestrujące logi systemowe, odczyty z czujników IoT, dane telemetryczne czy rejestry transakcji finansowych (Time\sphinxhyphen{}Series Data), gdzie każdego dnia przybywają miliony nowych wierszy.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Implementacja Storage Tiering:} Możliwość fizycznego rozdzielenia danych na różne nośniki. Najnowsze i najczęściej odpytywane partycje (Hot Data) umieszcza się na ultra\sphinxhyphen{}szybkich macierzach NVMe, podczas gdy starsze, rzadko używane partycje (Cold Data) przenosi się na tańsze wolumeny dyskowe (HDD), co znacząco optymalizuje koszty infrastruktury.
+
+\end{itemize}
+
+
+\subsection{2.6.4 Zalety i wady partycjonowania}
+\label{\detokenize{rozdzial_2/rozdzial_26/index:zalety-i-wady-partycjonowania}}
+\sphinxAtStartPar
+Jak każda technika optymalizacyjna, partycjonowanie stanowi kompromis inżynieryjny (Trade\sphinxhyphen{}off).
+
+\sphinxAtStartPar
+\sphinxstylestrong{Zalety:}
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+Spektakularny wzrost wydajności operacji odczytu, o ile zapytanie wykorzystuje klucz partycjonowania.
+
+\item {} 
+\sphinxAtStartPar
+Optymalne wykorzystanie pamięci operacyjnej (RAM) \textendash{} indeksy dla poszczególnych partycji są znacznie mniejsze i z większym prawdopodobieństwem zmieszczą się w całości w pamięci podręcznej (Cache).
+
+\item {} 
+\sphinxAtStartPar
+Możliwość bezinwazyjnego odłączania i dołączania gigabajtów danych niemal w czasie rzeczywistym.
+
+\end{itemize}
+
+\sphinxAtStartPar
+\sphinxstylestrong{Wady:}
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+Zwiększony narzut (overhead) na planistę zapytań. Przy bardzo dużej liczbie partycji (np. tysiące fragmentów), czas samego planowania zapytania przez silnik bazy może być dłuższy niż czas jego wykonania.
+
+\item {} 
+\sphinxAtStartPar
+Ograniczenia strukturalne: w wielu systemach DBMS (w tym w PostgreSQL) globalne klucze główne (Primary Keys) i ograniczenia unikalności (UNIQUE) muszą z założenia zawierać w sobie kolumnę będącą kluczem partycjonowania, co bywa trudne do pogodzenia z logiką biznesową aplikacji.
+
+\item {} 
+\sphinxAtStartPar
+Spadek wydajności w przypadku zapytań omijących klucz partycjonowania \textendash{} silnik musi wówczas odpytać każdą fizyczną partycję z osobna.
+
+\end{itemize}
+
+
+\subsection{2.6.5 Implementacja partycjonowania w PostgreSQL}
+\label{\detokenize{rozdzial_2/rozdzial_26/index:implementacja-partycjonowania-w-postgresql}}
+\sphinxAtStartPar
+Począwszy od wersji 10, PostgreSQL oferuje natywne wsparcie dla partycjonowania deklaratywnego. Eliminuje to konieczność ręcznego pisania skomplikowanych wyzwalaczy czy reguł (rules). Silnik obsługuje trzy główne strategie przydziału danych:
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Zakresowe (RANGE):} Dane są dzielone na podstawie ciągłych przedziałów wartości. Najczęściej wykorzystywanym kluczem są typy daty i czasu (np. jedna partycja dla \sphinxcode{\sphinxupquote{2025\sphinxhyphen{}01\sphinxhyphen{}01}} do \sphinxcode{\sphinxupquote{2025\sphinxhyphen{}01\sphinxhyphen{}31}}) lub sekwencje numeryczne.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Listowe (LIST):} Dane są dystrybuowane na podstawie konkretnych, dyskretnych wartości zdefiniowanych w tablicy. Metoda ta idealnie sprawdza się w przypadku podziału na kategorie biznesowe, takie jak “Status\_Zlecenia” (osobna partycja dla wartości \sphinxcode{\sphinxupquote{Zakończone}}, \sphinxcode{\sphinxupquote{W trakcie}}) lub regiony geograficzne.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstylestrong{Haszujące (HASH):} Wiersze są rozdzielane na zadaną liczbę partycji (modułów) z wykorzystaniem zaawansowanej, matematycznej funkcji skrótu. Strategia ta nie służy przyspieszaniu zapytań zakresowych, lecz idealnie równomiernemu rozłożeniu ciężaru I/O podczas masowych operacji wstawiania (INSERT) w systemach wielodyskowych.
+
+\end{itemize}
+
+
+\subsection{2.6.6 Ograniczenia i obejście w środowisku SQLite}
+\label{\detokenize{rozdzial_2/rozdzial_26/index:ograniczenia-i-obejscie-w-srodowisku-sqlite}}
+\sphinxAtStartPar
+W przeciwieństwie do potężnych, serwerowych silników RDBMS takich jak PostgreSQL, lekka i plikowa biblioteka SQLite \sphinxstylestrong{nie posiada} natywnego mechanizmu partycjonowania deklaratywnego. Wynika to z jej osadzonej (embedded) architektury.
+
+\sphinxAtStartPar
+Niemniej jednak, efekt partycjonowania w SQLite można emulować za pomocą programistycznego podejścia warstwowego:
+1. \sphinxstylestrong{Podział fizyczny:} Utworzenie wielu mniejszych, niezależnych tabel (np. \sphinxcode{\sphinxupquote{zlecenia\_2025}}, \sphinxcode{\sphinxupquote{zlecenia\_2026}}).
+2. \sphinxstylestrong{Warstwa logiczna:} Stworzenie wspólnego widoku (\sphinxcode{\sphinxupquote{VIEW}}), który scala wszystkie te tabele z wykorzystaniem operatora \sphinxcode{\sphinxupquote{UNION ALL}}. Umożliwia to wykonywanie zapytań \sphinxcode{\sphinxupquote{SELECT}} na jednej strukturze.
+3. \sphinxstylestrong{Zarządzanie modyfikacjami:} Obsługa instrukcji DML (\sphinxcode{\sphinxupquote{INSERT}}, \sphinxcode{\sphinxupquote{UPDATE}}, \sphinxcode{\sphinxupquote{DELETE}}) wymaga zdefiniowania na widoku zestawu wyzwalaczy (\sphinxcode{\sphinxupquote{TRIGGERS INSTEAD OF}}). Wyzwalacze te muszą przechwytywać dane w locie, analizować klucz (np. datę) i dynamicznie przekierowywać operację do odpowiedniej fizycznej pod\sphinxhyphen{}tabeli.
+
+\sphinxAtStartPar
+Choć to rozwiązanie jest funkcjonalne, należy pamiętać, że w SQLite każdorazowe uruchamianie wyzwalaczy generuje zauważalny narzut wydajnościowy w porównaniu do natywnego mechanizmu w PostgreSQL.
+
 \sphinxstepscope
 
 
@@ -2251,10 +2413,10 @@ Przykład wymuszenia TLS w konfiguracji PostgreSQL (\sphinxcode{\sphinxupquote{p
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZsh{} Włączenie obsługi protokołu TLS}
 \PYG{n+na}{ssl}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{on}
-\PYG{n+na}{ssl\PYGZus{}cert\PYGZus{}file}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}/etc/ssl/certs/db\PYGZhy{}server.crt\PYGZsq{}}
-\PYG{n+na}{ssl\PYGZus{}key\PYGZus{}file}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}/etc/ssl/private/db\PYGZhy{}server.key\PYGZsq{}}
+\PYG{n+na}{ssl\PYGZus{}cert\PYGZus{}file}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{/etc/ssl/certs/db\PYGZhy{}server.crt}\PYG{l+s}{\PYGZsq{}}
+\PYG{n+na}{ssl\PYGZus{}key\PYGZus{}file}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{/etc/ssl/private/db\PYGZhy{}server.key}\PYG{l+s}{\PYGZsq{}}
 \PYG{c+c1}{\PYGZsh{} Odrzucanie połączeń używających przestarzałych, podatnych wersji protokołu}
-\PYG{n+na}{ssl\PYGZus{}min\PYGZus{}protocol\PYGZus{}version}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}TLSv1.2\PYGZsq{}}
+\PYG{n+na}{ssl\PYGZus{}min\PYGZus{}protocol\PYGZus{}version}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{TLSv1.2}\PYG{l+s}{\PYGZsq{}}
 \end{sphinxVerbatim}
 
 \sphinxAtStartPar
@@ -2878,7 +3040,7 @@ Dla zasymulowania warunków produkcyjnych i obciążenia systemów większym wol
 Zarówno dla SQLite, jak i PostgreSQL, pierwszym krokiem w środowisku języka Python było odczytanie płaskiego pliku i przeniesienie go do ustrukturyzowanej, iterowalnej pamięci RAM (np. w postaci listy list):
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kn}{import} \PYG{n+nn}{csv}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{csv}
 
 \PYG{c+c1}{\PYGZsh{} Wczytywanie danych z pliku CSV do struktury iterowalnej}
 \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{klienci.csv}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{r}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{utf\PYGZhy{}8}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{plik\PYGZus{}csv}\PYG{p}{:}
@@ -3117,10 +3279,10 @@ Zbiór krotek (imię, nazwisko, email, telefon).
 Wyżej zdefiniowane funkcje zostały spakietowane w postaci odizolowanego modułu Pythona, gotowego do wykonania lub podpięcia jako biblioteka analityczna w głównym kodzie aplikacji.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kn}{import} \PYG{n+nn}{psycopg}
-\PYG{k+kn}{import} \PYG{n+nn}{sqlite3}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{psycopg}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{sqlite3}
 
-\PYG{k}{def} \PYG{n+nf}{sprawdz\PYGZus{}historie\PYGZus{}aut}\PYG{p}{(}\PYG{n}{conn}\PYG{p}{)}\PYG{p}{:}
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{sprawdz\PYGZus{}historie\PYGZus{}aut}\PYG{p}{(}\PYG{n}{conn}\PYG{p}{)}\PYG{p}{:}
     \PYG{n}{cursor} \PYG{o}{=} \PYG{n}{conn}\PYG{o}{.}\PYG{n}{cursor}\PYG{p}{(}\PYG{p}{)}
     \PYG{n}{query} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
 \PYG{l+s+s2}{        SELECT}

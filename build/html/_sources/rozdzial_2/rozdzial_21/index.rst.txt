@@ -156,7 +156,7 @@ Infrastruktura UPS i Agregaty Prądotwórcze
 Wszelkie systemy serwerowe DBMS muszą współpracować z zasilaczami awaryjnymi UPS działającymi w topologii *Online* (podwójne przetwarzanie). Zapewniają one idealną sinusoidę napięcia, eliminują przepięcia i gwarantują czas podtrzymania niezbędny do automatycznego uruchomienia spalinowych agregatów prądotwórczych o odpowiedniej mocy.
 
 Zapobieganie Zjawisku "Torn Writes"
---------------------------------
+-----------------------------------
 
 Zjawisko *Torn Write* (rozbity/częściowy zapis) występuje, gdy system operacyjny przesyła do zapisu stronę danych (np. 8 KB), a w trakcie fizycznego zapisu na komórkę pamięci Flash dochodzi do nagłego odcięcia zasilania. W efekcie na dysku ląduje np. tylko 4 KB danych, co powoduje bezpowrotne uszkodzenie struktury tej strony i błąd sumy kontrolnej przy próbie kolejnego uruchomienia bazy danych.
 

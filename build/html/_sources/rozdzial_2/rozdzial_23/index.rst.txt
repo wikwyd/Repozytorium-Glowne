@@ -12,11 +12,13 @@ Współczesne systemy relacyjnych baz danych to wysoce skomplikowane środowiska
 
 * **Kiedy?** Operacje inwazyjne (np. pełna przebudowa tabel i indeksów) powinny być planowane w tzw. oknach serwisowych, czyli w godzinach najniższego obciążenia systemu (zwykle w nocy lub w weekendy). Lżejsze prace konserwacyjne mogą odbywać się w tle.
 * **W jakim zakresie?** Należy precyzyjnie określić, czy konserwacji wymaga cała instancja, pojedyncza baza danych, czy tylko wytypowane, najszybciej rosnące tabele. Skupienie się na najbardziej obciążonych obszarach oszczędza zasoby sprzętowe.
-* **Jak?** Konserwacja powinna być maksymalnie zautomatyzowana (np. z wykorzystaniem systemowego demona CRON lub rozszerzenia `pg_cron`). Ręczne interwencje administratora powinny być zarezerwowane wyłącznie dla sytuacji awaryjnych i niestandardowych problemów wydajnościowych.
+* **Jak?** Konserwacja powinna być maksymalnie zautomatyzowana (np. z wykorzystaniem systemowego demona CRON lub rozszerzenia ``pg_cron`` w PostgreSQL). Ręczne interwencje administratora powinny być zarezerwowane wyłącznie dla sytuacji awaryjnych. 
+
+*Uwaga dla środowisk SQLite:* W przeciwieństwie do potężnego PostgreSQL, SQLite jako baza plikowa i wbudowana (embedded) nie posiada demonów działających w tle, więc pojęcie "planowania konserwacji" sprowadza się najczęściej do ręcznego wywoływania skryptów optymalizujących (np. z poziomu aplikacji klienckiej) w momentach, gdy plik bazy nie jest zablokowany.
 
 Zarządzanie stanem serwera i sesjami
 ====================================
-Podstawą kontroli nad środowiskiem bazodanowym jest zarządzanie cyklem życia samej usługi. Uruchamianie, zatrzymywanie i restartowanie serwera bazy danych realizuje się najczęściej za pośrednictwem menedżera usług systemu operacyjnego (np. polecenia `systemctl start/stop/restart postgresql`) lub za pomocą dedykowanego narzędzia wiersza poleceń `pg_ctl`.
+Podstawą kontroli nad środowiskiem bazodanowym w architekturze klient-serwer (takiej jak PostgreSQL) jest zarządzanie cyklem życia samej usługi. Uruchamianie, zatrzymywanie i restartowanie serwera bazy danych realizuje się najczęściej za pośrednictwem menedżera usług systemu operacyjnego (np. polecenia ``systemctl start/stop/restart postgresql``) lub za pomocą dedykowanego narzędzia wiersza poleceń ``pg_ctl``.
 
 Podczas wdrażania krytycznych aktualizacji lub w sytuacjach awaryjnych, konieczne jest sprawne zarządzanie ruchem użytkowników:
 
@@ -25,13 +27,15 @@ Podczas wdrażania krytycznych aktualizacji lub w sytuacjach awaryjnych, koniecz
 
 .. code-block:: sql
 
-    -- Zapobieganie nawiązywaniu nowych połączeń do bazy danych
+    -- Zapobieganie nawiązywaniu nowych połączeń do bazy danych (PostgreSQL)
     ALTER DATABASE biblioteka_db ALLOW_CONNECTIONS = false;
 
     -- Siłowe rozłączenie wszystkich aktywnych użytkowników (poza aktualną sesją)
     SELECT pg_terminate_backend(pid)
     FROM pg_stat_activity
     WHERE datname = 'biblioteka_db' AND pid <> pg_backend_pid();
+
+*Uwaga dla środowisk SQLite:* Ponieważ SQLite nie posiada procesu serwera zarządzającego użytkownikami sieciowymi, nie ma tu koncepcji "zabijania sesji" czy blokowania nowych połączeń sieciowych. Dostęp jest kontrolowany wyłącznie na poziomie blokad plików systemu operacyjnego (file locks).
 
 Proces Vacuum
 =============
@@ -41,16 +45,19 @@ Architektura PostgreSQL opiera się na mechanizmie MVCC (Multi-Version Concurren
 * **VACUUM FULL:** Inwazyjna i ciężka operacja, która fizycznie przebudowuje tabelę, faktycznie zmniejszając jej rozmiar i zwracając wolne miejsce do systemu operacyjnego. Wymaga ekskluzywnej blokady (lock), całkowicie odcinając aplikację od modyfikowanej tabeli na czas trwania procesu.
 * **AUTOVACUUM:** Zautomatyzowany proces działający w tle, który regularnie monitoruje poziom zmian w tabelach i samoczynnie wyzwala standardowy Vacuum, zapobiegając niekontrolowanemu puchnięciu bazy danych (table bloat).
 
+*Uwaga dla środowisk SQLite:* SQLite w odpowiedzi na operację DELETE po prostu oznacza miejsce jako "wolne" w pliku. Aby fizycznie skurczyć plik, należy wywołać unikalne polecenie ``VACUUM`` (odpowiednik ``VACUUM FULL`` z PostgreSQL). Możliwe jest również włączenie trybu ``PRAGMA auto_vacuum = FULL``, jednak ze względów wydajnościowych narzuca on znaczny koszt przy każdej modyfikacji.
+
 Zarządzanie transakcjami i schematy (SCHEMA)
 ============================================
 Kolejnym aspektem administracji jest dbanie o logiczną strukturę bazy oraz spójność operacji.
 
-**SCHEMA (Schematy)** to wirtualne przestrzenie nazw (przypominające katalogi w systemie operacyjnym), służące do logicznego grupowania tabel, widoków i funkcji. Ich główne zastosowania to:
+**SCHEMA (Schematy)** to wirtualne przestrzenie nazw (przypominające katalogi w systemie operacyjnym), służące do logicznego grupowania tabel, widoków i funkcji. Warto nadmienić, że mechanizm logicznych schematów znany z PostgreSQL nie występuje natywnie w SQLite (istnieje tam komenda ATTACH do dołączania innych plików baz danych jako schematów, ale działa to na innej zasadzie). Główne zastosowania schematów w PostgreSQL to:
+
 * Izolacja danych różnych mikrousług lub aplikacji wewnątrz jednej wspólnej bazy danych.
 * Implementacja architektury wielodostępowej (multi-tenant), gdzie każdy klient aplikacji obsługiwany jest w dedykowanym, oddzielnym schemacie.
 * Ułatwione i zbiorcze zarządzanie uprawnieniami dostępu.
 
-**Zarządzanie transakcjami** to proces kontrolowania instrukcji (BEGIN, COMMIT, ROLLBACK) w taki sposób, aby zachować zgodność z regułami ACID. Administrator musi zwracać szczególną uwagę na zapobieganie tzw. długim transakcjom (long-running transactions). Otwarta i porzucona transakcja powstrzymuje proces Vacuum przed usuwaniem martwych krotek, co prowadzi do drastycznego spadku wydajności całej bazy.
+**Zarządzanie transakcjami** to proces kontrolowania instrukcji (BEGIN, COMMIT, ROLLBACK) w taki sposób, aby zachować zgodność z regułami ACID. Administrator musi zwracać szczególną uwagę na zapobieganie tzw. długim transakcjom (long-running transactions). Otwarta i porzucona transakcja powstrzymuje proces Vacuum przed usuwaniem martwych krotek, co prowadzi do drastycznego spadku wydajności całej bazy (dotyczy to tak samo PostgreSQL, jak i SQLite, gdzie długa transakcja zapisu blokuje cały plik bazy).
 
 .. code-block:: sql
 
@@ -64,14 +71,10 @@ Zarządzanie indeksami
 =====================
 Indeksy są fundamentalne dla wydajnego wyszukiwania danych, jednak ich utrzymanie kosztuje — spowalniają one modyfikacje danych (DML) i konsumują miejsce na dysku. 
 
-Prawidłowe zarządzanie indeksami polega na stałym monitorowaniu ich wykorzystania. Należy identyfikować i usuwać indeksy, które nie są wykorzystywane przez planistę zapytań (tzw. unused indexes). Dodatkowo, podobnie jak tabele, indeksy ulegają fragmentacji. Z tego powodu administrator powinien regularnie planować operację **REINDEX**, która od nowa buduje strukturę drzewa indeksu, przywracając mu optymalny rozmiar i maksymalną wydajność. W systemach o wysokiej dostępności stosuje się przebudowę w trybie `CONCURRENTLY`, która nie przerywa pracy aplikacji.
+Prawidłowe zarządzanie indeksami polega na stałym monitorowaniu ich wykorzystania. Należy identyfikować i usuwać indeksy, które nie są wykorzystywane przez planistę zapytań (tzw. unused indexes). Dodatkowo, podobnie jak tabele, indeksy ulegają fragmentacji. Z tego powodu administrator powinien regularnie planować operację **REINDEX**, która od nowa buduje strukturę drzewa indeksu, przywracając mu optymalny rozmiar i maksymalną wydajność. W systemach PostgreSQL o wysokiej dostępności stosuje się przebudowę w trybie ``CONCURRENTLY``, która nie przerywa pracy aplikacji (SQLite posiada jedynie standardowe polecenie REINDEX, blokujące tabele).
 
 Podsumowanie
 ============
-Prawidłowa kontrola i konserwacja środowiska bazodanowego to wielowymiarowy proces, wymagający głębokiego zrozumienia zarówno architektury logicznej, jak i fizycznej serwera. 
+Prawidłowa kontrola i konserwacja środowiska bazodanowego to wielowymiarowy proces, wymagający głębokiego zrozumienia zarówno architektury logicznej, jak i fizycznej silnika. 
 
-Stabilność i wydajność systemu zależy w równej mierze od prawidłowego zarządzania stanem usługi i połączeniami, dogłębnego planowania okien serwisowych, jak i proaktywnego zarządzania mechanizmem Vacuum i transakcjami. Wykorzystanie schematów do strukturyzacji danych oraz regularne dbanie o kondycję indeksów pozwala na zbudowanie środowiska, które będzie skalowalne, przewidywalne i odporne na awarie w trudnych, produkcyjnych warunkach.
-
-:Autorzy:
-    1. Paweł Łoćwin
-    2. Paweł Łosowski
+Stabilność i wydajność dużych systemów relacyjnych (PostgreSQL) zależy w równej mierze od prawidłowego zarządzania stanem usługi i połączeniami sieciowymi, dogłębnego planowania okien serwisowych, jak i proaktywnego zarządzania mechanizmem AutoVacuum. Z kolei w środowiskach wbudowanych (SQLite) ciężar ten przenosi się na precyzyjne zarządzanie blokadami plików operacyjnych oraz manualną defragmentację przestrzeni. Niezależnie od wybranego silnika, regularne dbanie o kondycję indeksów i izolacja transakcyjna pozwalają na zbudowanie stabilnego systemu odpornego na obciążenia w trudnych, produkcyjnych warunkach.

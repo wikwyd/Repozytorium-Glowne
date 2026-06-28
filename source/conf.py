@@ -8,7 +8,7 @@
 
 project = 'Sprawozdanie-284385'
 copyright = '2026, Olaf Chomicki, Konrad Machowski, Wiktor Wydrzyński'
-author = 'Olaf Chomicki, Konrad Machowski, Wiktor Wydrzyński'
+author = 'Wiktor Wydrzyński'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

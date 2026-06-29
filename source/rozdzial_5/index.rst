@@ -10,7 +10,6 @@ Zapytania do bazy danych (SQLite PostgreSQL)
     1. Olaf Chomicki
     2. Konrad Machowski
     3. Wiktor Wydrzyński
-
 Wprowadzenie
 ============
 

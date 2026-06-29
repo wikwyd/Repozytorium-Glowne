@@ -10,7 +10,7 @@ Implementacja bazy danych i import danych
     1. Olaf Chomicki
     2. Konrad Machowski
     3. Wiktor Wydrzyński
-
+    
 Wprowadzenie
 ============
 W ramach czwartego rozdziału zrealizowano dwa kluczowe etapy prac wdrożeniowych: utworzenie struktur tabelarycznych zdefiniowanych w modelu fizycznym oraz wdrożenie zoptymalizowanych mechanizmów importu danych testowych. Prace przeprowadzono w sposób równoległy dla środowiska lokalnego opartego na silniku SQLite oraz serwerowego wykorzystującego system PostgreSQL.

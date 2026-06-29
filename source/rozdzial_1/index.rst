@@ -3,14 +3,25 @@ Wstęp do sprawozdania oraz linki
 ================================
 
 :Autorzy:
-    1. Olaf Chomicki
-    2. Konrad Machowski
-    3. Wiktor Wydrzyński
+    Wiktor Wydrzyński
 
 Wstęp
 =====
 
 Niniejszy dokument stanowi techniczną dokumentację laboratorium z przedmiotu Bazy Danych. Celem projektu była transformacja wiedzy teoretycznej w praktyczne kompetencje inżynierskie, obejmujące projektowanie, wdrażanie oraz administrację systemami relacyjnymi. Opracowanie opisuje pełen cykl wdrożeniowy oprogramowania: od analizy wymagań i modelowania (pojęciowego i logicznego), przez fizyczną implementację w środowiskach PostgreSQL i SQLite, aż po automatyzację procesów masowego zasilania struktur bazodanowych (ETL).
+
+Podsumowanie i wnioski z laboratorium
+======================================
+
+Zrealizowane prace wdrożeniowe i eksperymenty programistyczne doprowadziły do następujących konkluzji technicznych:
+
+* **Krytyczna rola normalizacji (3NF):** Fundamentalnym etapem tworzenia architektury systemu okazało się doprowadzenie modelu konceptualnego do trzeciej postaci normalnej. Taki zabieg skutecznie zapobiega dublowaniu się danych oraz chroni przed anomaliami wstawiania, modyfikacji i usuwania na późniejszych etapach życia bazy.
+
+* **Rozbieżności między środowiskami DBMS:** Równoległa implementacja na silnikach PostgreSQL i SQLite uwydatniła ich odmienną specyfikę. Architektura serwerowa PostgreSQL gwarantuje ścisłe typowanie oraz rygorystyczne egzekwowanie więzów integralności. Z kolei wbudowana natura SQLite zapewnia łatwość wdrożenia, co jest okupione kompromisami, m.in. koniecznością emulacji typów czasowych (np. brak natywnego ``DATE``).
+
+* **Strategie ładowania wolumenów danych:** Testy wydajnościowe potwierdziły, że w scenariuszach zbliżonych do produkcyjnych należy odchodzić od iteracyjnego wywoływania pojedynczych zapytań ``INSERT``. Zastąpienie ich potokowym wprowadzaniem danych (np. poprzez ``executemany()`` w skryptach Python) minimalizuje opóźnienia I/O oraz znacząco redukuje czas trwania procesów ETL.
+
+* **Delegowanie logiki do warstwy bazy danych:** Optymalna architektura aplikacji wymaga przeniesienia operacji analitycznych wprost do silnika DBMS. Skuteczne wykorzystanie operatorów algebry relacyjnej (``JOIN``), algebry zbiorów (``UNION``, ``EXCEPT``) oraz podzapytań eliminuje konieczność przesyłania i kosztownego filtrowania potężnych zbiorów danych w pamięci operacyjnej aplikacji.
 
 Wykaz repozytoriów (Linki)
 ==========================

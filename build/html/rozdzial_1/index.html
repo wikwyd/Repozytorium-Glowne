@@ -37,16 +37,22 @@
 <h1>Wstęp do sprawozdania oraz linki<a class="headerlink" href="#wstep-do-sprawozdania-oraz-linki" title="Link to this heading">¶</a></h1>
 <dl class="field-list simple">
 <dt class="field-odd">Autorzy<span class="colon">:</span></dt>
-<dd class="field-odd"><ol class="arabic simple">
-<li><p>Olaf Chomicki</p></li>
-<li><p>Konrad Machowski</p></li>
-<li><p>Wiktor Wydrzyński</p></li>
-</ol>
+<dd class="field-odd"><p>Wiktor Wydrzyński</p>
 </dd>
 </dl>
 <section id="wstep">
 <h2>Wstęp<a class="headerlink" href="#wstep" title="Link to this heading">¶</a></h2>
 <p>Niniejszy dokument stanowi techniczną dokumentację laboratorium z przedmiotu Bazy Danych. Celem projektu była transformacja wiedzy teoretycznej w praktyczne kompetencje inżynierskie, obejmujące projektowanie, wdrażanie oraz administrację systemami relacyjnymi. Opracowanie opisuje pełen cykl wdrożeniowy oprogramowania: od analizy wymagań i modelowania (pojęciowego i logicznego), przez fizyczną implementację w środowiskach PostgreSQL i SQLite, aż po automatyzację procesów masowego zasilania struktur bazodanowych (ETL).</p>
+</section>
+<section id="podsumowanie-i-wnioski-z-laboratorium">
+<h2>Podsumowanie i wnioski z laboratorium<a class="headerlink" href="#podsumowanie-i-wnioski-z-laboratorium" title="Link to this heading">¶</a></h2>
+<p>Zrealizowane prace wdrożeniowe i eksperymenty programistyczne doprowadziły do następujących konkluzji technicznych:</p>
+<ul class="simple">
+<li><p><strong>Krytyczna rola normalizacji (3NF):</strong> Fundamentalnym etapem tworzenia architektury systemu okazało się doprowadzenie modelu konceptualnego do trzeciej postaci normalnej. Taki zabieg skutecznie zapobiega dublowaniu się danych oraz chroni przed anomaliami wstawiania, modyfikacji i usuwania na późniejszych etapach życia bazy.</p></li>
+<li><p><strong>Rozbieżności między środowiskami DBMS:</strong> Równoległa implementacja na silnikach PostgreSQL i SQLite uwydatniła ich odmienną specyfikę. Architektura serwerowa PostgreSQL gwarantuje ścisłe typowanie oraz rygorystyczne egzekwowanie więzów integralności. Z kolei wbudowana natura SQLite zapewnia łatwość wdrożenia, co jest okupione kompromisami, m.in. koniecznością emulacji typów czasowych (np. brak natywnego <code class="docutils literal notranslate"><span class="pre">DATE</span></code>).</p></li>
+<li><p><strong>Strategie ładowania wolumenów danych:</strong> Testy wydajnościowe potwierdziły, że w scenariuszach zbliżonych do produkcyjnych należy odchodzić od iteracyjnego wywoływania pojedynczych zapytań <code class="docutils literal notranslate"><span class="pre">INSERT</span></code>. Zastąpienie ich potokowym wprowadzaniem danych (np. poprzez <code class="docutils literal notranslate"><span class="pre">executemany()</span></code> w skryptach Python) minimalizuje opóźnienia I/O oraz znacząco redukuje czas trwania procesów ETL.</p></li>
+<li><p><strong>Delegowanie logiki do warstwy bazy danych:</strong> Optymalna architektura aplikacji wymaga przeniesienia operacji analitycznych wprost do silnika DBMS. Skuteczne wykorzystanie operatorów algebry relacyjnej (<code class="docutils literal notranslate"><span class="pre">JOIN</span></code>), algebry zbiorów (<code class="docutils literal notranslate"><span class="pre">UNION</span></code>, <code class="docutils literal notranslate"><span class="pre">EXCEPT</span></code>) oraz podzapytań eliminuje konieczność przesyłania i kosztownego filtrowania potężnych zbiorów danych w pamięci operacyjnej aplikacji.</p></li>
+</ul>
 </section>
 <section id="wykaz-repozytoriow-linki">
 <h2>Wykaz repozytoriów (Linki)<a class="headerlink" href="#wykaz-repozytoriow-linki" title="Link to this heading">¶</a></h2>

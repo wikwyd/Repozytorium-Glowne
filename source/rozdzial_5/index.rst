@@ -6,6 +6,11 @@ Zapytania do bazy danych (SQLite PostgreSQL)
    :maxdepth: 2
    :caption: Spis treści:
 
+:Autorzy:
+    1. Olaf Chomicki
+    2. Konrad Machowski
+    3. Wiktor Wydrzyński
+    
 Wprowadzenie
 ============
 
